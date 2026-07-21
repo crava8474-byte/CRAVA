@@ -237,234 +237,166 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
 }
 
 
-/* === CRAVA REALISTIC 3D BOX — FINAL === */
-.crava-box3d{
-  width:min(84vw,340px);
+/* === CRAVA PRODUCTION MAILER BOX — CLEAN 3D MODEL === */
+.mailer-box3d{
+  width:min(86vw,350px);
   height:238px;
-  margin:22px auto 28px;
+  margin:20px auto 28px;
   position:relative;
-  perspective:1200px;
+  perspective:1350px;
   perspective-origin:50% 38%;
 }
-.box-stage{
+.mailer-scene{
   position:absolute;
   inset:0;
   transform-style:preserve-3d;
-  transform:rotateX(8deg) rotateY(-7deg);
+  transform:rotateX(54deg) rotateZ(-1.5deg) translateY(-3px);
 }
-.box-lid3d{
+
+/* LOWER BOX */
+.mailer-base{
   position:absolute;
-  z-index:8;
-  left:6%;
-  top:20px;
-  width:88%;
-  height:132px;
+  left:8%;
+  top:58px;
+  width:84%;
+  height:150px;
   transform-style:preserve-3d;
-  transform-origin:50% 100%;
-  transition:transform 1.1s cubic-bezier(.18,.78,.18,1),top 1.1s cubic-bezier(.18,.78,.18,1);
-  transform:translateZ(24px) rotateX(0deg);
 }
-.crava-box3d.open .box-lid3d{
-  top:-5px;
-  transform:translateZ(10px) rotateX(-58deg);
-}
-.lid-face{
+.base-rim{
   position:absolute;
   inset:0;
-  border:1px solid rgba(199,157,108,.52);
-  border-radius:6px;
-  overflow:hidden;
-  backface-visibility:hidden;
-  background:
-    radial-gradient(circle at 50% 42%,rgba(213,177,129,.05),transparent 38%),
-    linear-gradient(145deg,#2b2725 0%,#1e1a19 55%,#151211 100%);
+  border:8px solid #24201e;
+  border-top-color:#38312d;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.055),
-    inset 0 -18px 28px rgba(0,0,0,.30),
-    0 16px 28px rgba(0,0,0,.60);
+    inset 0 0 0 1px rgba(199,154,103,.18),
+    0 0 0 1px rgba(0,0,0,.55);
+  background:#090807;
 }
-.lid-thickness{
+.base-cavity{
   position:absolute;
-  background:linear-gradient(180deg,#1c1816,#0c0a09);
-  border:1px solid rgba(199,157,108,.25);
+  inset:13px 14px 21px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 26%,rgba(74,62,54,.28),transparent 46%),
+    linear-gradient(180deg,#171311,#020202 78%);
+  box-shadow:
+    inset 0 18px 28px rgba(0,0,0,.78),
+    inset 0 -16px 25px rgba(0,0,0,.94);
 }
-.lid-thickness-front{
-  left:1.5%;
-  right:1.5%;
-  bottom:-11px;
-  height:12px;
+.cavity-fog{
+  position:absolute;
+  left:10%;right:10%;top:17%;bottom:8%;
+  border-radius:50%;
+  background:rgba(0,0,0,.72);
+  filter:blur(14px);
+}
+.base-front{
+  position:absolute;
+  left:0;right:0;bottom:-35px;height:36px;
   transform:rotateX(-90deg);
   transform-origin:top;
+  background:linear-gradient(180deg,#1b1715,#080707 78%);
+  border:1px solid rgba(199,154,103,.20);
+  box-shadow:0 18px 28px rgba(0,0,0,.65);
 }
-.lid-thickness-right{
-  top:1.5%;
-  bottom:1.5%;
-  right:-11px;
-  width:12px;
-  transform:rotateY(90deg);
-  transform-origin:left;
+.base-left,.base-right{
+  position:absolute;
+  top:0;bottom:0;width:17px;
+  background:linear-gradient(180deg,#1d1917,#090807);
+  border:1px solid rgba(199,154,103,.16);
 }
-.lid-logo{
+.base-left{left:-17px;transform:rotateY(-90deg);transform-origin:right}
+.base-right{right:-17px;transform:rotateY(90deg);transform-origin:left}
+
+/* LID + FRONT FLAP AS ONE MOVING PIECE */
+.mailer-lid{
+  position:absolute;
+  z-index:6;
+  left:8%;
+  top:58px;
+  width:84%;
+  height:150px;
+  transform-style:preserve-3d;
+  transform-origin:50% 0%;
+  transition:transform 2.2s cubic-bezier(.16,.78,.18,1);
+}
+.mailer-box3d.open .mailer-lid{
+  transform:rotateX(-37deg);
+}
+.lid-top{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  background:
+    url('./box-pattern.svg') center/100% 100% no-repeat,
+    linear-gradient(145deg,#2a2624 0%,#201c1a 54%,#161312 100%);
+  border:1px solid rgba(199,154,103,.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    inset 0 -20px 28px rgba(0,0,0,.26),
+    0 20px 33px rgba(0,0,0,.58);
+  backface-visibility:hidden;
+}
+.mailer-logo{
   position:absolute;
   left:50%;
-  top:47%;
-  width:56%;
+  top:48%;
+  width:51%;
   height:auto;
   transform:translate(-50%,-50%);
   object-fit:contain;
 }
-.lid-subtitle{
+.mailer-subtitle{
   position:absolute;
-  left:0;
-  right:0;
-  top:65%;
+  left:0;right:0;
+  top:66%;
   text-align:center;
-  color:rgba(218,208,197,.60);
+  color:rgba(218,208,198,.62);
   font-size:8px;
   letter-spacing:.03em;
 }
-.pattern-corner{
+.lid-front{
   position:absolute;
-  width:74px;
-  height:74px;
-  opacity:.68;
-}
-.pattern-corner:before{
-  content:"";
-  position:absolute;
-  width:56px;
-  height:56px;
-  border:1px solid rgba(199,157,108,.76);
-  border-radius:50%;
-  background:
-    repeating-linear-gradient(45deg,transparent 0 7px,rgba(199,157,108,.56) 8px 9px),
-    repeating-linear-gradient(-45deg,transparent 0 7px,rgba(199,157,108,.56) 8px 9px);
-  clip-path:polygon(0 0,100% 0,100% 68%,72% 100%,0 100%);
-}
-.pattern-corner:after{
-  content:"";
-  position:absolute;
-  left:12px;
-  top:44px;
-  width:40px;
-  height:24px;
-  border-left:2px solid rgba(199,157,108,.72);
-  border-bottom:2px solid rgba(199,157,108,.72);
-  border-radius:0 0 22px 18px;
-  transform:rotate(-9deg);
-}
-.pc1{left:-12px;top:-12px}
-.pc2{right:-12px;top:-12px;transform:scaleX(-1)}
-.pc3{left:-12px;bottom:-15px;transform:scaleY(-1)}
-.pc4{right:-12px;bottom:-15px;transform:scale(-1)}
-
-.box-interior{
-  position:absolute;
-  z-index:5;
-  left:9%;
-  top:118px;
-  width:82%;
-  height:72px;
-  transform:translateZ(4px);
-  border:1px solid rgba(196,154,105,.30);
-  border-radius:4px 4px 9px 9px;
+  left:0;right:0;bottom:-38px;height:39px;
+  transform:rotateX(-90deg);
+  transform-origin:top;
   overflow:hidden;
-  background:
-    radial-gradient(ellipse at 50% 20%,rgba(66,56,49,.45),transparent 48%),
-    linear-gradient(180deg,#171311,#050505 72%);
-  box-shadow:
-    inset 0 16px 24px rgba(0,0,0,.62),
-    inset 0 -12px 22px rgba(0,0,0,.78);
+  background:linear-gradient(180deg,#181412,#080707);
+  border:1px solid rgba(199,154,103,.22);
+  box-shadow:0 16px 24px rgba(0,0,0,.55);
 }
-.inner-rim{
-  position:absolute;
-  inset:0;
-  border:7px solid rgba(42,35,31,.92);
-  border-top-color:rgba(69,56,48,.95);
-  border-radius:inherit;
-  box-shadow:inset 0 0 0 1px rgba(205,164,113,.12);
-}
-.inner-shadow{
-  position:absolute;
-  left:11%;
-  right:11%;
-  top:22%;
-  bottom:10%;
-  border-radius:50%;
-  background:rgba(0,0,0,.74);
-  filter:blur(12px);
-}
-.box-base3d{
-  position:absolute;
-  z-index:4;
-  left:8%;
-  top:137px;
-  width:84%;
-  height:72px;
-  transform-style:preserve-3d;
-}
-.base-top-edge{
-  position:absolute;
-  left:0;
-  right:0;
-  top:-10px;
-  height:12px;
-  transform:rotateX(65deg);
-  transform-origin:bottom;
-  background:linear-gradient(180deg,#2c2622,#171311);
-  border:1px solid rgba(196,154,105,.23);
-}
-.base-front-face{
-  position:absolute;
-  inset:0;
-  border:1px solid rgba(196,154,105,.28);
-  border-radius:3px 3px 10px 10px;
-  background:
-    linear-gradient(112deg,rgba(255,255,255,.028),transparent 38%),
-    linear-gradient(155deg,#1c1816,#090807 76%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.03),
-    inset 0 -18px 24px rgba(0,0,0,.52),
-    0 25px 34px rgba(0,0,0,.66);
-  overflow:hidden;
-}
-.base-right-face{
-  position:absolute;
-  top:1px;
-  right:-12px;
-  width:13px;
-  height:calc(100% - 4px);
-  transform:rotateY(90deg);
-  transform-origin:left;
-  background:linear-gradient(180deg,#151210,#070606);
-  border:1px solid rgba(196,154,105,.18);
-}
-.base-logo{
+.mailer-front-logo{
   position:absolute;
   left:50%;
-  top:50%;
-  width:34%;
+  top:52%;
+  width:31%;
   height:auto;
   transform:translate(-50%,-50%);
-  opacity:.82;
+  opacity:.88;
 }
-.ground-shadow{
+.lid-left,.lid-right{
+  position:absolute;
+  top:0;bottom:0;width:13px;
+  background:linear-gradient(180deg,#26211f,#0c0a09);
+  border:1px solid rgba(199,154,103,.20);
+}
+.lid-left{left:-13px;transform:rotateY(-90deg);transform-origin:right}
+.lid-right{right:-13px;transform:rotateY(90deg);transform-origin:left}
+
+.mailer-shadow{
   position:absolute;
   z-index:1;
-  left:8%;
-  right:5%;
-  bottom:3px;
-  height:31px;
+  left:5%;right:3%;bottom:-8px;height:40px;
   border-radius:50%;
-  background:rgba(0,0,0,.86);
-  filter:blur(15px);
-  transform:translateZ(-30px) rotateX(76deg);
+  background:rgba(0,0,0,.88);
+  filter:blur(16px);
+  transform:translateZ(-70px) rotateX(90deg);
 }
 @media(max-width:420px){
-  .crava-box3d{width:min(86vw,330px)}
+  .mailer-box3d{width:min(88vw,340px)}
 }
 @media(prefers-reduced-motion:reduce){
-  .box-lid3d{transition:none!important}
+  .mailer-lid{transition:none!important}
 }
 
 </style>
@@ -479,35 +411,29 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   <img src="brand-wordmark.png" class="hero-logo">
   <div class="tag">Your box is the beginning.<br>Your taste becomes the story.</div>
   <p class="copy">Claim your authentic CRAVA box, rate every creation, unlock your Taste DNA, and build a collection that belongs only to you.</p>
-  <div id="box" class="crava-box3d" aria-label="CRAVA premium sweet box">
-    <div class="box-stage">
-      <div class="box-lid3d">
-        <div class="lid-thickness lid-thickness-front"></div>
-        <div class="lid-thickness lid-thickness-right"></div>
-        <div class="lid-face">
-          <div class="pattern-corner pc1"></div>
-          <div class="pattern-corner pc2"></div>
-          <div class="pattern-corner pc3"></div>
-          <div class="pattern-corner pc4"></div>
-          <img src="brand-wordmark.png" class="lid-logo" alt="CRAVA">
-          <div class="lid-subtitle">Premium Sweet Box</div>
+  <div id="box" class="mailer-box3d" aria-label="CRAVA premium sweet box">
+    <div class="mailer-scene">
+      <div class="mailer-base">
+        <div class="base-rim"></div>
+        <div class="base-cavity"><div class="cavity-fog"></div></div>
+        <div class="base-front"></div>
+        <div class="base-left"></div>
+        <div class="base-right"></div>
+      </div>
+
+      <div class="mailer-lid">
+        <div class="lid-top">
+          <img src="brand-wordmark.png" class="mailer-logo" alt="CRAVA">
+          <div class="mailer-subtitle">Premium Sweet Box</div>
         </div>
-      </div>
-
-      <div class="box-interior">
-        <div class="inner-rim"></div>
-        <div class="inner-shadow"></div>
-      </div>
-
-      <div class="box-base3d">
-        <div class="base-top-edge"></div>
-        <div class="base-front-face">
-          <img src="brand-wordmark.png" class="base-logo" alt="">
+        <div class="lid-front">
+          <img src="brand-wordmark.png" class="mailer-front-logo" alt="">
         </div>
-        <div class="base-right-face"></div>
+        <div class="lid-left"></div>
+        <div class="lid-right"></div>
       </div>
 
-      <div class="ground-shadow"></div>
+      <div class="mailer-shadow"></div>
     </div>
   </div>
   <button id="enterBtn" class="btn primary">OPEN YOUR CRAVA BOX</button>
@@ -579,7 +505,7 @@ function memberNo(n){return '#'+String(n||0).padStart(6,'0')}
 function levelFor(xp){let r=LEVELS[0];LEVELS.forEach(l=>{if(xp>=l[1])r=l});return r}
 setTimeout(()=>$('#intro').classList.add('done'),2700);
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
-$('#enterBtn').onclick=()=>{$('#box').classList.add('open');setTimeout(start,900)};$('#accountBtn').onclick=()=>user?openDashboard():start;
+$('#enterBtn').onclick=()=>{$('#box').classList.add('open');setTimeout(start,2450)};$('#accountBtn').onclick=()=>user?openDashboard():start;
 function setMode(v){mode=v;$('#nameWrap').classList.toggle('hidden',v==='login');$('#authSubmit').textContent=v==='signup'?'CREATE MY ACCOUNT':'SIGN IN'}
 $('#signupTab').onclick=()=>setMode('signup');$('#loginTab').onclick=()=>setMode('login');
 
