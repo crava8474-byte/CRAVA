@@ -1,7 +1,7 @@
 {
   "name": "CRAVA",
   "short_name": "CRAVA",
-  "description": "CRAVA \u2014 claim your box, rate every item, and build your taste identity.",
+  "description": "CRAVA — claim your box, rate every item, and build your taste identity.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#090909",
@@ -10,12 +10,14 @@
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
