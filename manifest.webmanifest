@@ -1,10 +1,10 @@
 {
   "name": "CRAVA",
   "short_name": "CRAVA",
-  "description": "CRAVA — claim your box, rate every item, and build your taste identity.",
+  "description": "Every craving leaves a signature.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#090909",
+  "background_color": "#080808",
   "theme_color": "#090909",
   "icons": [
     {

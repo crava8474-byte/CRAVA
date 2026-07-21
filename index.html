@@ -6,7 +6,10 @@
 <meta name="theme-color" content="#090909">
 <meta name="description" content="CRAVA — Every craving leaves a signature.">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>CRAVA — Every Craving Leaves a Signature</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,20 +24,7 @@ button,input,textarea{font:inherit}.wrap{width:min(100%,620px);margin:auto;min-h
 .intro{position:fixed;inset:0;background:#060606;z-index:100;display:grid;place-items:center;text-align:center;transition:.9s}.intro.done{opacity:0;pointer-events:none}.intro img{width:min(74vw,420px);opacity:0;animation:reveal 1.6s .25s forwards}.intro p{font-family:"Cormorant Garamond",serif;color:var(--gold);font-size:19px;letter-spacing:.06em;opacity:0;animation:reveal 1.2s 1.25s forwards}@keyframes reveal{to{opacity:1}}
 .hero{min-height:calc(100vh - 74px);display:grid;align-items:center}.frame{position:relative;border:1px solid var(--line);border-radius:34px;overflow:hidden;padding:56px 26px 35px;text-align:center;background:linear-gradient(145deg,#171514,#090909 67%);box-shadow:var(--shadow)}
 .frame:before{content:"";position:absolute;inset:0;opacity:.28;background-image:radial-gradient(circle at 20% 20%,transparent 0 18px,rgba(215,196,163,.25) 19px 20px,transparent 21px),linear-gradient(45deg,transparent 48%,rgba(215,196,163,.12) 49% 51%,transparent 52%);background-size:130px 130px,92px 92px}
-.hero-inner{position:relative}
-.hero-logo{
-  display:block;
-  width:min(calc(100% - 30px),430px);
-  height:auto;
-  margin:0 auto;
-  object-fit:contain;
-  overflow:visible;
-  transform:translateZ(0);
-  filter:
-    drop-shadow(0 2px 0 rgba(90,68,42,.95))
-    drop-shadow(0 5px 4px rgba(0,0,0,.75))
-    drop-shadow(0 0 18px rgba(241,227,202,.12));
-}.tag{font-family:"Cormorant Garamond",serif;font-size:27px;line-height:1.12;margin:28px 0 12px;color:var(--gold2)}.copy{color:var(--muted);line-height:1.8;font-size:13px;max-width:390px;margin:0 auto 25px}
+.hero-inner{position:relative}.hero-logo{width:min(100%,430px)}.tag{font-family:"Cormorant Garamond",serif;font-size:27px;line-height:1.12;margin:28px 0 12px;color:var(--gold2)}.copy{color:var(--muted);line-height:1.8;font-size:13px;max-width:390px;margin:0 auto 25px}
 .box{width:220px;height:130px;margin:25px auto 30px;perspective:700px;position:relative}.base,.lid{position:absolute;left:0;width:100%;border:1px solid var(--line);background:linear-gradient(145deg,#171514,#090909);box-shadow:0 22px 35px rgba(0,0,0,.45)}.base{bottom:0;height:92px;border-radius:10px 10px 20px 20px}.lid{top:20px;height:42px;border-radius:18px 18px 7px 7px;transform-origin:top;transition:1s}.box.open .lid{transform:rotateX(105deg) translateY(-7px)}.box-mark{position:absolute;inset:0;display:grid;place-items:center;font-family:"Cormorant Garamond";font-size:25px;color:var(--gold2)}
 .btn{width:100%;border:0;border-radius:16px;padding:16px 18px;font-weight:800;display:flex;justify-content:center;align-items:center;gap:8px}.primary{background:linear-gradient(135deg,var(--gold2),#b49a72);color:#17110c}.secondary{background:#111;color:var(--gold2);border:1px solid var(--line)}.stack{display:grid;gap:12px}.head{padding:32px 2px 18px}.eyebrow{font-size:9px;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:9px}h1,h2,h3{font-family:"Cormorant Garamond",serif}h2{font-size:38px;margin:0 0 7px;color:var(--gold2)}.lead{color:var(--muted);font-size:13px;line-height:1.7;margin:0}
 .card{border:1px solid var(--line);border-radius:24px;background:linear-gradient(145deg,#171514,#0c0b0b);padding:20px;box-shadow:var(--shadow)}
@@ -48,22 +38,232 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
 .ai{border:1px solid rgba(241,227,202,.35);background:linear-gradient(145deg,rgba(215,196,163,.11),#0c0b0b);border-radius:24px;padding:20px}.ai h3{font-size:31px;margin:13px 0 7px;color:var(--gold2)}.ai p{color:var(--muted);font-size:13px;line-height:1.8}.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{border:1px solid var(--line);border-radius:999px;padding:7px 9px;font-size:9px;color:var(--gold2)}
 .nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:sticky;bottom:12px;margin-top:15px}.history{display:flex;justify-content:space-between;border-bottom:1px solid rgba(215,196,163,.12);padding:11px 0;font-size:12px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;place-items:center;z-index:50;padding:18px}.modal.show{display:grid}.modal .card{width:min(100%,460px)}
 .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.metric{border:1px solid var(--line);border-radius:16px;padding:14px;background:#0d0d0d}.metric b{display:block;color:var(--gold2);font-size:20px}.metric span{font-size:8px;color:var(--muted);letter-spacing:.08em}.passport{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.stamp{border:1px dashed var(--line);border-radius:16px;padding:15px;text-align:center;opacity:.45}.stamp.on{opacity:1;background:rgba(215,196,163,.08);border-style:solid}.stamp i{font-style:normal;font-size:24px;display:block}.journey{position:relative;padding-left:18px}.journey:before{content:"";position:absolute;left:5px;top:5px;bottom:5px;width:1px;background:var(--line)}.journey-item{position:relative;padding:0 0 16px 14px}.journey-item:before{content:"";position:absolute;left:-17px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--gold2);box-shadow:0 0 15px rgba(241,227,202,.4)}.journey-item b{color:var(--gold2);font-size:12px}.journey-item span{display:block;color:var(--muted);font-size:10px;margin-top:3px}.badge small{display:block;color:var(--muted);font-size:7px;margin-top:4px}.tier-bronze.on{box-shadow:inset 0 0 0 1px rgba(205,127,50,.25)}.tier-silver.on{box-shadow:inset 0 0 0 1px rgba(192,192,192,.25)}.tier-gold.on{box-shadow:inset 0 0 0 1px rgba(212,175,55,.3)}.tier-diamond.on{box-shadow:inset 0 0 0 1px rgba(185,242,255,.25)}.tier-legendary.on{box-shadow:0 0 25px rgba(241,227,202,.12)}
-@media(max-width:420px){
-  .hero-logo{width:calc(100% - 42px)}
+
+/* === CRAVA FINAL LAUNCH UI === */
+.logo{
+  width:132px;
+  height:auto;
+  object-fit:contain;
 }
+.hero-logo{
+  display:block;
+  width:min(90%,470px);
+  height:auto;
+  max-width:470px;
+  max-height:none;
+  margin:0 auto 15px;
+  padding:0;
+  object-fit:contain;
+  object-position:center;
+  overflow:visible;
+  clip-path:none;
+  transform:none;
+  filter:none;
+}
+.intro img{
+  display:block;
+  width:min(82vw,500px);
+  height:auto;
+  object-fit:contain;
+}
+.frame{
+  border-color:rgba(215,196,163,.27);
+  background:
+    radial-gradient(circle at 50% 8%,rgba(215,196,163,.07),transparent 33%),
+    linear-gradient(145deg,#171514,#080808 70%);
+}
+.hero-inner{position:relative;z-index:2}
+.primary{
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 14px 32px rgba(180,154,114,.16),inset 0 1px 0 rgba(255,255,255,.34);
+  transition:transform .16s ease,filter .16s ease;
+}
+.primary:active{transform:scale(.985);filter:brightness(.96)}
+.primary:before{
+  content:"";
+  position:absolute;
+  top:-140%;
+  left:-42%;
+  width:30%;
+  height:380%;
+  transform:rotate(22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+  animation:cravaShine 4.8s ease-in-out infinite;
+}
+@keyframes cravaShine{0%,72%{left:-42%}100%{left:125%}}
+
+/* Real CRAVA box based on the production design */
+.real-box{
+  width:min(84vw,340px);
+  height:236px;
+  margin:24px auto 28px;
+  position:relative;
+  perspective:1200px;
+}
+.real-box-lid{
+  position:absolute;
+  z-index:5;
+  left:4%;
+  top:14px;
+  width:92%;
+  height:158px;
+  border:1px solid rgba(203,164,115,.48);
+  border-radius:6px;
+  transform-origin:50% 100%;
+  transition:transform 1.05s cubic-bezier(.2,.76,.2,1),top 1.05s cubic-bezier(.2,.76,.2,1);
+  background:
+    radial-gradient(circle at 50% 45%,rgba(203,164,115,.05),transparent 42%),
+    linear-gradient(145deg,#272321,#171413 72%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.055),
+    inset 0 -22px 35px rgba(0,0,0,.34),
+    0 18px 30px rgba(0,0,0,.60);
+  overflow:hidden;
+}
+.real-box.open .real-box-lid{
+  top:-12px;
+  transform:rotateX(-63deg);
+}
+.box-logo{
+  position:absolute;
+  left:50%;
+  top:45%;
+  width:58%;
+  height:auto;
+  transform:translate(-50%,-50%);
+  object-fit:contain;
+}
+.box-subtitle{
+  position:absolute;
+  left:0;right:0;
+  top:62%;
+  text-align:center;
+  color:rgba(214,203,190,.65);
+  font-size:9px;
+  letter-spacing:.03em;
+}
+.corner-art{
+  position:absolute;
+  width:72px;
+  height:72px;
+  opacity:.58;
+}
+.corner-art:before{
+  content:"";
+  position:absolute;
+  width:56px;height:56px;
+  border:1px solid rgba(203,164,115,.70);
+  border-radius:50%;
+  background:
+    repeating-linear-gradient(45deg,transparent 0 7px,rgba(203,164,115,.55) 8px 9px),
+    repeating-linear-gradient(-45deg,transparent 0 7px,rgba(203,164,115,.55) 8px 9px);
+  clip-path:polygon(0 0,100% 0,100% 72%,70% 100%,0 100%);
+}
+.corner-art:after{
+  content:"";
+  position:absolute;
+  width:42px;height:28px;
+  border-left:2px solid rgba(203,164,115,.72);
+  border-bottom:2px solid rgba(203,164,115,.72);
+  border-radius:0 0 24px 20px;
+  transform:rotate(-8deg);
+}
+.ca1{left:-12px;top:-11px}
+.ca2{right:-12px;top:-11px;transform:scaleX(-1)}
+.ca3{left:-12px;bottom:-15px;transform:scaleY(-1)}
+.ca4{right:-12px;bottom:-15px;transform:scale(-1)}
+.real-box-body{
+  position:absolute;
+  z-index:2;
+  left:7%;
+  top:146px;
+  width:86%;
+  height:72px;
+  border:1px solid rgba(203,164,115,.30);
+  border-radius:2px 2px 10px 10px;
+  background:linear-gradient(150deg,#1c1917,#0a0909 72%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 23px 30px rgba(0,0,0,.62);
+}
+.real-box-front{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.front-logo{
+  width:36%;
+  height:auto;
+  opacity:.88;
+}
+.real-box-floor-shadow{
+  position:absolute;
+  z-index:1;
+  left:7%;right:7%;
+  bottom:1px;
+  height:26px;
+  border-radius:50%;
+  background:rgba(0,0,0,.82);
+  filter:blur(13px);
+}
+
+/* Google sign-in */
+.oauth-divider{
+  display:flex;align-items:center;gap:10px;
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.oauth-divider:before,.oauth-divider:after{
+  content:"";height:1px;flex:1;background:var(--line);
+}
+.google-btn{
+  background:#f7f4ef;
+  color:#17110c;
+  border:1px solid rgba(255,255,255,.78);
+}
+.google-btn svg{width:18px;height:18px}
+
+@media(max-width:420px){
+  .hero-logo{width:88%}
+  .logo{width:120px}
+  .real-box{width:min(88vw,330px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .screen,.intro img,.intro p,.primary:before{animation:none!important}
+  .real-box-lid{transition:none!important}
+}
+
 </style>
 </head>
 <body>
-<div id="intro" class="intro"><div><img src="crava-logo-clean.png"><p>Every craving leaves a signature.</p></div></div>
+<div id="intro" class="intro"><div><img src="brand-wordmark.png"><p>Every craving leaves a signature.</p></div></div>
 <div class="wrap">
-<header class="top"><img src="crava-logo-clean.png" class="logo"><button id="accountBtn" class="pill">MY CRAVA</button></header>
+<header class="top"><img src="brand-wordmark.png" class="logo"><button id="accountBtn" class="pill">MY CRAVA</button></header>
 
 <section id="landing" class="screen active">
  <div class="hero"><div class="frame"><div class="hero-inner">
-  <img src="crava-logo-clean.png" class="hero-logo">
+  <img src="brand-wordmark.png" class="hero-logo">
   <div class="tag">Your box is the beginning.<br>Your taste becomes the story.</div>
   <p class="copy">Claim your authentic CRAVA box, rate every creation, unlock your Taste DNA, and build a collection that belongs only to you.</p>
-  <div id="box" class="box"><div class="lid"></div><div class="base"><div class="box-mark">CRAVA</div></div></div>
+  <div id="box" class="real-box" aria-label="CRAVA premium sweet box">
+    <div class="real-box-lid">
+      <div class="corner-art ca1"></div>
+      <div class="corner-art ca2"></div>
+      <div class="corner-art ca3"></div>
+      <div class="corner-art ca4"></div>
+      <img src="brand-wordmark.png" class="box-logo" alt="CRAVA">
+      <div class="box-subtitle">Premium Sweet Box</div>
+    </div>
+    <div class="real-box-body">
+      <div class="real-box-front">
+        <img src="brand-wordmark.png" class="front-logo" alt="">
+      </div>
+    </div>
+    <div class="real-box-floor-shadow"></div>
+  </div>
   <button id="enterBtn" class="btn primary">OPEN YOUR CRAVA BOX</button>
  </div></div></div>
 </section>
@@ -75,7 +275,18 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   <div id="nameWrap"><label>Display name</label><input id="name" placeholder="Your name"></div>
   <div><label>Email</label><input id="email" type="email" placeholder="you@example.com"></div>
   <div><label>Password</label><input id="password" type="password" minlength="8" placeholder="Minimum 8 characters"></div>
-  <button id="authSubmit" class="btn primary">CREATE MY ACCOUNT</button><div id="authMsg" class="msg"></div>
+  <button id="authSubmit" class="btn primary">CREATE MY ACCOUNT</button>
+  <div class="oauth-divider"><span>or continue with</span></div>
+  <button id="googleBtn" class="btn google-btn" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.24-.2-1.8H12v3.27h5.52a4.8 4.8 0 0 1-2.05 3.06v2.12h3.31c1.94-1.79 2.82-4.42 2.82-6.65z"/>
+      <path fill="#34A853" d="M12 22c2.7 0 4.97-.89 6.63-2.42l-3.31-2.12c-.92.61-2.1.98-3.32.98-2.6 0-4.8-1.76-5.59-4.12H3v2.19A10 10 0 0 0 12 22z"/>
+      <path fill="#FBBC05" d="M6.41 14.32A6.02 6.02 0 0 1 6.1 12c0-.8.14-1.58.31-2.32V7.49H3A10 10 0 0 0 2 12c0 1.61.38 3.14 1 4.51l3.41-2.19z"/>
+      <path fill="#EA4335" d="M12 5.56c1.47 0 2.79.51 3.83 1.5l2.87-2.88C16.96 2.56 14.7 2 12 2a10 10 0 0 0-9 5.49l3.41 2.19C7.2 7.32 9.4 5.56 12 5.56z"/>
+    </svg>
+    CONTINUE WITH GOOGLE
+  </button>
+  <div id="authMsg" class="msg"></div>
  </div>
 </section>
 
@@ -125,6 +336,24 @@ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch
 $('#enterBtn').onclick=()=>{$('#box').classList.add('open');setTimeout(start,900)};$('#accountBtn').onclick=()=>user?openDashboard():start;
 function setMode(v){mode=v;$('#nameWrap').classList.toggle('hidden',v==='login');$('#authSubmit').textContent=v==='signup'?'CREATE MY ACCOUNT':'SIGN IN'}
 $('#signupTab').onclick=()=>setMode('signup');$('#loginTab').onclick=()=>setMode('login');
+
+async function signInWithGoogle(){
+  const msg=$('#authMsg');
+  msg.textContent='OPENING GOOGLE...';
+  msg.className='msg';
+  try{
+    const{error}=await db.auth.signInWithOAuth({
+      provider:'google',
+      options:{redirectTo:window.location.origin+window.location.pathname}
+    });
+    if(error)throw error;
+  }catch(e){
+    msg.textContent=String(e.message||e).toUpperCase();
+    msg.className='msg bad';
+  }
+}
+$('#googleBtn').onclick=signInWithGoogle;
+
 
 async function start(){if(!configured){alert('Connect Supabase first using README_AR.md');go('auth');return}const{data:{session}}=await db.auth.getSession();if(session){user=session.user;await loadProfile();go('claim')}else go('auth')}
 async function loadProfile(){const{data,error}=await db.from('profiles').select('*').eq('id',user.id).single();if(error)throw error;profile=data}
