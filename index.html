@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="CRAVA — Every craving leaves a signature.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>CRAVA — Every Craving Leaves a Signature</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080808;--panel:#111;--panel2:#171514;--gold:#d7c4a3;--gold2:#f1e3ca;--text:#f5efe7;--muted:#988f86;--line:rgba(215,196,163,.22);--danger:#ee8f87;--ok:#a9d4b1;--shadow:0 30px 90px rgba(0,0,0,.65)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -10%,rgba(215,196,163,.13),transparent 28%),#080808;color:var(--text);font-family:Inter,Arial,sans-serif}
+button,input,textarea{font:inherit}.wrap{width:min(100%,620px);margin:auto;min-height:100vh;padding:18px 18px 80px}.hidden{display:none!important}
+.top{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;padding:10px 0;background:linear-gradient(#080808 65%,transparent)}
+.logo{width:112px}.pill,.ghost{border:1px solid var(--line);background:rgba(10,10,10,.75);color:var(--gold2);border-radius:999px;padding:9px 13px;font-size:11px}
+.screen{display:none;animation:up .45s ease}.screen.active{display:block}@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.intro{position:fixed;inset:0;background:#060606;z-index:100;display:grid;place-items:center;text-align:center;transition:.9s}.intro.done{opacity:0;pointer-events:none}.intro img{width:min(74vw,420px);opacity:0;animation:reveal 1.6s .25s forwards}.intro p{font-family:"Cormorant Garamond",serif;color:var(--gold);font-size:19px;letter-spacing:.06em;opacity:0;animation:reveal 1.2s 1.25s forwards}@keyframes reveal{to{opacity:1}}
+.hero{min-height:calc(100vh - 74px);display:grid;align-items:center}.frame{position:relative;border:1px solid var(--line);border-radius:34px;overflow:hidden;padding:56px 26px 35px;text-align:center;background:linear-gradient(145deg,#171514,#090909 67%);box-shadow:var(--shadow)}
+.frame:before{content:"";position:absolute;inset:0;opacity:.28;background-image:radial-gradient(circle at 20% 20%,transparent 0 18px,rgba(215,196,163,.25) 19px 20px,transparent 21px),linear-gradient(45deg,transparent 48%,rgba(215,196,163,.12) 49% 51%,transparent 52%);background-size:130px 130px,92px 92px}
+.hero-inner{position:relative}.hero-logo{width:min(100%,430px)}.tag{font-family:"Cormorant Garamond",serif;font-size:27px;line-height:1.12;margin:28px 0 12px;color:var(--gold2)}.copy{color:var(--muted);line-height:1.8;font-size:13px;max-width:390px;margin:0 auto 25px}
+.box{width:220px;height:130px;margin:25px auto 30px;perspective:700px;position:relative}.base,.lid{position:absolute;left:0;width:100%;border:1px solid var(--line);background:linear-gradient(145deg,#171514,#090909);box-shadow:0 22px 35px rgba(0,0,0,.45)}.base{bottom:0;height:92px;border-radius:10px 10px 20px 20px}.lid{top:20px;height:42px;border-radius:18px 18px 7px 7px;transform-origin:top;transition:1s}.box.open .lid{transform:rotateX(105deg) translateY(-7px)}.box-mark{position:absolute;inset:0;display:grid;place-items:center;font-family:"Cormorant Garamond";font-size:25px;color:var(--gold2)}
+.btn{width:100%;border:0;border-radius:16px;padding:16px 18px;font-weight:800;display:flex;justify-content:center;align-items:center;gap:8px}.primary{background:linear-gradient(135deg,var(--gold2),#b49a72);color:#17110c}.secondary{background:#111;color:var(--gold2);border:1px solid var(--line)}.stack{display:grid;gap:12px}.head{padding:32px 2px 18px}.eyebrow{font-size:9px;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:9px}h1,h2,h3{font-family:"Cormorant Garamond",serif}h2{font-size:38px;margin:0 0 7px;color:var(--gold2)}.lead{color:var(--muted);font-size:13px;line-height:1.7;margin:0}
+.card{border:1px solid var(--line);border-radius:24px;background:linear-gradient(145deg,#171514,#0c0b0b);padding:20px;box-shadow:var(--shadow)}
+label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}input,textarea{width:100%;background:#090909;border:1px solid var(--line);color:white;border-radius:14px;padding:14px;outline:none}input:focus{border-color:var(--gold)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.msg{min-height:18px;font-size:11px;color:var(--muted)}.msg.ok{color:var(--ok)}.msg.bad{color:var(--danger)}
+.product{border:1px solid var(--line);border-radius:20px;background:#111;padding:16px}.product-top{display:flex;justify-content:space-between}.product h3{font-size:24px;margin:0;color:var(--gold2)}.cat{font-size:9px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}.score{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--gold2)}.stars{display:flex;gap:3px;margin-top:13px}.star{border:0;background:none;color:#4e4944;font-size:30px;padding:0}.star.on{color:var(--gold2);text-shadow:0 0 18px rgba(241,227,202,.2)}
+.member{display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:center}.seal{width:72px;height:72px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;font:700 27px "Cormorant Garamond";color:var(--gold2);background:radial-gradient(circle,#2b241a,#0b0b0b 68%)}.member-id{font:700 29px "Cormorant Garamond";color:var(--gold2)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.stat{border:1px solid var(--line);border-radius:14px;text-align:center;padding:11px 6px}.stat b{display:block;font-size:20px;color:var(--gold2)}.stat span{font-size:8px;color:var(--muted)}
+.progress{height:9px;border-radius:999px;border:1px solid var(--line);overflow:hidden;margin-top:8px}.progress i{display:block;height:100%;background:linear-gradient(90deg,#8d704a,var(--gold2))}
+.dna{display:grid;gap:12px}.dna-row{display:grid;grid-template-columns:100px 1fr 35px;gap:9px;align-items:center;font-size:11px}.bar{height:8px;border-radius:999px;background:#090909;overflow:hidden}.bar i{height:100%;display:block;background:linear-gradient(90deg,#8d704a,var(--gold2))}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.badge{border:1px solid var(--line);border-radius:14px;padding:12px 6px;text-align:center;color:#625d58;font-size:9px}.badge.on{color:var(--gold2);background:rgba(215,196,163,.08)}.badge i{font-style:normal;font-size:24px;display:block;margin-bottom:4px}
+.shelf{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.shelf-box{height:108px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#171514,#090909);display:grid;place-items:center;text-align:center}.shelf-box b{font-family:"Cormorant Garamond";font-size:19px;color:var(--gold2)}.shelf-box span{font-size:9px;color:var(--muted)}
+.ai{border:1px solid rgba(241,227,202,.35);background:linear-gradient(145deg,rgba(215,196,163,.11),#0c0b0b);border-radius:24px;padding:20px}.ai h3{font-size:31px;margin:13px 0 7px;color:var(--gold2)}.ai p{color:var(--muted);font-size:13px;line-height:1.8}.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{border:1px solid var(--line);border-radius:999px;padding:7px 9px;font-size:9px;color:var(--gold2)}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:sticky;bottom:12px;margin-top:15px}.history{display:flex;justify-content:space-between;border-bottom:1px solid rgba(215,196,163,.12);padding:11px 0;font-size:12px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;place-items:center;z-index:50;padding:18px}.modal.show{display:grid}.modal .card{width:min(100%,460px)}
+.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.metric{border:1px solid var(--line);border-radius:16px;padding:14px;background:#0d0d0d}.metric b{display:block;color:var(--gold2);font-size:20px}.metric span{font-size:8px;color:var(--muted);letter-spacing:.08em}.passport{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.stamp{border:1px dashed var(--line);border-radius:16px;padding:15px;text-align:center;opacity:.45}.stamp.on{opacity:1;background:rgba(215,196,163,.08);border-style:solid}.stamp i{font-style:normal;font-size:24px;display:block}.journey{position:relative;padding-left:18px}.journey:before{content:"";position:absolute;left:5px;top:5px;bottom:5px;width:1px;background:var(--line)}.journey-item{position:relative;padding:0 0 16px 14px}.journey-item:before{content:"";position:absolute;left:-17px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--gold2);box-shadow:0 0 15px rgba(241,227,202,.4)}.journey-item b{color:var(--gold2);font-size:12px}.journey-item span{display:block;color:var(--muted);font-size:10px;margin-top:3px}.badge small{display:block;color:var(--muted);font-size:7px;margin-top:4px}.tier-bronze.on{box-shadow:inset 0 0 0 1px rgba(205,127,50,.25)}.tier-silver.on{box-shadow:inset 0 0 0 1px rgba(192,192,192,.25)}.tier-gold.on{box-shadow:inset 0 0 0 1px rgba(212,175,55,.3)}.tier-diamond.on{box-shadow:inset 0 0 0 1px rgba(185,242,255,.25)}.tier-legendary.on{box-shadow:0 0 25px rgba(241,227,202,.12)}
+</style>
+</head>
+<body>
+<div id="intro" class="intro"><div><img src="crava-logo-clean.png"><p>Every craving leaves a signature.</p></div></div>
+<div class="wrap">
+<header class="top"><img src="crava-logo-clean.png" class="logo"><button id="accountBtn" class="pill">MY CRAVA</button></header>
+
+<section id="landing" class="screen active">
+ <div class="hero"><div class="frame"><div class="hero-inner">
+  <img src="crava-logo-clean.png" class="hero-logo">
+  <div class="tag">Your box is the beginning.<br>Your taste becomes the story.</div>
+  <p class="copy">Claim your authentic CRAVA box, rate every creation, unlock your Taste DNA, and build a collection that belongs only to you.</p>
+  <div id="box" class="box"><div class="lid"></div><div class="base"><div class="box-mark">CRAVA</div></div></div>
+  <button id="enterBtn" class="btn primary">OPEN YOUR CRAVA BOX</button>
+ </div></div></div>
+</section>
+
+<section id="auth" class="screen">
+ <div class="head"><div class="eyebrow">CRAVA MEMBERSHIP</div><h2>Enter the inner circle.</h2><p class="lead">Create your permanent CRAVA identity or return to your collection.</p></div>
+ <div class="card stack">
+  <div class="grid2"><button id="signupTab" class="btn secondary">SIGN UP</button><button id="loginTab" class="btn secondary">SIGN IN</button></div>
+  <div id="nameWrap"><label>Display name</label><input id="name" placeholder="Your name"></div>
+  <div><label>Email</label><input id="email" type="email" placeholder="you@example.com"></div>
+  <div><label>Password</label><input id="password" type="password" minlength="8" placeholder="Minimum 8 characters"></div>
+  <button id="authSubmit" class="btn primary">CREATE MY ACCOUNT</button><div id="authMsg" class="msg"></div>
+ </div>
+</section>
+
+<section id="claim" class="screen">
+ <div class="head"><div class="eyebrow">AUTHENTIC BOX ACCESS</div><h2>Claim your box.</h2><p class="lead">Use the box number and private claim code found inside your CRAVA package.</p></div>
+ <div class="card stack">
+  <div><label>Box number</label><input id="boxNo" inputmode="numeric" placeholder="000185"></div>
+  <div><label>Private claim code</label><input id="claimCode" maxlength="12" placeholder="K7M4Q9"></div>
+  <button id="claimBtn" class="btn primary">VERIFY & ADD TO COLLECTION</button><div id="claimMsg" class="msg"></div>
+ </div>
+ <div class="card" style="margin-top:12px"><div class="eyebrow">SECURITY</div><p class="lead">Only activated boxes can be claimed. Every private code works once and becomes permanently attached to the first verified account.</p></div>
+</section>
+
+<section id="rating" class="screen">
+ <div class="head"><div class="eyebrow">BOX EXPERIENCE</div><h2>Rate every creation.</h2><p class="lead">Your ratings train your personal CRAVA Taste DNA.</p></div>
+ <div id="memberStrip" class="card"></div><div id="products" class="stack" style="margin-top:12px"></div>
+ <div class="nav"><button class="btn secondary" onclick="openDashboard()">MY PROFILE</button><button id="submitRatings" class="btn primary">SAVE RATINGS</button></div>
+</section>
+
+<section id="dashboard" class="screen">
+ <div class="head"><div class="eyebrow">PRIVATE MEMBER PROFILE</div><h2>Your CRAVA identity.</h2><p class="lead">A living record of every verified box, rating, level, badge, and taste shift.</p></div>
+ <div id="dashboardContent" class="stack"></div>
+ <div class="nav"><button class="btn secondary" onclick="go('claim')">CLAIM NEW BOX</button><button id="logoutBtn" class="btn primary">SIGN OUT</button></div>
+</section>
+</div>
+
+<div id="modal" class="modal"><div class="card stack"><div class="eyebrow">TASTE DNA UPDATED</div><h2 style="font-size:33px">Your box is now part of your story.</h2><p id="modalText" class="lead"></p><button class="btn primary" onclick="closeModal();openDashboard()">VIEW MY PROFILE</button></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+<script>
+const $=s=>document.querySelector(s), PRODUCTS=[
+['noir_cookie','NOIR COOKIE','Dark cocoa cookie'],['amber_cookie','AMBER COOKIE','Golden caramel cookie'],
+['chocolate_twist','CHOCOLATE TWIST','Filled twist'],['strawberry_twist','STRAWBERRY TWIST','Filled twist'],
+['custard_twist','CUSTARD TWIST','Filled twist'],['lotus_twist','LOTUS TWIST','Filled twist'],
+['orbs','ORBS','Candy experience'],['blue_dip','BLUE DIP','Signature dip']
+], LEVELS=[['EXPLORER',0],['INSIDER',250],['COLLECTOR',600],['ELITE',1200],['LEGEND',2200],['CRAVA ICON',4000]];
+let mode='signup',user=null,profile=null,activeBox=null,ratings={};
+const cfg=window.CRAVA_CONFIG||{}, configured=!String(cfg.SUPABASE_URL).includes('PASTE_');
+const db=configured?supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY):null;
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id));scrollTo(0,0)}
+function esc(v=''){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function memberNo(n){return '#'+String(n||0).padStart(6,'0')}
+function levelFor(xp){let r=LEVELS[0];LEVELS.forEach(l=>{if(xp>=l[1])r=l});return r}
+setTimeout(()=>$('#intro').classList.add('done'),2700);
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+$('#enterBtn').onclick=()=>{$('#box').classList.add('open');setTimeout(start,900)};$('#accountBtn').onclick=()=>user?openDashboard():start;
+function setMode(v){mode=v;$('#nameWrap').classList.toggle('hidden',v==='login');$('#authSubmit').textContent=v==='signup'?'CREATE MY ACCOUNT':'SIGN IN'}
+$('#signupTab').onclick=()=>setMode('signup');$('#loginTab').onclick=()=>setMode('login');
+
+async function start(){if(!configured){alert('Connect Supabase first using README_AR.md');go('auth');return}const{data:{session}}=await db.auth.getSession();if(session){user=session.user;await loadProfile();go('claim')}else go('auth')}
+async function loadProfile(){const{data,error}=await db.from('profiles').select('*').eq('id',user.id).single();if(error)throw error;profile=data}
+$('#authSubmit').onclick=async()=>{const msg=$('#authMsg'),email=$('#email').value.trim(),password=$('#password').value,name=$('#name').value.trim();msg.textContent='PLEASE WAIT...';msg.className='msg';
+try{if(mode==='signup'){if(name.length<2)throw Error('Enter your name.');const{data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name}}});if(error)throw error;if(!data.session){msg.textContent='CHECK YOUR EMAIL TO CONFIRM YOUR ACCOUNT.';msg.className='msg ok';return}user=data.user}else{const{data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;user=data.user}await loadProfile();go('claim')}catch(e){msg.textContent=String(e.message||e).toUpperCase();msg.className='msg bad'}};
+
+$('#claimBtn').onclick=async()=>{const no=parseInt($('#boxNo').value,10),code=$('#claimCode').value.trim().toUpperCase(),msg=$('#claimMsg');msg.textContent='VERIFYING...';msg.className='msg';
+if(!no||code.length<5){msg.textContent='ENTER A VALID BOX NUMBER AND CLAIM CODE.';msg.className='msg bad';return}
+const{data,error}=await db.rpc('claim_crava_box',{p_box_number:no,p_claim_code:code});
+if(error||!data?.ok){msg.textContent=(data?.reason||error?.message||'BOX COULD NOT BE CLAIMED').toUpperCase();msg.className='msg bad';return}
+activeBox=data.box_id;profile.box_count=data.box_count;profile.xp=data.xp;msg.textContent='BOX VERIFIED — ADDED TO YOUR COLLECTION.';msg.className='msg ok';renderProducts();renderMemberStrip();setTimeout(()=>go('rating'),700)
+};
+
+function renderMemberStrip(){const lvl=levelFor(profile?.xp||0);$('#memberStrip').innerHTML=`<div class="member"><div class="seal">${esc((profile?.display_name||'C')[0].toUpperCase())}</div><div><div class="cat">CRAVA MEMBER</div><div class="member-id">${memberNo(profile?.member_number)}</div><div class="lead">${esc(profile?.display_name||'Member')} · ${lvl[0]}</div></div></div>`}
+function renderProducts(){ratings={};$('#products').innerHTML=PRODUCTS.map(p=>`<article class="product" data-id="${p[0]}"><div class="product-top"><div><h3>${p[1]}</h3><div class="cat">${p[2]}</div></div><div class="score">—</div></div><div class="stars">${[1,2,3,4,5].map(n=>`<button class="star" data-v="${n}">★</button>`).join('')}</div><div style="margin-top:10px"><input maxlength="80" placeholder="Optional note"></div></article>`).join('');
+document.querySelectorAll('.product').forEach(c=>c.querySelectorAll('.star').forEach(s=>s.onclick=()=>{let v=+s.dataset.v,id=c.dataset.id;ratings[id]={rating:v,note:c.querySelector('input').value};c.querySelectorAll('.star').forEach((x,i)=>x.classList.toggle('on',i<v));c.querySelector('.score').textContent=v+'.0'}))}
+$('#submitRatings').onclick=async()=>{const entries=Object.entries(ratings);if(!activeBox||!entries.length)return;const payload=entries.map(([product_id,r])=>({product_id,rating:r.rating,note:r.note||null}));const{data,error}=await db.rpc('submit_crava_ratings',{p_box_id:activeBox,p_ratings:payload});if(error||!data?.ok){alert(data?.reason||error?.message||'Save failed');return}profile.xp=data.xp;activeBox=null;$('#modalText').textContent=data.rare_reward?'A rare reward was hidden inside this box. Check your new badge.':'Your ratings refined your Taste DNA and moved you closer to your next level.';$('#modal').classList.add('show')};
+function closeModal(){$('#modal').classList.remove('show')}
+
+function analyze(rows){const avg=id=>{const a=rows.filter(r=>r.product_id===id);return a.length?a.reduce((s,r)=>s+r.rating,0)/a.length:0},chocolate=Math.max(avg('chocolate_twist'),avg('noir_cookie'))*20,fruity=Math.max(avg('strawberry_twist'),avg('orbs'))*20,sweetness=((avg('lotus_twist')+avg('custard_twist')+avg('amber_cookie'))/3)*20,adventure=rows.length?Math.min(100,35+new Set(rows.map(r=>r.product_id)).size*8):0;let title='THE FIRST TASTER',text='Your profile is waiting for its first verified experience.';if(rows.length){const top=Math.max(chocolate,fruity,sweetness,adventure);if(top===chocolate){title='THE MIDNIGHT CONNOISSEUR';text='You lean toward rich chocolate, deeper cocoa notes, and bold indulgence.'}else if(top===fruity){title='THE BERRY EXPLORER';text='Bright strawberry notes and playful fruit-forward flavors define your taste.'}else if(top===sweetness){title='THE GOLDEN CLASSIC';text='Creamy custard and caramelized Lotus warmth are at the center of your profile.'}else{title='THE FLAVOR ARCHITECT';text='You enjoy exploring the full CRAVA range instead of staying with one familiar choice.'}}return{title,text,dna:[['CHOCOLATE',chocolate],['FRUITY',fruity],['SWEETNESS',sweetness],['ADVENTURE',adventure]]}}
+async function openDashboard(){if(!user)return start();await loadProfile();const[{data:rows},{data:boxes},{data:badges},{data:board}]=await Promise.all([
+db.from('ratings').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),
+db.from('boxes').select('box_number,rarity,claimed_at').eq('claimed_by',user.id).order('claimed_at',{ascending:false}),
+db.from('user_badges').select('badge_key,earned_at').eq('user_id',user.id),
+db.from('leaderboard_public').select('*').limit(10)
+]);const safeRows=rows||[],safeBoxes=boxes||[],safeBadges=badges||[],a=analyze(safeRows),lvl=levelFor(profile.xp||0),idx=LEVELS.findIndex(x=>x[0]===lvl[0]),next=LEVELS[idx+1],prog=next?Math.min(100,((profile.xp-lvl[1])/(next[1]-lvl[1]))*100):100,avg=safeRows.length?(safeRows.reduce((s,r)=>s+r.rating,0)/safeRows.length).toFixed(1):'—';
+const productAvg=PRODUCTS.map(p=>{const rr=safeRows.filter(r=>r.product_id===p[0]);return[p[0],p[1],rr.length?rr.reduce((s,r)=>s+r.rating,0)/rr.length:0]}).sort((a,b)=>b[2]-a[2]);const favorite=productAvg[0]?.[2]?productAvg[0][1]:'—';
+const flavorDefs=[['chocolate_twist','🍫','CHOCOLATE'],['strawberry_twist','🍓','STRAWBERRY'],['custard_twist','🍮','CUSTARD'],['lotus_twist','🪷','LOTUS']];const tried=new Set(safeRows.filter(r=>flavorDefs.some(f=>f[0]===r.product_id)).map(r=>r.product_id));
+const badgeDefs=[
+['first_box','✦','FIRST BOX','BRONZE'],['first_rating','★','FIRST VERDICT','BRONZE'],['chocolate_taster','🍫','CHOCO TASTER','BRONZE'],['strawberry_taster','🍓','BERRY TASTER','BRONZE'],['custard_taster','🍮','CUSTARD TASTER','BRONZE'],['lotus_taster','🪷','LOTUS TASTER','BRONZE'],
+['collector_3','▣','COLLECTOR III','SILVER'],['ratings_10','✎','10 RATINGS','SILVER'],['flavor_pair','◈','FLAVOR PAIR','SILVER'],['week_member','⌛','ONE WEEK','SILVER'],
+['collector_10','♜','COLLECTOR X','GOLD'],['passport_complete','✥','FULL PASSPORT','GOLD'],['ratings_25','✦','25 RATINGS','GOLD'],['level_elite','▲','CRAVA ELITE','GOLD'],
+['collector_25','💎','COLLECTOR XXV','DIAMOND'],['ratings_50','◇','50 RATINGS','DIAMOND'],['rare_box','♛','RARE FIND','DIAMOND'],['taste_master','✺','TASTE MASTER','DIAMOND'],
+['crava_icon','★','CRAVA ICON','LEGENDARY'],['collector_50','♚','THE ARCHIVIST','LEGENDARY']];
+const earned=new Map(safeBadges.map(b=>[b.badge_key,b.earned_at]));const firstBox=safeBoxes.length?safeBoxes[safeBoxes.length-1]:null,lastBox=safeBoxes[0]||null,joined=new Date(profile.created_at),days=Math.max(1,Math.ceil((Date.now()-joined)/86400000));
+const journey=[];journey.push(['MEMBERSHIP CREATED',joined.toLocaleDateString()]);if(firstBox)journey.push(['FIRST BOX CLAIMED',`BOX ${memberNo(firstBox.box_number)} · ${new Date(firstBox.claimed_at).toLocaleDateString()}`]);if(safeRows.length)journey.push(['FIRST RATING',new Date(safeRows[safeRows.length-1].created_at).toLocaleDateString()]);safeBadges.slice().sort((x,y)=>new Date(x.earned_at)-new Date(y.earned_at)).slice(-6).forEach(b=>journey.push([badgeDefs.find(d=>d[0]===b.badge_key)?.[2]||'BADGE UNLOCKED',new Date(b.earned_at).toLocaleDateString()]));
+$('#dashboardContent').innerHTML=`<div class="card"><div class="member"><div class="seal">${esc((profile.display_name||'C')[0])}</div><div><div class="cat">MEMBER NUMBER</div><div class="member-id">${memberNo(profile.member_number)}</div><div class="lead">${esc(profile.display_name)} · ${lvl[0]}</div></div></div><div style="margin-top:15px"><div class="cat">${profile.xp||0} XP</div><div class="progress"><i style="width:${prog}%"></i></div></div></div>
+<div class="card"><div class="eyebrow">YOUR CRAVA STATISTICS</div><div class="metric-grid"><div class="metric"><b>${profile.box_count||0}</b><span>BOXES CLAIMED</span></div><div class="metric"><b>${safeRows.length}</b><span>RATINGS GIVEN</span></div><div class="metric"><b>${avg}</b><span>AVERAGE RATING</span></div><div class="metric"><b>${favorite}</b><span>FAVORITE PRODUCT</span></div><div class="metric"><b>${days}</b><span>DAYS AS MEMBER</span></div><div class="metric"><b>${lastBox?'#'+String(lastBox.box_number).padStart(6,'0'):'—'}</b><span>LATEST BOX</span></div></div></div>
+<div class="ai"><div class="eyebrow">TASTE DNA</div><h3>${a.title}</h3><p>${a.text}</p><div class="dna">${a.dna.map(x=>`<div class="dna-row"><span>${x[0]}</span><div class="bar"><i style="width:${Math.round(x[1])}%"></i></div><b>${Math.round(x[1])}</b></div>`).join('')}</div></div>
+<div class="card"><div class="eyebrow">FLAVOR PASSPORT</div><div class="passport">${flavorDefs.map(f=>`<div class="stamp ${tried.has(f[0])?'on':''}"><i>${f[1]}</i><b>${f[2]}</b><div class="cat">${tried.has(f[0])?'STAMPED':'NOT YET'}</div></div>`).join('')}</div></div>
+<div class="card"><div class="eyebrow">CRAVA JOURNEY</div><div class="journey">${journey.map(j=>`<div class="journey-item"><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>
+<div class="card"><div class="eyebrow">DIGITAL SHELF</div><div class="shelf">${safeBoxes.map(b=>`<div class="shelf-box"><div><b>BOX ${memberNo(b.box_number)}</b><br><span>${String(b.rarity||'STANDARD').toUpperCase()}</span></div></div>`).join('')||'<p class="lead">No claimed boxes yet.</p>'}</div></div>
+<div class="card"><div class="eyebrow">ACHIEVEMENTS</div><div class="badges">${badgeDefs.map(d=>`<div class="badge tier-${d[3].toLowerCase()} ${earned.has(d[0])?'on':''}"><i>${d[1]}</i>${d[2]}<small>${d[3]}${earned.has(d[0])?' · '+new Date(earned.get(d[0])).toLocaleDateString():''}</small></div>`).join('')}</div></div>
+<div class="card"><div class="eyebrow">TOP CRAVA MEMBERS</div>${(board||[]).map((r,i)=>`<div class="history"><span>${i+1}. ${esc(r.display_name)}</span><b>${r.xp} XP</b></div>`).join('')||'<p class="lead">Leaderboard begins with the first members.</p>'}</div>
+<div class="card"><div class="eyebrow">LATEST RATINGS</div>${safeRows.slice(0,8).map(r=>`<div class="history"><span>${PRODUCTS.find(p=>p[0]===r.product_id)?.[1]||r.product_id}</span><b>${r.rating}.0</b></div>`).join('')||'<p class="lead">No ratings yet.</p>'}</div>`;go('dashboard')}
+$('#logoutBtn').onclick=async()=>{await db.auth.signOut();user=null;profile=null;go('landing')};
+renderProducts();
+</script>
+</body></html>
