@@ -1,4 +1,4 @@
-const CACHE='crava-final-launch-v2';
+const CACHE='crava-realistic-box-v1';
 const ASSETS=['./','./index.html','./config.js','./crava-logo-clean.png','./brand-wordmark.png','./icon-192.png','./icon-512.png','./manifest.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));

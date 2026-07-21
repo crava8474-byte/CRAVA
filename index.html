@@ -236,6 +236,237 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   .real-box-lid{transition:none!important}
 }
 
+
+/* === CRAVA REALISTIC 3D BOX — FINAL === */
+.crava-box3d{
+  width:min(84vw,340px);
+  height:238px;
+  margin:22px auto 28px;
+  position:relative;
+  perspective:1200px;
+  perspective-origin:50% 38%;
+}
+.box-stage{
+  position:absolute;
+  inset:0;
+  transform-style:preserve-3d;
+  transform:rotateX(8deg) rotateY(-7deg);
+}
+.box-lid3d{
+  position:absolute;
+  z-index:8;
+  left:6%;
+  top:20px;
+  width:88%;
+  height:132px;
+  transform-style:preserve-3d;
+  transform-origin:50% 100%;
+  transition:transform 1.1s cubic-bezier(.18,.78,.18,1),top 1.1s cubic-bezier(.18,.78,.18,1);
+  transform:translateZ(24px) rotateX(0deg);
+}
+.crava-box3d.open .box-lid3d{
+  top:-5px;
+  transform:translateZ(10px) rotateX(-58deg);
+}
+.lid-face{
+  position:absolute;
+  inset:0;
+  border:1px solid rgba(199,157,108,.52);
+  border-radius:6px;
+  overflow:hidden;
+  backface-visibility:hidden;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(213,177,129,.05),transparent 38%),
+    linear-gradient(145deg,#2b2725 0%,#1e1a19 55%,#151211 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.055),
+    inset 0 -18px 28px rgba(0,0,0,.30),
+    0 16px 28px rgba(0,0,0,.60);
+}
+.lid-thickness{
+  position:absolute;
+  background:linear-gradient(180deg,#1c1816,#0c0a09);
+  border:1px solid rgba(199,157,108,.25);
+}
+.lid-thickness-front{
+  left:1.5%;
+  right:1.5%;
+  bottom:-11px;
+  height:12px;
+  transform:rotateX(-90deg);
+  transform-origin:top;
+}
+.lid-thickness-right{
+  top:1.5%;
+  bottom:1.5%;
+  right:-11px;
+  width:12px;
+  transform:rotateY(90deg);
+  transform-origin:left;
+}
+.lid-logo{
+  position:absolute;
+  left:50%;
+  top:47%;
+  width:56%;
+  height:auto;
+  transform:translate(-50%,-50%);
+  object-fit:contain;
+}
+.lid-subtitle{
+  position:absolute;
+  left:0;
+  right:0;
+  top:65%;
+  text-align:center;
+  color:rgba(218,208,197,.60);
+  font-size:8px;
+  letter-spacing:.03em;
+}
+.pattern-corner{
+  position:absolute;
+  width:74px;
+  height:74px;
+  opacity:.68;
+}
+.pattern-corner:before{
+  content:"";
+  position:absolute;
+  width:56px;
+  height:56px;
+  border:1px solid rgba(199,157,108,.76);
+  border-radius:50%;
+  background:
+    repeating-linear-gradient(45deg,transparent 0 7px,rgba(199,157,108,.56) 8px 9px),
+    repeating-linear-gradient(-45deg,transparent 0 7px,rgba(199,157,108,.56) 8px 9px);
+  clip-path:polygon(0 0,100% 0,100% 68%,72% 100%,0 100%);
+}
+.pattern-corner:after{
+  content:"";
+  position:absolute;
+  left:12px;
+  top:44px;
+  width:40px;
+  height:24px;
+  border-left:2px solid rgba(199,157,108,.72);
+  border-bottom:2px solid rgba(199,157,108,.72);
+  border-radius:0 0 22px 18px;
+  transform:rotate(-9deg);
+}
+.pc1{left:-12px;top:-12px}
+.pc2{right:-12px;top:-12px;transform:scaleX(-1)}
+.pc3{left:-12px;bottom:-15px;transform:scaleY(-1)}
+.pc4{right:-12px;bottom:-15px;transform:scale(-1)}
+
+.box-interior{
+  position:absolute;
+  z-index:5;
+  left:9%;
+  top:118px;
+  width:82%;
+  height:72px;
+  transform:translateZ(4px);
+  border:1px solid rgba(196,154,105,.30);
+  border-radius:4px 4px 9px 9px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 20%,rgba(66,56,49,.45),transparent 48%),
+    linear-gradient(180deg,#171311,#050505 72%);
+  box-shadow:
+    inset 0 16px 24px rgba(0,0,0,.62),
+    inset 0 -12px 22px rgba(0,0,0,.78);
+}
+.inner-rim{
+  position:absolute;
+  inset:0;
+  border:7px solid rgba(42,35,31,.92);
+  border-top-color:rgba(69,56,48,.95);
+  border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgba(205,164,113,.12);
+}
+.inner-shadow{
+  position:absolute;
+  left:11%;
+  right:11%;
+  top:22%;
+  bottom:10%;
+  border-radius:50%;
+  background:rgba(0,0,0,.74);
+  filter:blur(12px);
+}
+.box-base3d{
+  position:absolute;
+  z-index:4;
+  left:8%;
+  top:137px;
+  width:84%;
+  height:72px;
+  transform-style:preserve-3d;
+}
+.base-top-edge{
+  position:absolute;
+  left:0;
+  right:0;
+  top:-10px;
+  height:12px;
+  transform:rotateX(65deg);
+  transform-origin:bottom;
+  background:linear-gradient(180deg,#2c2622,#171311);
+  border:1px solid rgba(196,154,105,.23);
+}
+.base-front-face{
+  position:absolute;
+  inset:0;
+  border:1px solid rgba(196,154,105,.28);
+  border-radius:3px 3px 10px 10px;
+  background:
+    linear-gradient(112deg,rgba(255,255,255,.028),transparent 38%),
+    linear-gradient(155deg,#1c1816,#090807 76%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.03),
+    inset 0 -18px 24px rgba(0,0,0,.52),
+    0 25px 34px rgba(0,0,0,.66);
+  overflow:hidden;
+}
+.base-right-face{
+  position:absolute;
+  top:1px;
+  right:-12px;
+  width:13px;
+  height:calc(100% - 4px);
+  transform:rotateY(90deg);
+  transform-origin:left;
+  background:linear-gradient(180deg,#151210,#070606);
+  border:1px solid rgba(196,154,105,.18);
+}
+.base-logo{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:34%;
+  height:auto;
+  transform:translate(-50%,-50%);
+  opacity:.82;
+}
+.ground-shadow{
+  position:absolute;
+  z-index:1;
+  left:8%;
+  right:5%;
+  bottom:3px;
+  height:31px;
+  border-radius:50%;
+  background:rgba(0,0,0,.86);
+  filter:blur(15px);
+  transform:translateZ(-30px) rotateX(76deg);
+}
+@media(max-width:420px){
+  .crava-box3d{width:min(86vw,330px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .box-lid3d{transition:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -248,21 +479,36 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   <img src="brand-wordmark.png" class="hero-logo">
   <div class="tag">Your box is the beginning.<br>Your taste becomes the story.</div>
   <p class="copy">Claim your authentic CRAVA box, rate every creation, unlock your Taste DNA, and build a collection that belongs only to you.</p>
-  <div id="box" class="real-box" aria-label="CRAVA premium sweet box">
-    <div class="real-box-lid">
-      <div class="corner-art ca1"></div>
-      <div class="corner-art ca2"></div>
-      <div class="corner-art ca3"></div>
-      <div class="corner-art ca4"></div>
-      <img src="brand-wordmark.png" class="box-logo" alt="CRAVA">
-      <div class="box-subtitle">Premium Sweet Box</div>
-    </div>
-    <div class="real-box-body">
-      <div class="real-box-front">
-        <img src="brand-wordmark.png" class="front-logo" alt="">
+  <div id="box" class="crava-box3d" aria-label="CRAVA premium sweet box">
+    <div class="box-stage">
+      <div class="box-lid3d">
+        <div class="lid-thickness lid-thickness-front"></div>
+        <div class="lid-thickness lid-thickness-right"></div>
+        <div class="lid-face">
+          <div class="pattern-corner pc1"></div>
+          <div class="pattern-corner pc2"></div>
+          <div class="pattern-corner pc3"></div>
+          <div class="pattern-corner pc4"></div>
+          <img src="brand-wordmark.png" class="lid-logo" alt="CRAVA">
+          <div class="lid-subtitle">Premium Sweet Box</div>
+        </div>
       </div>
+
+      <div class="box-interior">
+        <div class="inner-rim"></div>
+        <div class="inner-shadow"></div>
+      </div>
+
+      <div class="box-base3d">
+        <div class="base-top-edge"></div>
+        <div class="base-front-face">
+          <img src="brand-wordmark.png" class="base-logo" alt="">
+        </div>
+        <div class="base-right-face"></div>
+      </div>
+
+      <div class="ground-shadow"></div>
     </div>
-    <div class="real-box-floor-shadow"></div>
   </div>
   <button id="enterBtn" class="btn primary">OPEN YOUR CRAVA BOX</button>
  </div></div></div>
