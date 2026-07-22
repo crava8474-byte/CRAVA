@@ -768,7 +768,7 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   </div>
   </div>
   <button id="enterBtn" class="btn primary">OPEN YOUR CRAVA BOX</button>
- </div></div></div>
+ </div></div>
 </section>
 
 <section id="auth" class="screen">
@@ -830,29 +830,54 @@ const $=s=>document.querySelector(s), PRODUCTS=[
 let mode='signup',user=null,profile=null,activeBox=null,ratings={};
 const cfg=window.CRAVA_CONFIG||{}, configured=!String(cfg.SUPABASE_URL).includes('PASTE_');
 const db=configured?supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY):null;
-function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id));scrollTo(0,0)}
+function go(id){
+  const target=document.getElementById(id);
+  if(!target){
+    console.error('CRAVA screen not found:',id);
+    return;
+  }
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  target.classList.add('active');
+  try{window.scrollTo({top:0,left:0,behavior:'auto'})}catch(_){window.scrollTo(0,0)}
+}
 function esc(v=''){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function memberNo(n){return '#'+String(n||0).padStart(6,'0')}
 function levelFor(xp){let r=LEVELS[0];LEVELS.forEach(l=>{if(xp>=l[1])r=l});return r}
 setTimeout(()=>$('#intro').classList.add('done'),2700);
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
-$('#enterBtn').onclick=async()=>{
+$('#enterBtn').onclick=()=>{
   const btn=$('#enterBtn');
   if(btn.disabled)return;
+
   btn.disabled=true;
   $('#box').classList.add('open');
 
-  await new Promise(resolve=>setTimeout(resolve,2450));
-
-  try{
-    await start();
-  }catch(e){
-    console.error('CRAVA start transition failed:',e);
+  setTimeout(()=>{
+    /* Always show a real screen first—never leave the page blank. */
     go('auth');
-  }finally{
+
+    /* Then upgrade the destination for an already signed-in member. */
+    if(configured && db){
+      db.auth.getSession()
+        .then(async({data,error})=>{
+          if(error || !data?.session?.user)return;
+
+          user=data.session.user;
+
+          try{
+            await loadProfile();
+            go('claim');
+          }catch(e){
+            console.error('Profile load failed after box opening:',e);
+          }
+        })
+        .catch(e=>console.error('Session check failed after box opening:',e));
+    }
+
     btn.disabled=false;
-  }
-};$('#accountBtn').onclick=()=>user?openDashboard():start;
+  },2450);
+};
+$('#accountBtn').onclick=()=>user?openDashboard():start;
 function setMode(v){mode=v;$('#nameWrap').classList.toggle('hidden',v==='login');$('#authSubmit').textContent=v==='signup'?'CREATE MY ACCOUNT':'SIGN IN'}
 $('#signupTab').onclick=()=>setMode('signup');$('#loginTab').onclick=()=>setMode('login');
 
@@ -874,36 +899,7 @@ async function signInWithGoogle(){
 $('#googleBtn').onclick=signInWithGoogle;
 
 
-async function start(){
-  try{
-    if(!configured){
-      go('auth');
-      return;
-    }
-
-    const{data,error}=await db.auth.getSession();
-    if(error)throw error;
-
-    const session=data?.session;
-    if(!session?.user){
-      go('auth');
-      return;
-    }
-
-    user=session.user;
-
-    try{
-      await loadProfile();
-      go('claim');
-    }catch(profileError){
-      console.error('Profile load failed:',profileError);
-      go('auth');
-    }
-  }catch(e){
-    console.error('Session check failed:',e);
-    go('auth');
-  }
-}
+async function start(){if(!configured){alert('Connect Supabase first using README_AR.md');go('auth');return}const{data:{session}}=await db.auth.getSession();if(session){user=session.user;await loadProfile();go('claim')}else go('auth')}
 async function loadProfile(){const{data,error}=await db.from('profiles').select('*').eq('id',user.id).single();if(error)throw error;profile=data}
 $('#authSubmit').onclick=async()=>{const msg=$('#authMsg'),email=$('#email').value.trim(),password=$('#password').value,name=$('#name').value.trim();msg.textContent='PLEASE WAIT...';msg.className='msg';
 try{if(mode==='signup'){if(name.length<2)throw Error('Enter your name.');const{data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name}}});if(error)throw error;if(!data.session){msg.textContent='CHECK YOUR EMAIL TO CONFIRM YOUR ACCOUNT.';msg.className='msg ok';return}user=data.user}else{const{data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;user=data.user}await loadProfile();go('claim')}catch(e){msg.textContent=String(e.message||e).toUpperCase();msg.className='msg bad'}};
@@ -950,14 +946,12 @@ $('#dashboardContent').innerHTML=`<div class="card"><div class="member"><div cla
 $('#logoutBtn').onclick=async()=>{await db.auth.signOut();user=null;profile=null;go('landing')};
 renderProducts();
 
-/* Navigation watchdog: recover automatically if any runtime error hides every screen. */
-window.addEventListener('error',()=>{
-  const active=document.querySelector('.screen.active');
-  if(!active)go('auth');
-});
-window.addEventListener('unhandledrejection',()=>{
-  const active=document.querySelector('.screen.active');
-  if(!active)go('auth');
-});
+setInterval(()=>{
+  if(!document.querySelector('.screen.active')){
+    const auth=document.getElementById('auth');
+    if(auth)auth.classList.add('active');
+  }
+},500);
+
 </script>
 </body></html>
