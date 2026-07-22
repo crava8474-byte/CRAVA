@@ -1,4 +1,4 @@
-const CACHE='crava-rigid-lid-final-v1';
+const CACHE='crava-true-hinge-box-v1';
 const ASSETS=['./','./index.html','./config.js','./crava-logo-clean.png','./brand-wordmark.png','./box-pattern.svg','./icon-192.png','./icon-512.png','./manifest.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));
