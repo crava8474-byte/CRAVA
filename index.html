@@ -814,6 +814,32 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   }
 }
 
+
+/* === FINAL BOX POSITIONING ONLY === */
+.hinge-box{
+  width:min(78vw,320px) !important;
+  height:188px !important;
+  margin:0 auto 2px !important;
+  transform:translate(-10px,-14px) !important;
+}
+.hinge-scene{
+  left:50% !important;
+  width:100% !important;
+  transform:
+    translateX(-50%)
+    rotateX(55deg)
+    rotateZ(0deg)
+    translateY(-4px) !important;
+}
+
+@media(max-width:420px){
+  .hinge-box{
+    width:min(80vw,310px) !important;
+    height:182px !important;
+    transform:translate(-9px,-13px) !important;
+  }
+}
+
 </style>
 </head>
 <body>
