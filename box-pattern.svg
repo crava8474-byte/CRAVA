@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620">
-  <g fill="none" stroke="#c79a67" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+  <g fill="none" stroke="#c79a67" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".42">
     <!-- top-left waffle -->
     <path d="M0 0h210c0 92-28 132-93 164C64 190 20 168 0 145z"/>
     <path d="M22 18l143 122M58 5l137 116M4 56l130 110M188 18L48 150M214 52L86 170"/>

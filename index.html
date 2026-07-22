@@ -256,6 +256,7 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
 /* LOWER BOX */
 .mailer-base{
   position:absolute;
+  z-index:3;
   left:8%;
   top:58px;
   width:84%;
@@ -317,11 +318,15 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   width:84%;
   height:150px;
   transform-style:preserve-3d;
-  transform-origin:50% 0%;
-  transition:transform 2.2s cubic-bezier(.16,.78,.18,1);
+  transform-origin:50% 100%;
+  transform:translateY(0) translateZ(0) rotateX(0deg);
+  transition:
+    transform 2.2s cubic-bezier(.16,.78,.18,1),
+    filter 2.2s cubic-bezier(.16,.78,.18,1);
 }
 .mailer-box3d.open .mailer-lid{
-  transform:rotateX(-37deg);
+  transform:translateY(-24px) translateZ(20px) rotateX(10deg);
+  filter:drop-shadow(0 18px 16px rgba(0,0,0,.52));
 }
 .lid-top{
   position:absolute;
@@ -360,6 +365,7 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   left:0;right:0;bottom:-38px;height:39px;
   transform:rotateX(-90deg);
   transform-origin:top;
+  backface-visibility:hidden;
   overflow:hidden;
   background:linear-gradient(180deg,#181412,#080707);
   border:1px solid rgba(199,154,103,.22);
@@ -397,6 +403,25 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
 }
 @media(prefers-reduced-motion:reduce){
   .mailer-lid{transition:none!important}
+}
+
+
+/* Final lid-lift refinement */
+.mailer-base:after{
+  content:"";
+  position:absolute;
+  left:7%;
+  right:7%;
+  top:2px;
+  height:18px;
+  border-radius:50%;
+  background:rgba(0,0,0,0);
+  filter:blur(10px);
+  transition:background 2.2s cubic-bezier(.16,.78,.18,1);
+  pointer-events:none;
+}
+.mailer-box3d.open .mailer-base:after{
+  background:rgba(0,0,0,.64);
 }
 
 </style>
