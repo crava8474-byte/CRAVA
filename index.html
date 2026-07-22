@@ -836,7 +836,23 @@ function memberNo(n){return '#'+String(n||0).padStart(6,'0')}
 function levelFor(xp){let r=LEVELS[0];LEVELS.forEach(l=>{if(xp>=l[1])r=l});return r}
 setTimeout(()=>$('#intro').classList.add('done'),2700);
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
-$('#enterBtn').onclick=()=>{$('#box').classList.add('open');setTimeout(start,2450)};$('#accountBtn').onclick=()=>user?openDashboard():start;
+$('#enterBtn').onclick=async()=>{
+  const btn=$('#enterBtn');
+  if(btn.disabled)return;
+  btn.disabled=true;
+  $('#box').classList.add('open');
+
+  await new Promise(resolve=>setTimeout(resolve,2450));
+
+  try{
+    await start();
+  }catch(e){
+    console.error('CRAVA start transition failed:',e);
+    go('auth');
+  }finally{
+    btn.disabled=false;
+  }
+};$('#accountBtn').onclick=()=>user?openDashboard():start;
 function setMode(v){mode=v;$('#nameWrap').classList.toggle('hidden',v==='login');$('#authSubmit').textContent=v==='signup'?'CREATE MY ACCOUNT':'SIGN IN'}
 $('#signupTab').onclick=()=>setMode('signup');$('#loginTab').onclick=()=>setMode('login');
 
@@ -858,7 +874,36 @@ async function signInWithGoogle(){
 $('#googleBtn').onclick=signInWithGoogle;
 
 
-async function start(){if(!configured){alert('Connect Supabase first using README_AR.md');go('auth');return}const{data:{session}}=await db.auth.getSession();if(session){user=session.user;await loadProfile();go('claim')}else go('auth')}
+async function start(){
+  try{
+    if(!configured){
+      go('auth');
+      return;
+    }
+
+    const{data,error}=await db.auth.getSession();
+    if(error)throw error;
+
+    const session=data?.session;
+    if(!session?.user){
+      go('auth');
+      return;
+    }
+
+    user=session.user;
+
+    try{
+      await loadProfile();
+      go('claim');
+    }catch(profileError){
+      console.error('Profile load failed:',profileError);
+      go('auth');
+    }
+  }catch(e){
+    console.error('Session check failed:',e);
+    go('auth');
+  }
+}
 async function loadProfile(){const{data,error}=await db.from('profiles').select('*').eq('id',user.id).single();if(error)throw error;profile=data}
 $('#authSubmit').onclick=async()=>{const msg=$('#authMsg'),email=$('#email').value.trim(),password=$('#password').value,name=$('#name').value.trim();msg.textContent='PLEASE WAIT...';msg.className='msg';
 try{if(mode==='signup'){if(name.length<2)throw Error('Enter your name.');const{data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name}}});if(error)throw error;if(!data.session){msg.textContent='CHECK YOUR EMAIL TO CONFIRM YOUR ACCOUNT.';msg.className='msg ok';return}user=data.user}else{const{data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;user=data.user}await loadProfile();go('claim')}catch(e){msg.textContent=String(e.message||e).toUpperCase();msg.className='msg bad'}};
@@ -904,5 +949,15 @@ $('#dashboardContent').innerHTML=`<div class="card"><div class="member"><div cla
 <div class="card"><div class="eyebrow">LATEST RATINGS</div>${safeRows.slice(0,8).map(r=>`<div class="history"><span>${PRODUCTS.find(p=>p[0]===r.product_id)?.[1]||r.product_id}</span><b>${r.rating}.0</b></div>`).join('')||'<p class="lead">No ratings yet.</p>'}</div>`;go('dashboard')}
 $('#logoutBtn').onclick=async()=>{await db.auth.signOut();user=null;profile=null;go('landing')};
 renderProducts();
+
+/* Navigation watchdog: recover automatically if any runtime error hides every screen. */
+window.addEventListener('error',()=>{
+  const active=document.querySelector('.screen.active');
+  if(!active)go('auth');
+});
+window.addEventListener('unhandledrejection',()=>{
+  const active=document.querySelector('.screen.active');
+  if(!active)go('auth');
+});
 </script>
 </body></html>
