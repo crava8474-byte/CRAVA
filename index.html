@@ -731,6 +731,89 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   .single-lid{transition:none!important}
 }
 
+
+/* === CRAVA FINAL MOBILE COMPACTION + CENTERING + CORRECT HINGE === */
+
+#landing .frame{
+  padding-top:16px !important;
+  padding-bottom:16px !important;
+}
+#landing .hero-inner{
+  gap:8px !important;
+}
+#landing .hero-logo{
+  margin-bottom:2px !important;
+}
+#landing h1,
+#landing .headline{
+  margin-top:0 !important;
+  margin-bottom:4px !important;
+  line-height:1.12 !important;
+}
+#landing .sub,
+#landing .hero-copy{
+  margin-top:0 !important;
+  margin-bottom:6px !important;
+  line-height:1.42 !important;
+}
+#landing .btn.primary{
+  margin-top:6px !important;
+}
+
+/* Visually center the box */
+.hinge-box{
+  width:min(82vw,340px) !important;
+  height:204px !important;
+  margin:4px auto 8px !important;
+  left:auto !important;
+  right:auto !important;
+  transform:none !important;
+}
+.hinge-scene{
+  left:50% !important;
+  right:auto !important;
+  width:100% !important;
+  transform:translateX(-50%) rotateX(55deg) rotateZ(0deg) translateY(-4px) !important;
+  transform-origin:50% 50% !important;
+}
+
+/* Rear edge fixed, front edge rises upward by a quarter opening */
+.single-lid{
+  transform-origin:50% 0% !important;
+  transform:translateZ(7px) rotateX(0deg) !important;
+  transition:
+    transform 2.2s cubic-bezier(.16,.78,.18,1),
+    filter 2.2s cubic-bezier(.16,.78,.18,1) !important;
+}
+.hinge-box.open .single-lid{
+  transform:translateZ(7px) rotateX(24deg) !important;
+  filter:drop-shadow(0 16px 14px rgba(0,0,0,.48)) !important;
+}
+
+@media(max-width:420px){
+  #landing .frame{
+    padding-top:12px !important;
+    padding-bottom:12px !important;
+  }
+  #landing .hero-logo{
+    width:80% !important;
+  }
+  #landing h1,
+  #landing .headline{
+    font-size:clamp(25px,7vw,36px) !important;
+  }
+  #landing .sub,
+  #landing .hero-copy{
+    font-size:14px !important;
+  }
+  .hinge-box{
+    width:min(84vw,330px) !important;
+    height:194px !important;
+    margin-top:0 !important;
+    margin-bottom:2px !important;
+  }
+}
+
 </style>
 </head>
 <body>
