@@ -455,6 +455,110 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   isolation:isolate;
 }
 
+
+/* === FINAL RIGID L-SHAPED LID === */
+.mailer-lid{
+  position:absolute !important;
+  z-index:8 !important;
+  left:8% !important;
+  top:58px !important;
+  width:84% !important;
+  height:150px !important;
+  transform-style:preserve-3d !important;
+  transform-origin:50% 0% !important;
+  transform:translateY(0) translateZ(0) rotateX(0deg) !important;
+  transition:transform 2.2s cubic-bezier(.16,.78,.18,1) !important;
+  filter:none !important;
+}
+.mailer-box3d.open .mailer-lid{
+  transform:translateY(-16px) translateZ(10px) rotateX(-18deg) !important;
+  filter:drop-shadow(0 15px 16px rgba(0,0,0,.5)) !important;
+}
+.lid-rigid{
+  position:absolute;
+  inset:0;
+  transform-style:preserve-3d;
+}
+.lid-top{
+  position:absolute !important;
+  inset:0 !important;
+  transform:none !important;
+  overflow:hidden !important;
+  background:
+    url('./box-pattern.svg') center/100% 100% no-repeat,
+    linear-gradient(145deg,#2a2624 0%,#201c1a 54%,#161312 100%) !important;
+  border:1px solid rgba(199,154,103,.42) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    inset 0 -18px 26px rgba(0,0,0,.26),
+    0 18px 30px rgba(0,0,0,.52) !important;
+  backface-visibility:hidden !important;
+}
+.lid-top:after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:-1px;
+  height:8px;
+  background:linear-gradient(180deg,#2a211c,#17110e);
+  border-top:1px solid rgba(199,154,103,.16);
+  pointer-events:none;
+}
+.lid-front{
+  position:absolute !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:-40px !important;
+  height:40px !important;
+  transform:rotateX(-90deg) !important;
+  transform-origin:top center !important;
+  backface-visibility:hidden !important;
+  overflow:hidden !important;
+  background:linear-gradient(180deg,#181412,#080707) !important;
+  border:1px solid rgba(199,154,103,.22) !important;
+  box-shadow:0 14px 22px rgba(0,0,0,.46) !important;
+}
+.lid-front:before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:6px;
+  background:linear-gradient(180deg,#2c221d,#17110e);
+  border-bottom:1px solid rgba(199,154,103,.13);
+  pointer-events:none;
+}
+.lid-left,.lid-right{
+  position:absolute !important;
+  top:0 !important;
+  bottom:0 !important;
+  width:13px !important;
+  background:linear-gradient(180deg,#26211f,#0c0a09) !important;
+  border:1px solid rgba(199,154,103,.20) !important;
+}
+.lid-left{
+  left:-13px !important;
+  transform:rotateY(-90deg) !important;
+  transform-origin:right !important;
+}
+.lid-right{
+  right:-13px !important;
+  transform:rotateY(90deg) !important;
+  transform-origin:left !important;
+}
+.mailer-base{z-index:3 !important}
+.mailer-base:after{
+  content:"";
+  position:absolute;
+  left:7%; right:7%; top:2px;
+  height:16px;
+  border-radius:50%;
+  background:rgba(0,0,0,0);
+  filter:blur(10px);
+  transition:background 2.2s cubic-bezier(.16,.78,.18,1);
+}
+.mailer-box3d.open .mailer-base:after{
+  background:rgba(0,0,0,.58);
+}
+
 </style>
 </head>
 <body>
@@ -478,15 +582,17 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
       </div>
 
       <div class="mailer-lid">
-        <div class="lid-top">
-          <img src="brand-wordmark.png" class="mailer-logo" alt="CRAVA">
-          <div class="mailer-subtitle">Premium Sweet Box</div>
+        <div class="lid-rigid">
+          <div class="lid-top">
+            <img src="brand-wordmark.png" class="mailer-logo" alt="CRAVA">
+            <div class="mailer-subtitle">Premium Sweet Box</div>
+          </div>
+          <div class="lid-front">
+            <img src="brand-wordmark.png" class="mailer-front-logo" alt="">
+          </div>
+          <div class="lid-left"></div>
+          <div class="lid-right"></div>
         </div>
-        <div class="lid-front">
-          <img src="brand-wordmark.png" class="mailer-front-logo" alt="">
-        </div>
-        <div class="lid-left"></div>
-        <div class="lid-right"></div>
       </div>
 
       <div class="mailer-shadow"></div>
