@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070707">
+<title>CRAVA — الخزنة الخاصة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#d7c4a3;--g2:#f1e3ca;--t:#f5efe7;--m:#988f86;
+  --l:rgba(215,196,163,.22);--panel:#111;--danger:#ee8f87;
+  --ok:#a9d4b1;--blue:#9fc6df
+}
+*{box-sizing:border-box}
+body{margin:0;background:#070707;color:var(--t);font-family:Tajawal,Arial,sans-serif}
+.wrap{width:min(100%,1120px);margin:auto;padding:22px 16px 70px}
+.logo{width:145px;height:auto;display:block;margin-bottom:18px}
+.card{border:1px solid var(--l);border-radius:22px;padding:18px;background:linear-gradient(145deg,#141414,#0d0d0d);margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.stat{border:1px solid var(--l);padding:15px;border-radius:16px;background:#0d0d0d}
+.stat b{display:block;font-size:25px;color:var(--g2);direction:ltr;text-align:right}
+.stat span{font-size:11px;color:var(--m)}
+input,select,textarea,button{width:100%;padding:13px;border-radius:13px;border:1px solid var(--l);background:#080808;color:white;font:inherit}
+textarea{min-height:85px;resize:vertical}
+button{background:linear-gradient(135deg,#f1e3ca,#b49a72);color:#17110c;font-weight:800;cursor:pointer}
+button.secondary{background:#171717;color:var(--g2)}
+button.danger-btn{background:#241313;color:#ffaaa3;border-color:rgba(238,143,135,.35)}
+h1,h2,h3{font-family:"Cormorant Garamond",Tajawal,serif;color:var(--g2)}
+h1{font-size:42px;margin:10px 0} h2{font-size:28px;margin:0 0 12px}
+.msg{color:var(--m);font-size:12px;min-height:18px}.danger{color:var(--danger)}.ok{color:var(--ok)}
+.hidden{display:none!important}
+.tabs{display:flex;gap:8px;overflow:auto;padding:3px 0 8px}
+.tabs button{min-width:max-content;background:#111;color:var(--g2)}
+.tabs button.active{background:linear-gradient(135deg,#f1e3ca,#b49a72);color:#17110c}
+.section{display:none}.section.active{display:block}
+.table{overflow:auto;border:1px solid var(--l);border-radius:15px}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:760px}
+td,th{padding:11px;border-bottom:1px solid var(--l);text-align:right;vertical-align:top}
+th{color:var(--g);background:#0a0a0a;position:sticky;top:0}
+.badge{display:inline-block;border:1px solid var(--l);border-radius:999px;padding:5px 9px;font-size:10px;white-space:nowrap}
+.status-new{color:#f2cf8f}.status-confirmed{color:var(--blue)}.status-preparing{color:#d9b8ff}
+.status-out_for_delivery{color:#91d8ff}.status-delivered{color:var(--ok)}.status-cancelled{color:var(--danger)}
+.actions{display:flex;gap:7px;min-width:230px}.actions button{padding:9px;font-size:11px}
+.product-card{border:1px solid var(--l);border-radius:16px;padding:14px;background:#0d0d0d}
+.product-card h3{margin:0 0 4px;font-family:Tajawal;font-size:18px}
+.product-meta{font-size:11px;color:var(--m);margin-bottom:10px}
+.price{font-size:22px;color:var(--g2);direction:ltr;display:inline-block}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.topbar button{width:auto;padding:10px 16px}
+pre{white-space:pre-wrap;word-break:break-word;direction:ltr;text-align:left}
+@media(max-width:600px){h1{font-size:35px}.card{padding:15px}.wrap{padding-inline:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img src="crava-logo-clean.png" class="logo" alt="CRAVA">
+
+  <div id="login" class="card">
+    <h1>خزنة خاصة</h1>
+    <p class="msg">هذه الصفحة غير متاحة للعامة. الدخول مخصص لمسؤول CRAVA فقط.</p>
+    <input id="email" type="email" autocomplete="email" placeholder="بريد المسؤول" style="margin-bottom:8px">
+    <input id="pass" type="password" autocomplete="current-password" placeholder="كلمة المرور" style="margin-bottom:8px">
+    <button id="loginBtn">ادخل الخزنة</button>
+    <button id="forgotBtn" class="secondary" type="button" style="margin-top:8px">هل نسيت كلمة السر؟</button>
+    <p id="msg" class="msg"></p>
+  </div>
+
+  <div id="panel" class="hidden">
+    <div class="topbar">
+      <h1>غرفة تحكم CRAVA</h1>
+      <button id="logout" class="secondary">تسجيل الخروج</button>
+    </div>
+
+    <div class="tabs">
+      <button data-tab="overview" class="active">نظرة عامة</button>
+      <button data-tab="orders">الطلبات</button>
+      <button data-tab="products">المنتجات</button>
+      <button data-tab="boxes">البوكسات</button>
+    </div>
+
+    <section id="overview" class="section active">
+      <div id="storeStats" class="stats"></div>
+      <div class="card">
+        <h2>أحدث الطلبات</h2>
+        <div id="latestOrders"></div>
+      </div>
+    </section>
+
+    <section id="orders" class="section">
+      <div class="card">
+        <h2>إدارة الطلبات</h2>
+        <div class="grid">
+          <input id="orderSearch" placeholder="ابحث برقم الطلب أو الاسم أو الهاتف">
+          <select id="orderFilter">
+            <option value="">كل الحالات</option>
+            <option value="new">جديد</option>
+            <option value="confirmed">تم التأكيد</option>
+            <option value="preparing">قيد التجهيز</option>
+            <option value="out_for_delivery">خرج للتوصيل</option>
+            <option value="delivered">تم التسليم</option>
+            <option value="cancelled">ملغي</option>
+          </select>
+          <button id="refreshOrders">تحديث الطلبات</button>
+        </div>
+      </div>
+      <div class="card">
+        <div id="ordersTable"></div>
+      </div>
+    </section>
+
+    <section id="products" class="section">
+      <div class="card">
+        <h2>إضافة أو تعديل منتج</h2>
+        <input id="productId" type="hidden">
+        <div class="grid">
+          <input id="productNameAr" placeholder="اسم المنتج بالعربي">
+          <input id="productNameEn" placeholder="اسم المنتج بالإنجليزي">
+          <input id="productSlug" placeholder="slug مثال: family-box">
+          <input id="productPrice" inputmode="decimal" placeholder="السعر بالدينار">
+          <input id="productSort" inputmode="numeric" placeholder="ترتيب الظهور">
+          <select id="productActive">
+            <option value="true">متوفر وظاهر</option>
+            <option value="false">مخفي / غير متوفر</option>
+          </select>
+        </div>
+        <textarea id="productDescription" placeholder="وصف المنتج"></textarea>
+        <div class="grid" style="margin-top:10px">
+          <button id="saveProduct">حفظ المنتج</button>
+          <button id="cancelProductEdit" class="secondary">إلغاء التعديل</button>
+        </div>
+        <p id="productMsg" class="msg"></p>
+      </div>
+      <div id="productList" class="grid"></div>
+    </section>
+
+    <section id="boxes" class="section">
+      <div class="card">
+        <h2>تفعيل مجموعة بوكسات</h2>
+        <div class="grid">
+          <input id="from" inputmode="numeric" placeholder="من: 1">
+          <input id="to" inputmode="numeric" placeholder="إلى: 20">
+          <select id="rarity">
+            <option value="standard">Standard</option>
+            <option value="golden">Golden</option>
+            <option value="rare">Rare</option>
+          </select>
+          <button id="activate">تفعيل المجموعة</button>
+        </div>
+        <p id="actMsg" class="msg"></p>
+      </div>
+
+      <div class="card">
+        <h2>البحث عن بوكس</h2>
+        <div class="grid">
+          <input id="findNo" inputmode="numeric" placeholder="رقم البوكس">
+          <button id="findBtn">بحث</button>
+        </div>
+        <div id="boxResult"></div>
+      </div>
+
+      <div class="card">
+        <h2>آخر نشاط للبوكسات</h2>
+        <div id="boxesTable"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const cfg=window.CRAVA_CONFIG||{};
+const db=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
+
+const STATUS_LABELS={
+  new:'جديد',
+  confirmed:'تم التأكيد',
+  preparing:'قيد التجهيز',
+  out_for_delivery:'خرج للتوصيل',
+  delivered:'تم التسليم',
+  cancelled:'ملغي'
+};
+
+let allOrders=[];
+let allProducts=[];
+
+function esc(value=''){
+  return String(value).replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
+
+function money(value){
+  return Number(value||0).toFixed(3)+' د.أ';
+}
+
+function orderNo(value){
+  return '#'+String(value||0).padStart(6,'0');
+}
+
+function showTab(id){
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));
+  $('#'+id).classList.add('active');
+  document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+}
+
+document.querySelectorAll('.tabs button').forEach(btn=>{
+  btn.onclick=()=>showTab(btn.dataset.tab);
+});
+
+async function verify(){
+  const{data:{session}}=await db.auth.getSession();
+  if(!session)return false;
+
+  const{data,error}=await db.rpc('is_current_user_admin');
+  if(error)throw error;
+
+  if(data){
+    $('#login').classList.add('hidden');
+    $('#panel').classList.remove('hidden');
+    await loadAll();
+  }
+  return !!data;
+}
+
+$('#loginBtn').onclick=async()=>{
+  $('#msg').textContent='جاري التحقق...';
+  $('#msg').className='msg';
+
+  const{error}=await db.auth.signInWithPassword({
+    email:$('#email').value.trim(),
+    password:$('#pass').value
+  });
+
+  if(error){
+    $('#msg').textContent=error.message;
+    $('#msg').className='msg danger';
+    return;
+  }
+
+  try{
+    if(!(await verify())){
+      await db.auth.signOut();
+      $('#msg').textContent='تم الرفض';
+      $('#msg').className='msg danger';
+    }
+  }catch(error){
+    $('#msg').textContent=error.message;
+    $('#msg').className='msg danger';
+  }
+};
+
+$('#forgotBtn').onclick=async()=>{
+  const email=$('#email').value.trim();
+  if(!email){
+    $('#msg').textContent='اكتب بريد المسؤول أولًا';
+    $('#msg').className='msg danger';
+    return;
+  }
+
+  $('#msg').textContent='جاري إرسال رابط الاستعادة...';
+  $('#msg').className='msg';
+
+  const redirectTo=new URL('reset-password.html',window.location.href).href;
+  const{error}=await db.auth.resetPasswordForEmail(email,{redirectTo});
+
+  if(error){
+    $('#msg').textContent=error.message;
+    $('#msg').className='msg danger';
+  }else{
+    $('#msg').textContent='تم إرسال الرابط — افحص بريدك';
+    $('#msg').className='msg ok';
+  }
+};
+
+async function loadAll(){
+  await Promise.all([
+    loadStats(),
+    loadOrders(),
+    loadProducts(),
+    loadBoxes()
+  ]);
+}
+
+async function loadStats(){
+  const{data,error}=await db.rpc('admin_store_stats');
+
+  if(error){
+    $('#storeStats').innerHTML=`<div class="card danger">نفّذ ملف SQL الجديد أولًا: ${esc(error.message)}</div>`;
+    return;
+  }
+
+  const labels={
+    new_orders:'طلبات جديدة',
+    active_orders:'طلبات قيد التنفيذ',
+    delivered_orders:'طلبات مسلّمة',
+    cancelled_orders:'طلبات ملغاة',
+    sales_total:'إجمالي المبيعات',
+    active_products:'منتجات متوفرة'
+  };
+
+  $('#storeStats').innerHTML=Object.entries(data||{}).map(([key,value])=>`
+    <div class="stat">
+      <b>${key==='sales_total'?money(value):esc(value)}</b>
+      <span>${labels[key]||esc(key)}</span>
+    </div>
+  `).join('');
+}
+
+async function loadOrders(){
+  const{data,error}=await db
+    .from('orders')
+    .select('id,order_number,customer_name,phone_e164,city,area,street,building,floor,apartment,delivery_notes,status,subtotal,delivery_fee,total,admin_note,created_at')
+    .order('created_at',{ascending:false})
+    .limit(200);
+
+  if(error){
+    $('#ordersTable').innerHTML=`<p class="danger">${esc(error.message)}</p>`;
+    $('#latestOrders').innerHTML=`<p class="danger">${esc(error.message)}</p>`;
+    return;
+  }
+
+  allOrders=data||[];
+  renderOrders();
+  renderLatestOrders();
+}
+
+function renderLatestOrders(){
+  const rows=allOrders.slice(0,5);
+  if(!rows.length){
+    $('#latestOrders').innerHTML='<p class="msg">لا توجد طلبات حتى الآن.</p>';
+    return;
+  }
+
+  $('#latestOrders').innerHTML=rows.map(o=>`
+    <div class="product-card" style="margin-bottom:8px">
+      <strong>${orderNo(o.order_number)} — ${esc(o.customer_name)}</strong>
+      <div class="product-meta">${esc(o.area)} · ${new Date(o.created_at).toLocaleString('ar-JO')}</div>
+      <span class="badge status-${esc(o.status)}">${STATUS_LABELS[o.status]||esc(o.status)}</span>
+      <span class="price" style="font-size:17px;margin-right:8px">${money(o.total)}</span>
+    </div>
+  `).join('');
+}
+
+function renderOrders(){
+  const q=$('#orderSearch').value.trim().toLowerCase();
+  const filter=$('#orderFilter').value;
+
+  const rows=allOrders.filter(o=>{
+    const haystack=[
+      o.order_number,o.customer_name,o.phone_e164,o.area,o.street
+    ].join(' ').toLowerCase();
+
+    return (!q||haystack.includes(q))&&(!filter||o.status===filter);
+  });
+
+  if(!rows.length){
+    $('#ordersTable').innerHTML='<p class="msg">لا توجد طلبات مطابقة.</p>';
+    return;
+  }
+
+  $('#ordersTable').innerHTML=`
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>الطلب</th><th>العميل</th><th>العنوان</th>
+            <th>القيمة</th><th>الحالة</th><th>التاريخ</th><th>إجراء</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(o=>`
+            <tr>
+              <td><strong>${orderNo(o.order_number)}</strong></td>
+              <td>${esc(o.customer_name)}<br><span class="msg">${esc(o.phone_e164)}</span></td>
+              <td>
+                ${esc(o.area)}، ${esc(o.street)}
+                ${o.building?'<br>بناية '+esc(o.building):''}
+                ${o.floor?' · طابق '+esc(o.floor):''}
+                ${o.apartment?' · شقة '+esc(o.apartment):''}
+              </td>
+              <td>${money(o.total)}</td>
+              <td><span class="badge status-${esc(o.status)}">${STATUS_LABELS[o.status]||esc(o.status)}</span></td>
+              <td>${new Date(o.created_at).toLocaleString('ar-JO')}</td>
+              <td>
+                <div class="actions">
+                  <select id="status-${o.id}">
+                    ${Object.entries(STATUS_LABELS).map(([key,label])=>`
+                      <option value="${key}" ${o.status===key?'selected':''}>${label}</option>
+                    `).join('')}
+                  </select>
+                  <button onclick="saveOrderStatus('${o.id}')">حفظ</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+window.saveOrderStatus=async id=>{
+  const status=$('#status-'+id).value;
+  const note=prompt('ملاحظة داخلية للطلب (اختياري):','')??'';
+
+  const{data,error}=await db.rpc('admin_update_order_status',{
+    p_order_id:id,
+    p_status:status,
+    p_admin_note:note
+  });
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  await Promise.all([loadOrders(),loadStats()]);
+  alert(`تم تحديث الطلب ${orderNo(data.order_number)}`);
+};
+
+$('#orderSearch').oninput=renderOrders;
+$('#orderFilter').onchange=renderOrders;
+$('#refreshOrders').onclick=()=>Promise.all([loadOrders(),loadStats()]);
+
+async function loadProducts(){
+  const{data,error}=await db
+    .from('products')
+    .select('*')
+    .order('sort_order',{ascending:true});
+
+  if(error){
+    $('#productList').innerHTML=`<p class="danger">${esc(error.message)}</p>`;
+    return;
+  }
+
+  allProducts=data||[];
+
+  $('#productList').innerHTML=allProducts.map(p=>`
+    <article class="product-card">
+      <h3>${esc(p.name_ar)}</h3>
+      <div class="product-meta">${esc(p.slug)} · ${p.is_active?'متوفر':'مخفي'}</div>
+      <div class="price">${money(p.price)}</div>
+      <p class="msg">${esc(p.description_ar||'بدون وصف')}</p>
+      <button class="secondary" onclick="editProduct('${p.id}')">تعديل</button>
+    </article>
+  `).join('')||'<p class="msg">لا توجد منتجات.</p>';
+}
+
+window.editProduct=id=>{
+  const p=allProducts.find(x=>x.id===id);
+  if(!p)return;
+
+  $('#productId').value=p.id;
+  $('#productNameAr').value=p.name_ar||'';
+  $('#productNameEn').value=p.name_en||'';
+  $('#productSlug').value=p.slug||'';
+  $('#productPrice').value=p.price||0;
+  $('#productSort').value=p.sort_order||0;
+  $('#productActive').value=String(p.is_active);
+  $('#productDescription').value=p.description_ar||'';
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+function clearProductForm(){
+  $('#productId').value='';
+  $('#productNameAr').value='';
+  $('#productNameEn').value='';
+  $('#productSlug').value='';
+  $('#productPrice').value='';
+  $('#productSort').value='';
+  $('#productActive').value='true';
+  $('#productDescription').value='';
+  $('#productMsg').textContent='';
+}
+
+$('#cancelProductEdit').onclick=clearProductForm;
+
+$('#saveProduct').onclick=async()=>{
+  const msg=$('#productMsg');
+  const name=$('#productNameAr').value.trim();
+  const slug=$('#productSlug').value.trim();
+  const price=Number($('#productPrice').value);
+
+  if(!name||!slug||!Number.isFinite(price)||price<0){
+    msg.textContent='تأكد من اسم المنتج وSlug والسعر.';
+    msg.className='msg danger';
+    return;
+  }
+
+  msg.textContent='جاري الحفظ...';
+  msg.className='msg';
+
+  const id=$('#productId').value||null;
+  const{error}=await db.rpc('admin_save_product',{
+    p_id:id,
+    p_slug:slug,
+    p_name_ar:name,
+    p_name_en:$('#productNameEn').value.trim(),
+    p_description_ar:$('#productDescription').value.trim(),
+    p_price:price,
+    p_is_active:$('#productActive').value==='true',
+    p_sort_order:Number($('#productSort').value||0)
+  });
+
+  if(error){
+    msg.textContent=error.message;
+    msg.className='msg danger';
+    return;
+  }
+
+  msg.textContent='تم حفظ المنتج.';
+  msg.className='msg ok';
+  clearProductForm();
+  await Promise.all([loadProducts(),loadStats()]);
+};
+
+async function loadBoxes(){
+  const{data,error}=await db
+    .from('boxes')
+    .select('box_number,status,rarity,claimed_at')
+    .order('box_number',{ascending:false})
+    .limit(30);
+
+  if(error){
+    $('#boxesTable').innerHTML=`<p class="danger">${esc(error.message)}</p>`;
+    return;
+  }
+
+  $('#boxesTable').innerHTML=`
+    <div class="table">
+      <table>
+        <thead><tr><th>البوكس</th><th>الحالة</th><th>الندرة</th><th>وقت المطالبة</th></tr></thead>
+        <tbody>${(data||[]).map(x=>`
+          <tr>
+            <td>#${String(x.box_number).padStart(6,'0')}</td>
+            <td>${esc(x.status)}</td>
+            <td>${esc(x.rarity)}</td>
+            <td>${x.claimed_at?new Date(x.claimed_at).toLocaleString('ar-JO'):'—'}</td>
+          </tr>
+        `).join('')}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+$('#activate').onclick=async()=>{
+  const{data,error}=await db.rpc('admin_activate_box_range',{
+    p_from:+$('#from').value,
+    p_to:+$('#to').value,
+    p_rarity:$('#rarity').value
+  });
+
+  $('#actMsg').textContent=error?.message||`${data.activated} بوكس تم تفعيلها`;
+  $('#actMsg').className=error?'msg danger':'msg ok';
+  if(!error)loadBoxes();
+};
+
+$('#findBtn').onclick=async()=>{
+  const{data,error}=await db.rpc('admin_get_box',{
+    p_box_number:+$('#findNo').value
+  });
+
+  $('#boxResult').innerHTML=error
+    ?`<p class="danger">${esc(error.message)}</p>`
+    :`<pre>${esc(JSON.stringify(data,null,2))}</pre>`;
+};
+
+$('#logout').onclick=async()=>{
+  await db.auth.signOut();
+  location.reload();
+};
+
+verify().catch(error=>{
+  $('#msg').textContent=error.message;
+  $('#msg').className='msg danger';
+});
+</script>
+</body>
+</html>
