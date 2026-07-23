@@ -11,7 +11,28 @@
 const $=s=>document.querySelector(s),cfg=window.CRAVA_CONFIG,db=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
 async function verify(){const{data:{session}}=await db.auth.getSession();if(!session)return false;const{data}=await db.rpc('is_current_user_admin');if(data){$('#login').classList.add('hidden');$('#panel').classList.remove('hidden');load()}return !!data}
 $('#loginBtn').onclick=async()=>{const{error}=await db.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#pass').value});if(error){$('#msg').textContent=error.message;$('#msg').className='msg danger';return}if(!(await verify())){await db.auth.signOut();$('#msg').textContent='ACCESS DENIED';$('#msg').className='msg danger'}};
-$('#forgotBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email){$('#msg').textContent='ENTER YOUR ADMIN EMAIL FIRST';$('#msg').className='msg danger';return}$('#msg').textContent='SENDING RESET LINK...';$('#msg').className='msg';const redirectTo=window.location.origin+'/index.html';const{error}=await db.auth.resetPasswordForEmail(email,{redirectTo});if(error){$('#msg').textContent=error.message;$('#msg').className='msg danger'}else{$('#msg').textContent='RESET LINK SENT — CHECK YOUR EMAIL';$('#msg').className='msg'}};
+$('#forgotBtn').onclick=async()=>{
+  const email=$('#email').value.trim();
+  if(!email){
+    $('#msg').textContent='ENTER YOUR ADMIN EMAIL FIRST';
+    $('#msg').className='msg danger';
+    return;
+  }
+
+  $('#msg').textContent='SENDING RESET LINK...';
+  $('#msg').className='msg';
+
+  const redirectTo=new URL('reset-password.html',window.location.href).href;
+  const{error}=await db.auth.resetPasswordForEmail(email,{redirectTo});
+
+  if(error){
+    $('#msg').textContent=error.message;
+    $('#msg').className='msg danger';
+  }else{
+    $('#msg').textContent='RESET LINK SENT — CHECK YOUR EMAIL';
+    $('#msg').className='msg';
+  }
+};
 async function load(){const[{data:s},{data:r}]=await Promise.all([db.rpc('admin_dashboard_stats'),db.from('boxes').select('box_number,status,rarity,claimed_at').order('box_number',{ascending:false}).limit(30)]);$('#stats').innerHTML=Object.entries(s||{}).map(([k,v])=>`<div class="stat"><b>${v}</b><div class="msg">${k.replaceAll('_',' ').toUpperCase()}</div></div>`).join('');$('#rows').innerHTML=(r||[]).map(x=>`<tr><td>#${String(x.box_number).padStart(6,'0')}</td><td>${x.status}</td><td>${x.rarity}</td><td>${x.claimed_at?new Date(x.claimed_at).toLocaleString():'—'}</td></tr>`).join('')}
 $('#activate').onclick=async()=>{const{data,error}=await db.rpc('admin_activate_box_range',{p_from:+$('#from').value,p_to:+$('#to').value,p_rarity:$('#rarity').value});$('#actMsg').textContent=error?.message||`${data.activated} BOXES ACTIVATED`;if(!error)load()};
 $('#findBtn').onclick=async()=>{const{data,error}=await db.rpc('admin_get_box',{p_box_number:+$('#findNo').value});$('#boxResult').innerHTML=error?`<p class="danger">${error.message}</p>`:`<pre>${JSON.stringify(data,null,2)}</pre>`};
