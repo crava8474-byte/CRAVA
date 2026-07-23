@@ -888,6 +888,7 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
   <div><label>Email</label><input id="email" type="email" placeholder="you@example.com"></div>
   <div><label>Password</label><input id="password" type="password" minlength="8" placeholder="Minimum 8 characters"></div>
   <button id="authSubmit" class="btn primary">CREATE MY ACCOUNT</button>
+  <button id="forgotPasswordBtn" class="btn secondary hidden" type="button">FORGOT PASSWORD?</button>
   <div class="oauth-divider"><span>or continue with</span></div>
   <button id="googleBtn" class="btn google-btn" type="button">
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -902,13 +903,24 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
  </div>
 </section>
 
-<section id="claim" class="screen">
- <div class="head"><div class="eyebrow">AUTHENTIC BOX ACCESS</div><h2>Activate your box.</h2><p class="lead">Enter the one-time activation code provided when your CRAVA box was purchased.</p></div>
+<section id="resetPassword" class="screen">
+ <div class="head"><div class="eyebrow">ACCOUNT RECOVERY</div><h2>Create a new password.</h2><p class="lead">Enter a secure password for your CRAVA account.</p></div>
  <div class="card stack">
-  <div><label>Activation code</label><input id="claimCode" maxlength="9" placeholder="A7F2-9C4D" autocomplete="one-time-code" style="text-transform:uppercase;letter-spacing:.12em"></div>
+  <div><label>New password</label><input id="newPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Minimum 8 characters"></div>
+  <div><label>Confirm new password</label><input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Repeat your password"></div>
+  <button id="updatePasswordBtn" class="btn primary" type="button">UPDATE PASSWORD</button>
+  <div id="resetMsg" class="msg"></div>
+ </div>
+</section>
+
+<section id="claim" class="screen">
+ <div class="head"><div class="eyebrow">AUTHENTIC BOX ACCESS</div><h2>Claim your box.</h2><p class="lead">Use the box number and private claim code found inside your CRAVA package.</p></div>
+ <div class="card stack">
+  <div><label>Box number</label><input id="boxNo" inputmode="numeric" placeholder="000185"></div>
+  <div><label>Private claim code</label><input id="claimCode" maxlength="12" placeholder="K7M4Q9"></div>
   <button id="claimBtn" class="btn primary">VERIFY & ADD TO COLLECTION</button><div id="claimMsg" class="msg"></div>
  </div>
- <div class="card" style="margin-top:12px"><div class="eyebrow">SECURITY</div><p class="lead">Every activation code works once. Successful activation attaches the box to your account and awards 100 points.</p></div>
+ <div class="card" style="margin-top:12px"><div class="eyebrow">SECURITY</div><p class="lead">Only activated boxes can be claimed. Every private code works once and becomes permanently attached to the first verified account.</p></div>
 </section>
 
 <section id="rating" class="screen">
@@ -986,8 +998,51 @@ $('#enterBtn').onclick=()=>{
   },2450);
 };
 $('#accountBtn').onclick=()=>user?openDashboard():start;
-function setMode(v){mode=v;$('#nameWrap').classList.toggle('hidden',v==='login');$('#authSubmit').textContent=v==='signup'?'CREATE MY ACCOUNT':'SIGN IN'}
+function setMode(v){mode=v;$('#nameWrap').classList.toggle('hidden',v==='login');$('#forgotPasswordBtn').classList.toggle('hidden',v!=='login');$('#authSubmit').textContent=v==='signup'?'CREATE MY ACCOUNT':'SIGN IN'}
 $('#signupTab').onclick=()=>setMode('signup');$('#loginTab').onclick=()=>setMode('login');
+
+function recoveryRedirectUrl(){
+  return window.location.origin + window.location.pathname;
+}
+
+$('#forgotPasswordBtn').onclick=async()=>{
+  const msg=$('#authMsg');
+  const email=$('#email').value.trim();
+  msg.className='msg';
+  if(!email){msg.textContent='ENTER YOUR EMAIL FIRST.';msg.className='msg bad';return}
+  msg.textContent='SENDING RESET LINK...';
+  try{
+    const{error}=await db.auth.resetPasswordForEmail(email,{redirectTo:recoveryRedirectUrl()});
+    if(error)throw error;
+    msg.textContent='RESET LINK SENT. CHECK YOUR EMAIL.';
+    msg.className='msg ok';
+  }catch(e){
+    msg.textContent=String(e.message||e).toUpperCase();
+    msg.className='msg bad';
+  }
+};
+
+$('#updatePasswordBtn').onclick=async()=>{
+  const msg=$('#resetMsg');
+  const password=$('#newPassword').value;
+  const confirm=$('#confirmPassword').value;
+  msg.className='msg';
+  if(password.length<8){msg.textContent='PASSWORD MUST BE AT LEAST 8 CHARACTERS.';msg.className='msg bad';return}
+  if(password!==confirm){msg.textContent='PASSWORDS DO NOT MATCH.';msg.className='msg bad';return}
+  msg.textContent='UPDATING PASSWORD...';
+  try{
+    const{error}=await db.auth.updateUser({password});
+    if(error)throw error;
+    msg.textContent='PASSWORD UPDATED SUCCESSFULLY. YOU CAN NOW SIGN IN.';
+    msg.className='msg ok';
+    await db.auth.signOut();
+    history.replaceState({},document.title,window.location.pathname);
+    setTimeout(()=>{setMode('login');go('auth')},1200);
+  }catch(e){
+    msg.textContent=String(e.message||e).toUpperCase();
+    msg.className='msg bad';
+  }
+};
 
 async function signInWithGoogle(){
   const msg=$('#authMsg');
@@ -1009,15 +1064,25 @@ $('#googleBtn').onclick=signInWithGoogle;
 
 async function start(){if(!configured){alert('Connect Supabase first using README_AR.md');go('auth');return}const{data:{session}}=await db.auth.getSession();if(session){user=session.user;await loadProfile();go('claim')}else go('auth')}
 async function loadProfile(){const{data,error}=await db.from('profiles').select('*').eq('id',user.id).single();if(error)throw error;profile=data}
+
+if(configured&&db){
+  db.auth.onAuthStateChange((event,session)=>{
+    if(event==='PASSWORD_RECOVERY'){
+      user=session?.user||null;
+      go('resetPassword');
+    }
+  });
+  const recoveryHash=/type=recovery/i.test(window.location.hash)||/type=recovery/i.test(window.location.search);
+  if(recoveryHash){go('resetPassword')}
+}
 $('#authSubmit').onclick=async()=>{const msg=$('#authMsg'),email=$('#email').value.trim(),password=$('#password').value,name=$('#name').value.trim();msg.textContent='PLEASE WAIT...';msg.className='msg';
 try{if(mode==='signup'){if(name.length<2)throw Error('Enter your name.');const{data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name}}});if(error)throw error;if(!data.session){msg.textContent='CHECK YOUR EMAIL TO CONFIRM YOUR ACCOUNT.';msg.className='msg ok';return}user=data.user}else{const{data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;user=data.user}await loadProfile();go('claim')}catch(e){msg.textContent=String(e.message||e).toUpperCase();msg.className='msg bad'}};
 
-$('#claimCode').addEventListener('input',e=>{let v=e.target.value.toUpperCase().replace(/[^A-F0-9]/g,'').slice(0,8);e.target.value=v.length>4?v.slice(0,4)+'-'+v.slice(4):v});
-$('#claimBtn').onclick=async()=>{const code=$('#claimCode').value.trim().toUpperCase(),msg=$('#claimMsg');msg.textContent='VERIFYING...';msg.className='msg';
-if(!/^[A-F0-9]{4}-[A-F0-9]{4}$/.test(code)){msg.textContent='ENTER A VALID ACTIVATION CODE.';msg.className='msg bad';return}
-const{data,error}=await db.rpc('claim_crava_activation_code',{p_activation_code:code});
-if(error||!data?.ok){msg.textContent=(data?.reason||error?.message||'ACTIVATION FAILED').toUpperCase();msg.className='msg bad';return}
-activeBox=data.box_id;profile.box_count=data.box_count;profile.xp=data.xp;msg.textContent=`${data.box_code} ACTIVATED — +100 POINTS`;msg.className='msg ok';renderProducts();renderMemberStrip();setTimeout(()=>go('rating'),700)
+$('#claimBtn').onclick=async()=>{const no=parseInt($('#boxNo').value,10),code=$('#claimCode').value.trim().toUpperCase(),msg=$('#claimMsg');msg.textContent='VERIFYING...';msg.className='msg';
+if(!no||code.length<5){msg.textContent='ENTER A VALID BOX NUMBER AND CLAIM CODE.';msg.className='msg bad';return}
+const{data,error}=await db.rpc('claim_crava_box',{p_box_number:no,p_claim_code:code});
+if(error||!data?.ok){msg.textContent=(data?.reason||error?.message||'BOX COULD NOT BE CLAIMED').toUpperCase();msg.className='msg bad';return}
+activeBox=data.box_id;profile.box_count=data.box_count;profile.xp=data.xp;msg.textContent='BOX VERIFIED — ADDED TO YOUR COLLECTION.';msg.className='msg ok';renderProducts();renderMemberStrip();setTimeout(()=>go('rating'),700)
 };
 
 function renderMemberStrip(){const lvl=levelFor(profile?.xp||0);$('#memberStrip').innerHTML=`<div class="member"><div class="seal">${esc((profile?.display_name||'C')[0].toUpperCase())}</div><div><div class="cat">CRAVA MEMBER</div><div class="member-id">${memberNo(profile?.member_number)}</div><div class="lead">${esc(profile?.display_name||'Member')} · ${lvl[0]}</div></div></div>`}
