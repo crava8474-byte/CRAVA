@@ -903,13 +903,12 @@ label{display:block;font-size:10px;color:var(--gold);letter-spacing:.12em;text-t
 </section>
 
 <section id="claim" class="screen">
- <div class="head"><div class="eyebrow">AUTHENTIC BOX ACCESS</div><h2>Claim your box.</h2><p class="lead">Use the box number and private claim code found inside your CRAVA package.</p></div>
+ <div class="head"><div class="eyebrow">AUTHENTIC BOX ACCESS</div><h2>Activate your box.</h2><p class="lead">Enter the one-time activation code provided when your CRAVA box was purchased.</p></div>
  <div class="card stack">
-  <div><label>Box number</label><input id="boxNo" inputmode="numeric" placeholder="000185"></div>
-  <div><label>Private claim code</label><input id="claimCode" maxlength="12" placeholder="K7M4Q9"></div>
+  <div><label>Activation code</label><input id="claimCode" maxlength="9" placeholder="A7F2-9C4D" autocomplete="one-time-code" style="text-transform:uppercase;letter-spacing:.12em"></div>
   <button id="claimBtn" class="btn primary">VERIFY & ADD TO COLLECTION</button><div id="claimMsg" class="msg"></div>
  </div>
- <div class="card" style="margin-top:12px"><div class="eyebrow">SECURITY</div><p class="lead">Only activated boxes can be claimed. Every private code works once and becomes permanently attached to the first verified account.</p></div>
+ <div class="card" style="margin-top:12px"><div class="eyebrow">SECURITY</div><p class="lead">Every activation code works once. Successful activation attaches the box to your account and awards 100 points.</p></div>
 </section>
 
 <section id="rating" class="screen">
@@ -1013,11 +1012,12 @@ async function loadProfile(){const{data,error}=await db.from('profiles').select(
 $('#authSubmit').onclick=async()=>{const msg=$('#authMsg'),email=$('#email').value.trim(),password=$('#password').value,name=$('#name').value.trim();msg.textContent='PLEASE WAIT...';msg.className='msg';
 try{if(mode==='signup'){if(name.length<2)throw Error('Enter your name.');const{data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name}}});if(error)throw error;if(!data.session){msg.textContent='CHECK YOUR EMAIL TO CONFIRM YOUR ACCOUNT.';msg.className='msg ok';return}user=data.user}else{const{data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;user=data.user}await loadProfile();go('claim')}catch(e){msg.textContent=String(e.message||e).toUpperCase();msg.className='msg bad'}};
 
-$('#claimBtn').onclick=async()=>{const no=parseInt($('#boxNo').value,10),code=$('#claimCode').value.trim().toUpperCase(),msg=$('#claimMsg');msg.textContent='VERIFYING...';msg.className='msg';
-if(!no||code.length<5){msg.textContent='ENTER A VALID BOX NUMBER AND CLAIM CODE.';msg.className='msg bad';return}
-const{data,error}=await db.rpc('claim_crava_box',{p_box_number:no,p_claim_code:code});
-if(error||!data?.ok){msg.textContent=(data?.reason||error?.message||'BOX COULD NOT BE CLAIMED').toUpperCase();msg.className='msg bad';return}
-activeBox=data.box_id;profile.box_count=data.box_count;profile.xp=data.xp;msg.textContent='BOX VERIFIED — ADDED TO YOUR COLLECTION.';msg.className='msg ok';renderProducts();renderMemberStrip();setTimeout(()=>go('rating'),700)
+$('#claimCode').addEventListener('input',e=>{let v=e.target.value.toUpperCase().replace(/[^A-F0-9]/g,'').slice(0,8);e.target.value=v.length>4?v.slice(0,4)+'-'+v.slice(4):v});
+$('#claimBtn').onclick=async()=>{const code=$('#claimCode').value.trim().toUpperCase(),msg=$('#claimMsg');msg.textContent='VERIFYING...';msg.className='msg';
+if(!/^[A-F0-9]{4}-[A-F0-9]{4}$/.test(code)){msg.textContent='ENTER A VALID ACTIVATION CODE.';msg.className='msg bad';return}
+const{data,error}=await db.rpc('claim_crava_activation_code',{p_activation_code:code});
+if(error||!data?.ok){msg.textContent=(data?.reason||error?.message||'ACTIVATION FAILED').toUpperCase();msg.className='msg bad';return}
+activeBox=data.box_id;profile.box_count=data.box_count;profile.xp=data.xp;msg.textContent=`${data.box_code} ACTIVATED — +100 POINTS`;msg.className='msg ok';renderProducts();renderMemberStrip();setTimeout(()=>go('rating'),700)
 };
 
 function renderMemberStrip(){const lvl=levelFor(profile?.xp||0);$('#memberStrip').innerHTML=`<div class="member"><div class="seal">${esc((profile?.display_name||'C')[0].toUpperCase())}</div><div><div class="cat">CRAVA MEMBER</div><div class="member-id">${memberNo(profile?.member_number)}</div><div class="lead">${esc(profile?.display_name||'Member')} · ${lvl[0]}</div></div></div>`}
