@@ -21,7 +21,7 @@
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script>
 <script>
-const $=s=>document.querySelector(s),cfg=window.CRAVA_CONFIG||{};let db=window.supabase?.createClient?.(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY)||null;
+const $=s=>document.querySelector(s),cfg=window.CRAVA_CONFIG||{},db=window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
 let user=null,profile=null,mode='signup',products=[],cart={};const money=v=>Number(v||0).toFixed(3)+' د.أ';const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$('#'+id).classList.add('active');scrollTo(0,0);if(id==='cart')renderCart();if(id==='checkout')renderCheckout()}
 function setMode(v){mode=v;$('#nameWrap').classList.toggle('hidden',v==='login');$('#forgotBtn').classList.toggle('hidden',v!=='login');$('#authBtn').textContent=v==='signup'?'إنشاء الحساب':'تسجيل الدخول'}
