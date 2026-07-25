@@ -39,6 +39,14 @@ linear-gradient(180deg,#070707,#0a0a0a)}
 .quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px}
 @media(max-width:700px){.wrap{padding:12px 9px 50px}.card{padding:13px;border-radius:16px}.top{align-items:flex-start}.logo{width:120px}.toolbar>*{width:100%}.modal{padding:8px}.modal-box{padding:13px}}
 </style>
+
+<style id="mobile-product-card-fix">
+#productList{align-items:stretch}
+#productList .product{min-width:0;overflow:hidden;display:flex;flex-direction:column}
+#productList .product .row-actions{min-width:0;width:100%;margin-top:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+#productList .product .row-actions>*{width:100%;min-width:0}
+@media(max-width:700px){#productList{grid-template-columns:minmax(0,1fr)}#productList .product .row-actions{grid-template-columns:minmax(0,1fr)}#productList .product .row-actions button{white-space:normal;overflow-wrap:anywhere}}
+</style>
 </head><body><div class="wrap"><img src="crava-logo-clean.png" class="logo">
 <div id="login" class="card"><h1>الخزنة الخاصة</h1><input id="email" type="email" placeholder="بريد الأدمن"><input id="pass" type="password" placeholder="كلمة المرور" style="margin-top:8px"><button id="loginBtn" style="margin-top:8px">دخول</button><button id="forgotBtn" class="secondary" style="margin-top:8px">نسيت كلمة المرور</button><p id="msg" class="msg"></p></div>
 <div id="panel" class="hidden"><div class="top"><div><h1 style="margin-bottom:2px">غرفة تحكم CRAVA</h1><div class="msg">الإصدار V14</div></div><button id="logout" class="secondary">خروج</button></div>
