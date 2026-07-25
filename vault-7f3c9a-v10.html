@@ -24,8 +24,19 @@ linear-gradient(180deg,#070707,#0a0a0a)}
 .badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 8px;border-radius:999px;border:1px solid var(--l);font-size:10px;white-space:nowrap}
 .badge.new{color:#fff0ad}.badge.confirmed{color:#bbdcff}.badge.preparing{color:#e9c9ff}.badge.out_for_delivery{color:#ffd3a8}.badge.delivered{color:var(--ok)}.badge.cancelled{color:var(--bad)}
 .empty{padding:24px;text-align:center;color:var(--m)}
-.row-actions{display:flex;gap:6px;flex-wrap:wrap;min-width:300px}
-.row-actions>*{width:auto;flex:1}
+.row-actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  min-width:0;
+  width:100%;
+}
+
+.row-actions>*{
+  width:auto;
+  flex:1 1 0;
+  min-width:0;
+}
 .mini{padding:7px 9px!important;font-size:10px!important}
 .danger{background:#251010;color:#ffaaa2;border-color:rgba(238,143,135,.35)}
 .warning{color:var(--warn)}
