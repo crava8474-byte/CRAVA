@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CRAVA Control Room V13</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CRAVA Control Room V14</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--g:#d7c4a3;--g2:#f1e3ca;--t:#f5efe7;--m:#988f86;--l:rgba(215,196,163,.22);--bad:#ee8f87;--ok:#a9d4b1}
@@ -22,21 +22,10 @@ linear-gradient(180deg,#070707,#0a0a0a)}
 .toolbar>*{width:auto;min-width:120px}
 .kpi-note{margin-top:7px;font-size:10px;color:var(--m)}
 .badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 8px;border-radius:999px;border:1px solid var(--l);font-size:10px;white-space:nowrap}
-.badge.new{color:#fff0ad}.badge.confirmed{color:#bbdcff}.badge.preparing{color:#e9c9ff}.badge.out_for_delivery{color:#ffd3a8}.badge.delivered{color:var(--ok)}.badge.cancelled{color:var(--bad)}
+.badge.new{color:#fff0ad}.badge.confirmed{color:#bbdcff}.badge.preparing{color:#e9c9ff}.badge.out_for_delivery{color:#ffd3a8}.badge.delivered{color:var(--ok)}.badge.cancelled{color:var(--bad)}.badge.active{color:var(--ok)}.badge.used{color:#bbdcff}.badge.revoked{color:var(--bad)}.badge.expired{color:var(--warn)}
 .empty{padding:24px;text-align:center;color:var(--m)}
-.row-actions{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  min-width:0;
-  width:100%;
-}
-
-.row-actions>*{
-  width:auto;
-  flex:1 1 0;
-  min-width:0;
-}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap;min-width:300px}
+.row-actions>*{width:auto;flex:1}
 .mini{padding:7px 9px!important;font-size:10px!important}
 .danger{background:#251010;color:#ffaaa2;border-color:rgba(238,143,135,.35)}
 .warning{color:var(--warn)}
@@ -52,8 +41,8 @@ linear-gradient(180deg,#070707,#0a0a0a)}
 </style>
 </head><body><div class="wrap"><img src="crava-logo-clean.png" class="logo">
 <div id="login" class="card"><h1>الخزنة الخاصة</h1><input id="email" type="email" placeholder="بريد الأدمن"><input id="pass" type="password" placeholder="كلمة المرور" style="margin-top:8px"><button id="loginBtn" style="margin-top:8px">دخول</button><button id="forgotBtn" class="secondary" style="margin-top:8px">نسيت كلمة المرور</button><p id="msg" class="msg"></p></div>
-<div id="panel" class="hidden"><div class="top"><div><h1 style="margin-bottom:2px">غرفة تحكم CRAVA</h1><div class="msg">الإصدار V13</div></div><button id="logout" class="secondary">خروج</button></div>
-<div class="tabs"><button data-tab="dashboard" class="active">الرئيسية</button><button data-tab="orders">الطلبات</button><button data-tab="products">المنتجات</button><button data-tab="boxes">البوكسات</button><button data-tab="members">الأعضاء</button><button data-tab="analytics">التحليلات</button><button data-tab="settings">الإعدادات</button></div>
+<div id="panel" class="hidden"><div class="top"><div><h1 style="margin-bottom:2px">غرفة تحكم CRAVA</h1><div class="msg">الإصدار V14</div></div><button id="logout" class="secondary">خروج</button></div>
+<div class="tabs"><button data-tab="dashboard" class="active">الرئيسية</button><button data-tab="orders">الطلبات</button><button data-tab="products">المنتجات</button><button data-tab="boxes">البوكسات</button><button data-tab="members">الأعضاء</button><button data-tab="rewards">المكافآت</button><button data-tab="analytics">التحليلات</button><button data-tab="settings">الإعدادات</button></div>
 <section id="dashboard" class="section active"><div id="stats" class="stats"></div><div class="card"><h2>آخر الطلبات</h2><div id="latest"></div></div></section>
 <section id="orders" class="section"><div class="card grid"><input id="search" placeholder="بحث برقم الطلب أو الاسم أو الهاتف"><select id="filter"><option value="">كل الحالات</option><option value="new">جديد</option><option value="confirmed">مؤكد</option><option value="preparing">قيد التجهيز</option><option value="out_for_delivery">خرج للتوصيل</option><option value="delivered">تم التسليم</option><option value="cancelled">ملغي</option></select><select id="orderSort"><option value="newest">الأحدث</option><option value="oldest">الأقدم</option><option value="highest">الأعلى قيمة</option><option value="lowest">الأقل قيمة</option></select><button id="refresh">تحديث</button><button id="exportOrdersTop" class="secondary">تصدير</button></div><div class="card" id="ordersTable"></div><div id="ordersPagination" class="pagination"></div></section>
 <section id="products" class="section"><div class="card"><h2>إضافة أو تعديل منتج</h2><input id="pid" type="hidden"><div class="grid"><input id="pname" placeholder="الاسم بالعربي"><input id="pen" placeholder="الاسم بالإنجليزي"><input id="pslug" placeholder="slug"><input id="pprice" inputmode="decimal" placeholder="السعر"><input id="pimage" placeholder="رابط الصورة"><input id="psort" inputmode="numeric" placeholder="الترتيب"><select id="pactive"><option value="true">ظاهر</option><option value="false">مخفي</option></select></div><textarea id="pdesc" placeholder="الوصف" style="margin-top:8px"></textarea><div class="grid" style="margin-top:8px"><button id="saveProduct">حفظ</button><button id="clearProduct" class="secondary">إلغاء</button></div><p id="pmsg" class="msg"></p></div><div id="productList" class="grid"></div></section>
@@ -84,7 +73,53 @@ linear-gradient(180deg,#070707,#0a0a0a)}
     </div>
     <div class="card" id="membersTable"></div>
     </section>
-    <section id="analytics" class="section">
+    
+<section id="rewards" class="section">
+  <div class="card">
+    <h2>منح مكافأة لعضو</h2>
+    <div class="grid">
+      <select id="rewardMember"><option value="">اختر العضو</option></select>
+      <select id="rewardType">
+        <option value="points">نقاط</option>
+        <option value="percent_discount">خصم نسبة مئوية</option>
+        <option value="fixed_discount">خصم مبلغ ثابت</option>
+        <option value="free_delivery">توصيل مجاني</option>
+        <option value="free_item">منتج مجاني</option>
+      </select>
+      <input id="rewardValue" inputmode="decimal" placeholder="القيمة">
+      <input id="rewardTitle" placeholder="اسم المكافأة للعميل">
+      <input id="rewardReason" placeholder="سبب منح المكافأة">
+      <input id="rewardExpires" type="datetime-local">
+    </div>
+    <div id="rewardItemWrap" class="grid hidden" style="margin-top:8px">
+      <select id="rewardProduct"><option value="">اختر المنتج المجاني</option></select>
+      <input id="rewardQuantity" inputmode="numeric" min="1" value="1" placeholder="الكمية">
+    </div>
+    <div class="grid" style="margin-top:8px">
+      <button id="grantReward">منح المكافأة</button>
+      <button id="clearReward" class="secondary">مسح الحقول</button>
+    </div>
+    <p id="rewardMsg" class="msg"></p>
+    <div class="notice msg">
+      النقاط تُضاف مباشرة إلى رصيد العضو. الخصومات والمكافآت الأخرى تظهر كسجل نشط، ويمكن ربطها بعملية الطلب في SQL.
+    </div>
+  </div>
+
+  <div class="card grid">
+    <input id="rewardSearch" placeholder="بحث باسم العميل أو الهاتف أو المكافأة">
+    <select id="rewardStatus">
+      <option value="">كل الحالات</option>
+      <option value="active">نشطة</option>
+      <option value="used">مستخدمة</option>
+      <option value="revoked">ملغاة</option>
+      <option value="expired">منتهية</option>
+    </select>
+    <button id="refreshRewards" class="secondary">تحديث السجل</button>
+  </div>
+  <div class="card" id="rewardsTable"></div>
+</section>
+
+<section id="analytics" class="section">
       <div class="card"><h2>تحليلات التشغيل</h2><div id="analyticsCards" class="stats"></div></div>
       <div class="card"><h2>ملخص الحالات</h2><div id="statusBreakdown" class="quick-grid"></div></div>
       <div class="card"><h2>أفضل المنتجات</h2><div id="topProducts"></div></div>
@@ -107,7 +142,7 @@ linear-gradient(180deg,#070707,#0a0a0a)}
 const $=s=>document.querySelector(s),cfg=window.CRAVA_CONFIG||{};
 if(!cfg.SUPABASE_URL||!cfg.SUPABASE_ANON_KEY){document.body.innerHTML='<div class="wrap"><div class="card"><h1>CRAVA V13</h1><p class="bad">ملف config.js غير موجود أو ناقص.</p></div></div>';throw new Error('Missing CRAVA_CONFIG')}
 const db=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
-let orders=[],products=[],members=[],orderPage=1;const ORDER_PAGE_SIZE=40,sessionAudit=[];
+let orders=[],products=[],members=[],rewards=[],orderPage=1;const ORDER_PAGE_SIZE=40,sessionAudit=[];
 const toast=(m,bad=false)=>{const t=$('#toast');t.textContent=m;t.classList.remove('hidden');t.style.color=bad?'var(--bad)':'var(--ok)';clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.add('hidden'),3500)}
 const logAction=(type,detail='')=>{sessionAudit.unshift({type,detail,at:new Date()});renderAudit()}
 const statusLabel=s=>({new:'جديد',confirmed:'مؤكد',preparing:'قيد التجهيز',out_for_delivery:'خرج للتوصيل',delivered:'تم التسليم',cancelled:'ملغي'})[s]||s;
@@ -118,7 +153,7 @@ document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.query
 async function verify(){const{data:{session}}=await db.auth.getSession();if(!session)return false;const{data}=await db.rpc('is_current_user_admin');if(data){$('#login').classList.add('hidden');$('#panel').classList.remove('hidden');await loadAll()}return !!data}
 $('#loginBtn').onclick=async()=>{const{error}=await db.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#pass').value});if(error){$('#msg').textContent=error.message;return}if(!(await verify())){$('#msg').textContent='تم الرفض';await db.auth.signOut()}}
 $('#forgotBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email)return;const{error}=await db.auth.resetPasswordForEmail(email,{redirectTo:new URL('reset-password.html',location.href).href});$('#msg').textContent=error?error.message:'تم إرسال رابط الاستعادة'}
-async function loadAll(){await Promise.all([loadStats(),loadOrders(),loadProducts(),loadBoxes(),loadMembers()]);renderAnalytics();renderAudit()}
+async function loadAll(){await Promise.all([loadStats(),loadOrders(),loadProducts(),loadBoxes(),loadMembers(),loadRewards()]);renderAnalytics();renderAudit()}
 async function loadStats(){const{data,error}=await db.rpc('admin_store_stats');if(error){$('#stats').innerHTML='<p class="bad">'+esc(error.message)+'</p>';return}const labels={orders_today:'طلبات اليوم',new_orders:'جديدة',active_orders:'قيد التنفيذ',delivered_orders:'مسلّمة',sales_today:'مبيعات اليوم',sales_total:'إجمالي المبيعات',average_order:'متوسط الطلب',active_products:'منتجات ظاهرة'};$('#stats').innerHTML=Object.entries(data||{}).map(([k,v])=>`<div class="stat"><b>${k.includes('sales')||k==='average_order'?money(v):v}</b><span>${labels[k]||k}</span></div>`).join('')}
 async function loadOrders(){const{data,error}=await db.from('orders').select('*,order_items(*)').order('created_at',{ascending:false}).limit(300);if(error){$('#ordersTable').innerHTML='<p class="bad">'+esc(error.message)+'</p>';return}orders=data||[];renderOrders();$('#latest').innerHTML=orders.slice(0,6).map(o=>`<div class="product"><b>${no(o.order_number)} — ${esc(o.customer_name)}</b><div class="msg">${esc(o.area)} · ${money(o.total)} · ${esc(o.status)}</div></div>`).join('')||'<p class="msg">لا توجد طلبات.</p>'}
 function getFilteredOrders(){
@@ -140,7 +175,7 @@ window.copyOrder=async id=>{const o=orders.find(x=>x.id===id);if(!o)return;const
 window.saveStatus=async id=>{const note=prompt('ملاحظة داخلية — اختياري','')??'';const{error}=await db.rpc('admin_update_order_status',{p_order_id:id,p_status:$('#s-'+id).value,p_admin_note:note});if(error)return toast(error.message,true);toast('تم تحديث حالة الطلب');logAction('تحديث طلب',id+' → '+$('#s-'+id).value);await Promise.all([loadOrders(),loadStats()])}
 window.linkBox=async id=>{const{data,error}=await db.rpc('admin_link_order_box',{p_order_id:id,p_box_number:Number($('#b-'+id).value),p_rarity:$('#r-'+id).value});if(error)return toast(error.message,true);toast(`تم ربط الطلب ${no(data.order_number)} بالبوكس #${data.box_number}`);logAction('ربط بوكس',`طلب ${no(data.order_number)} ← #${data.box_number}`);await loadBoxes()}
 $('#search').oninput=()=>{orderPage=1;renderOrders()};$('#filter').onchange=()=>{orderPage=1;renderOrders()};$('#orderSort').onchange=()=>{orderPage=1;renderOrders()};$('#refresh').onclick=()=>Promise.all([loadOrders(),loadStats()]);$('#exportOrdersTop').onclick=()=>exportOrdersCsv()
-async function loadProducts(){const{data,error}=await db.from('products').select('*').order('sort_order');if(error){$('#productList').innerHTML='<p class="bad">'+esc(error.message)+'</p>';return}products=data||[];$('#productList').innerHTML=products.map(p=>`<div class="product"><h3>${esc(p.name_ar)}</h3><div class="msg">${esc(p.slug)} · ${p.is_active?'ظاهر':'مخفي'}</div><b>${money(p.price)}</b><div class="row-actions"><button class="secondary" onclick="editProduct('${p.id}')">تعديل</button><button class="danger" onclick="deleteProduct('${p.id}')">حذف</button></div></div>`).join('')||'<div class="empty">لا توجد منتجات.</div>'}
+async function loadProducts(){const{data,error}=await db.from('products').select('*').order('sort_order');if(error){$('#productList').innerHTML='<p class="bad">'+esc(error.message)+'</p>';return}products=data||[];renderRewardProducts();$('#productList').innerHTML=products.map(p=>`<div class="product"><h3>${esc(p.name_ar)}</h3><div class="msg">${esc(p.slug)} · ${p.is_active?'ظاهر':'مخفي'}</div><b>${money(p.price)}</b><div class="row-actions"><button class="secondary" onclick="editProduct('${p.id}')">تعديل</button><button class="danger" onclick="deleteProduct('${p.id}')">حذف</button></div></div>`).join('')||'<div class="empty">لا توجد منتجات.</div>'}
 window.editProduct=id=>{const p=products.find(x=>x.id===id);$('#pid').value=p.id;$('#pname').value=p.name_ar||'';$('#pen').value=p.name_en||'';$('#pslug').value=p.slug||'';$('#pprice').value=p.price;$('#pimage').value=p.image_url||'';$('#psort').value=p.sort_order||0;$('#pactive').value=String(p.is_active);$('#pdesc').value=p.description_ar||''}
 function clearP(){['pid','pname','pen','pslug','pprice','pimage','psort','pdesc'].forEach(id=>$('#'+id).value='');$('#pactive').value='true'}$('#clearProduct').onclick=clearP
 $('#saveProduct').onclick=async()=>{const{error}=await db.rpc('admin_save_product',{p_id:$('#pid').value||null,p_slug:$('#pslug').value.trim(),p_name_ar:$('#pname').value.trim(),p_name_en:$('#pen').value.trim(),p_description_ar:$('#pdesc').value.trim(),p_price:Number($('#pprice').value),p_image_url:$('#pimage').value.trim(),p_is_active:$('#pactive').value==='true',p_sort_order:Number($('#psort').value||0)});$('#pmsg').textContent=error?error.message:'تم الحفظ';if(!error){toast('تم حفظ المنتج');logAction('حفظ منتج',$('#pname').value.trim());clearP();await Promise.all([loadProducts(),loadStats()])}}
@@ -218,8 +253,87 @@ $('#activate').onclick=async()=>{
   await loadBoxes();
 }
 $('#findBtn').onclick=async()=>{const{data,error}=await db.rpc('admin_get_box',{p_box_number:Number($('#findNo').value)});$('#boxResult').textContent=error?.message||JSON.stringify(data,null,2)}
-async function loadMembers(){const{data,error}=await db.from('profiles').select('id,display_name,phone_e164,points,xp,box_count,referral_code,created_at').order('created_at',{ascending:false}).limit(1000);if(error){$('#membersTable').innerHTML='<p class="bad">'+esc(error.message)+'</p>';return}members=data||[];renderMembers()}
+async function loadMembers(){const{data,error}=await db.from('profiles').select('id,display_name,phone_e164,points,xp,box_count,referral_code,created_at').order('created_at',{ascending:false}).limit(1000);if(error){$('#membersTable').innerHTML='<p class="bad">'+esc(error.message)+'</p>';return}members=data||[];renderMembers();renderRewardMembers()}
 function renderMembers(){const q=($('#memberSearch')?.value||'').trim().toLowerCase(),sort=$('#memberSort')?.value||'newest';let rows=members.filter(p=>!q||[p.display_name,p.phone_e164,p.referral_code].join(' ').toLowerCase().includes(q));rows.sort((a,b)=>sort==='points'?Number(b.points)-Number(a.points):sort==='boxes'?Number(b.box_count)-Number(a.box_count):new Date(b.created_at)-new Date(a.created_at));$('#membersTable').innerHTML=rows.length?`<div class="table"><table><thead><tr><th>الاسم</th><th>الهاتف</th><th>النقاط</th><th>XP</th><th>بوكسات</th><th>كود الدعوة</th><th>الانضمام</th></tr></thead><tbody>${rows.map(p=>`<tr><td>${esc(p.display_name)}</td><td>${esc(p.phone_e164||'—')}</td><td>${Number(p.points||0)}</td><td>${Number(p.xp||0)}</td><td>${Number(p.box_count||0)}</td><td>${esc(p.referral_code||'—')}</td><td>${dateFmt(p.created_at)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">لا توجد نتائج.</div>'}
+
+function renderRewardMembers(){
+ const sel=$('#rewardMember');if(!sel)return;
+ const current=sel.value;
+ sel.innerHTML='<option value="">اختر العضو</option>'+members.map(p=>`<option value="${p.id}">${esc(p.display_name||'عضو')} — ${esc(p.phone_e164||'بدون هاتف')} — ${Number(p.points||0)} نقطة</option>`).join('');
+ if([...sel.options].some(o=>o.value===current))sel.value=current;
+}
+function renderRewardProducts(){
+ const sel=$('#rewardProduct');if(!sel)return;
+ const current=sel.value;
+ sel.innerHTML='<option value="">اختر المنتج المجاني</option>'+products.filter(p=>p.is_active).map(p=>`<option value="${p.id}">${esc(p.name_ar)}</option>`).join('');
+ if([...sel.options].some(o=>o.value===current))sel.value=current;
+}
+function clearRewardForm(){
+ $('#rewardMember').value='';$('#rewardType').value='points';$('#rewardValue').value='';
+ $('#rewardTitle').value='';$('#rewardReason').value='';$('#rewardExpires').value='';
+ $('#rewardProduct').value='';$('#rewardQuantity').value='1';
+ $('#rewardItemWrap').classList.add('hidden');$('#rewardMsg').textContent='';
+}
+function rewardStatusLabel(v){return({active:'نشطة',used:'مستخدمة',revoked:'ملغاة',expired:'منتهية'})[v]||v}
+function rewardTypeLabel(v){return({points:'نقاط',percent_discount:'خصم نسبة',fixed_discount:'خصم مبلغ',free_delivery:'توصيل مجاني',free_item:'منتج مجاني'})[v]||v}
+function rewardValueText(r){
+ if(r.reward_type==='points')return `${Number(r.value||0)} نقطة`;
+ if(r.reward_type==='percent_discount')return `${Number(r.value||0)}%`;
+ if(r.reward_type==='fixed_discount')return money(r.value);
+ if(r.reward_type==='free_delivery')return 'توصيل مجاني';
+ if(r.reward_type==='free_item')return `${esc(r.product_name||'منتج')} × ${Number(r.quantity||1)}`;
+ return '—';
+}
+async function loadRewards(){
+ const{data,error}=await db.from('customer_rewards').select('*,profiles(display_name,phone_e164),products(name_ar)').order('created_at',{ascending:false}).limit(1000);
+ if(error){$('#rewardsTable').innerHTML='<p class="bad">'+esc(error.message)+'</p>';return}
+ rewards=(data||[]).map(r=>({...r,display_name:r.profiles?.display_name,phone_e164:r.profiles?.phone_e164,product_name:r.products?.name_ar}));
+ renderRewards();
+}
+function renderRewards(){
+ const q=($('#rewardSearch')?.value||'').trim().toLowerCase(),f=$('#rewardStatus')?.value||'';
+ const now=Date.now();
+ const rows=rewards.map(r=>({...r,effective_status:r.status==='active'&&r.expires_at&&new Date(r.expires_at).getTime()<now?'expired':r.status}))
+  .filter(r=>(!q||[r.display_name,r.phone_e164,r.title,r.reason,rewardTypeLabel(r.reward_type)].join(' ').toLowerCase().includes(q))&&(!f||r.effective_status===f));
+ $('#rewardsTable').innerHTML=rows.length?`<div class="table"><table><thead><tr><th>العضو</th><th>المكافأة</th><th>القيمة</th><th>السبب</th><th>الحالة</th><th>الانتهاء</th><th>الإجراء</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.display_name||'—')}<br><span class="msg">${esc(r.phone_e164||'—')}</span></td><td><b>${esc(r.title||rewardTypeLabel(r.reward_type))}</b><br><span class="msg">${rewardTypeLabel(r.reward_type)}</span></td><td>${rewardValueText(r)}</td><td>${esc(r.reason||'—')}</td><td><span class="badge ${esc(r.effective_status)}">${rewardStatusLabel(r.effective_status)}</span></td><td>${dateFmt(r.expires_at)}</td><td>${r.status==='active'?`<button class="danger mini" onclick="revokeReward('${r.id}')">إلغاء</button>`:'—'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">لا توجد مكافآت مطابقة.</div>';
+}
+$('#rewardType').onchange=()=>{
+ const t=$('#rewardType').value;
+ $('#rewardItemWrap').classList.toggle('hidden',t!=='free_item');
+ if(t==='free_delivery'){$('#rewardValue').value='0';$('#rewardValue').disabled=true}else{$('#rewardValue').disabled=false}
+};
+$('#clearReward').onclick=clearRewardForm;
+$('#rewardSearch').oninput=renderRewards;$('#rewardStatus').onchange=renderRewards;$('#refreshRewards').onclick=loadRewards;
+$('#grantReward').onclick=async()=>{
+ const userId=$('#rewardMember').value,type=$('#rewardType').value,title=$('#rewardTitle').value.trim(),reason=$('#rewardReason').value.trim();
+ const value=type==='free_delivery'?0:Number($('#rewardValue').value||0);
+ const productId=type==='free_item'?$('#rewardProduct').value||null:null;
+ const quantity=type==='free_item'?Math.max(1,Number($('#rewardQuantity').value||1)):1;
+ const expires=$('#rewardExpires').value?new Date($('#rewardExpires').value).toISOString():null;
+ if(!userId)return $('#rewardMsg').textContent='اختر العضو.';
+ if(!title)return $('#rewardMsg').textContent='اكتب اسم المكافأة.';
+ if(!reason)return $('#rewardMsg').textContent='اكتب سبب منح المكافأة.';
+ if(['points','percent_discount','fixed_discount'].includes(type)&&(!(value>0)))return $('#rewardMsg').textContent='أدخل قيمة صحيحة.';
+ if(type==='percent_discount'&&value>100)return $('#rewardMsg').textContent='نسبة الخصم لا تتجاوز 100%.';
+ if(type==='free_item'&&!productId)return $('#rewardMsg').textContent='اختر المنتج المجاني.';
+ $('#grantReward').disabled=true;$('#rewardMsg').textContent='جاري منح المكافأة...';
+ const{data,error}=await db.rpc('admin_grant_customer_reward',{
+  p_user_id:userId,p_reward_type:type,p_title:title,p_reason:reason,p_value:value,
+  p_product_id:productId,p_quantity:quantity,p_expires_at:expires
+ });
+ $('#grantReward').disabled=false;
+ if(error){$('#rewardMsg').textContent=error.message;return}
+ $('#rewardMsg').textContent='تم منح المكافأة بنجاح.';
+ toast('تم منح المكافأة');logAction('منح مكافأة',`${title} → ${data?.display_name||userId}`);
+ clearRewardForm();await Promise.all([loadMembers(),loadRewards(),loadStats()]);
+};
+window.revokeReward=async id=>{
+ if(!confirm('إلغاء هذه المكافأة؟'))return;
+ const{error}=await db.rpc('admin_revoke_customer_reward',{p_reward_id:id});
+ if(error)return toast(error.message,true);
+ toast('تم إلغاء المكافأة');logAction('إلغاء مكافأة',id);await loadRewards();
+};
+
 function renderAnalytics(){if(!$('#analyticsCards'))return;const filtered=getFilteredOrders(),delivered=orders.filter(o=>o.status==='delivered'),revenue=delivered.reduce((s,o)=>s+Number(o.total||0),0),cancelled=orders.filter(o=>o.status==='cancelled').length,conversion=orders.length?((delivered.length/orders.length)*100).toFixed(1):'0.0';$('#analyticsCards').innerHTML=`<div class="stat"><b>${orders.length}</b><span>الطلبات المحملة</span></div><div class="stat"><b>${money(revenue)}</b><span>إيراد الطلبات المسلّمة</span></div><div class="stat"><b>${conversion}%</b><span>نسبة التسليم</span></div><div class="stat"><b>${cancelled}</b><span>طلبات ملغاة</span></div><div class="stat"><b>${members.length}</b><span>الأعضاء</span></div><div class="stat"><b>${filtered.length}</b><span>نتيجة الفلتر الحالي</span></div>`;const counts={};orders.forEach(o=>counts[o.status]=(counts[o.status]||0)+1);$('#statusBreakdown').innerHTML=['new','confirmed','preparing','out_for_delivery','delivered','cancelled'].map(s=>`<div class="product"><span class="badge ${s}">${statusLabel(s)}</span><h3>${counts[s]||0}</h3></div>`).join('');const productTotals={};orders.forEach(o=>(o.order_items||[]).forEach(i=>productTotals[i.product_name]=(productTotals[i.product_name]||0)+Number(i.quantity||0)));const top=Object.entries(productTotals).sort((a,b)=>b[1]-a[1]).slice(0,10);$('#topProducts').innerHTML=top.length?top.map(([n,q],i)=>`<div class="product"><b>${i+1}. ${esc(n)}</b><div class="msg">${q} قطعة</div></div>`).join(''):'<div class="empty">لا توجد بيانات كافية.</div>'}
 function renderAudit(){if(!$('#auditLog'))return;$('#auditLog').innerHTML=sessionAudit.length?sessionAudit.map(x=>`<div class="audit-item"><b>${esc(x.type)}</b><div>${esc(x.detail)}</div><span class="msg">${dateFmt(x.at)}</span></div>`).join(''):'<div class="empty">لا توجد عمليات في هذه الجلسة.</div>'}
 function csvEscape(v){return `"${String(v??'').replaceAll('"','""')}"`}
