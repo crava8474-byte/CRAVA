@@ -85,7 +85,7 @@
         <div id="generatedCodes" class="notice hidden" style="margin-top:10px"></div>
       </div>
       <div class="card">
-        <div class="grid"><input id="activateFrom" inputmode="numeric" placeholder="تفعيل من"><input id="activateTo" inputmode="numeric" placeholder="إلى"><select id="activateRarity"><option value="standard">Standard</option><option value="golden">Golden</option><option value="rare">Rare</option></select><button id="activateRange">تفعيل النطاق</button></div>
+        <div class="grid"><input id="activateFrom" inputmode="numeric" placeholder="تفعيل من"><input id="activateTo" inputmode="numeric" placeholder="إلى"><select id="activateRarity"><option value="standard">Standard</option><option value="golden">Golden</option><option value="rare">Rare</option></select><button id="activateRange">إنشاء الأكواد وتفعيل النطاق</button></div>
         <p id="physicalMsg" class="msg"></p>
       </div>
       <div class="card"><div class="grid"><input id="findBoxNo" inputmode="numeric" placeholder="رقم البوكس"><button id="findBox">بحث</button></div><div id="boxResult"></div></div>
@@ -265,10 +265,15 @@ window.adjustPoints=async id=>{
 };
 
 async function loadPhysicalBoxes(){
-  const {data,error}=await db.from('boxes').select('box_number,status,rarity,order_id,activated_at,claimed_at').order('box_number',{ascending:false}).limit(100);
+  const {data,error}=await db.from('boxes')
+    .select('box_number,status,rarity,order_id,activated_at,claimed_at')
+    .in('status',['active','claimed'])
+    .order('activated_at',{ascending:false,nullsFirst:false})
+    .order('box_number',{ascending:false})
+    .limit(200);
   if(error){$('#physicalList').innerHTML='<div class="bad">'+esc(error.message)+'</div>';return;}
   physicalBoxes=data||[];
-  $('#physicalList').innerHTML=physicalBoxes.map(b=>`<div class="physical-card"><h3>#${String(b.box_number).padStart(6,'0')}</h3><div class="line"><span>الحالة</span><b>${esc(b.status)}</b></div><div class="line"><span>الندرة</span><b>${esc(b.rarity)}</b></div><div class="line"><span>مرتبط بطلب</span><b>${b.order_id?'نعم':'لا'}</b></div><div class="msg">تفعيل: ${dateFmt(b.activated_at)}<br>Claimed: ${dateFmt(b.claimed_at)}</div></div>`).join('')||'<div class="empty">لا توجد بوكسات مرقّمة.</div>';
+  $('#physicalList').innerHTML=physicalBoxes.map(b=>`<div class="physical-card"><h3>#${String(b.box_number).padStart(6,'0')}</h3><div class="line"><span>الحالة</span><b>${esc(b.status)}</b></div><div class="line"><span>الندرة</span><b>${esc(b.rarity)}</b></div><div class="line"><span>مرتبط بطلب</span><b>${b.order_id?'نعم':'لا'}</b></div><div class="msg">تفعيل: ${dateFmt(b.activated_at)}<br>Claimed: ${dateFmt(b.claimed_at)}</div></div>`).join('')||'<div class="empty">لا توجد بوكسات مفعّلة بعد.</div>';
 }
 $('#generateBoxes').onclick=async()=>{
   const from=Number($('#generateFrom').value),to=Number($('#generateTo').value);if(!Number.isInteger(from)||!Number.isInteger(to)||from<1||to<from)return toast('أدخل نطاقًا صحيحًا',true);
@@ -278,9 +283,21 @@ $('#generateBoxes').onclick=async()=>{
 };
 window.copyGeneratedCodes=async()=>{const text=$('#generatedCodes').dataset.codes||'';try{await navigator.clipboard.writeText(text);toast('تم نسخ الأكواد');}catch(e){prompt('انسخ الأكواد:',text);}};
 $('#activateRange').onclick=async()=>{
-  const from=Number($('#activateFrom').value),to=Number($('#activateTo').value);if(!Number.isInteger(from)||!Number.isInteger(to)||from<1||to<from)return $('#physicalMsg').textContent='أدخل نطاقًا صحيحًا.';
-  const {data,error}=await db.rpc('admin_activate_box_range',{p_from:from,p_to:to,p_rarity:$('#activateRarity').value});$('#physicalMsg').textContent=error?error.message:`تم تفعيل ${data.activated} بوكس.`;if(!error)await loadPhysicalBoxes();
+  const from=Number($('#activateFrom').value),to=Number($('#activateTo').value);
+  if(!Number.isInteger(from)||!Number.isInteger(to)||from<1||to<from){$('#physicalMsg').textContent='أدخل نطاقًا صحيحًا.';return;}
+  $('#activateRange').disabled=true;$('#physicalMsg').textContent='جاري إنشاء الأكواد والتفعيل...';
+  try{
+    const {data,error}=await db.rpc('admin_activate_boxes_with_codes',{p_from:from,p_to:to,p_rarity:$('#activateRarity').value});
+    if(error){$('#physicalMsg').textContent=error.message;return;}
+    const rows=data||[];
+    const text=rows.map(x=>`#${x.box_number}: ${x.claim_code}`).join('\n');
+    $('#generatedCodes').innerHTML='<b>تم التفعيل. انسخ الأكواد الآن؛ لن تظهر مرة أخرى:</b><div style="display:grid;gap:7px;margin-top:10px">'+rows.map(x=>`<div class="line" style="align-items:center"><span>#${String(x.box_number).padStart(6,'0')}</span><b dir="ltr">${esc(x.claim_code)}</b><button class="secondary" style="width:auto;padding:7px 10px" onclick="copySingleCode('${esc(x.claim_code)}')">📋 نسخ</button></div>`).join('')+'</div><button class="secondary" style="margin-top:10px" onclick="copyGeneratedCodes()">📋 نسخ كل الأكواد</button>';
+    $('#generatedCodes').dataset.codes=text;$('#generatedCodes').classList.remove('hidden');
+    $('#physicalMsg').textContent=`تم إنشاء وتفعيل ${rows.length} بوكس.`;
+    await loadPhysicalBoxes();
+  }finally{$('#activateRange').disabled=false;}
 };
+window.copySingleCode=async code=>{try{await navigator.clipboard.writeText(code);toast('تم نسخ الكود');}catch(e){prompt('انسخ الكود:',code);}};
 $('#findBox').onclick=async()=>{
   const n=Number($('#findBoxNo').value);const {data,error}=await db.rpc('admin_get_box',{p_box_number:n});$('#boxResult').innerHTML=error?`<div class="bad">${esc(error.message)}</div>`:`<pre style="white-space:pre-wrap;direction:ltr">${esc(JSON.stringify(data,null,2))}</pre>`;
 };
