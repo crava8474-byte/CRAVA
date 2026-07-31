@@ -1,40 +1,298 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CRAVA Vault</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<style>:root{--g:#d7c4a3;--t:#f5efe7;--m:#988f86;--l:rgba(215,196,163,.22)}*{box-sizing:border-box}body{margin:0;background:#070707;color:var(--t);font-family:Inter}.wrap{width:min(100%,900px);margin:auto;padding:24px}.logo{width:130px}.card{border:1px solid var(--l);border-radius:20px;padding:20px;background:#111;margin:12px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}input,select,button{width:100%;padding:13px;border-radius:12px;border:1px solid var(--l);background:#080808;color:white}button{background:linear-gradient(135deg,#f1e3ca,#b49a72);color:#17110c;font-weight:800;cursor:pointer}h1,h2{font-family:"Cormorant Garamond";color:var(--g)}.stat{border:1px solid var(--l);padding:15px;border-radius:15px}.stat b{font-size:25px;color:var(--g)}.msg{color:var(--m);font-size:12px}.danger{color:#ee8f87}.hidden{display:none}.table{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:10px;border-bottom:1px solid var(--l);text-align:left}</style></head>
-<body><div class="wrap"><img src="crava-logo-clean.png" class="logo"><div id="login" class="card"><h1>Private Vault</h1><p class="msg">This page is not linked publicly. Server-side admin authorization is still required.</p><input id="email" type="email" placeholder="Admin email" style="margin-bottom:8px"><input id="pass" type="password" placeholder="Password" style="margin-bottom:8px"><button id="loginBtn">ENTER VAULT</button><button id="forgotBtn" type="button" style="margin-top:8px;background:#171717;color:var(--g)">FORGOT PASSWORD?</button><p id="msg" class="msg"></p></div>
-<div id="panel" class="hidden"><h1>CRAVA Control Room</h1><div id="stats" class="grid"></div>
-<div class="card"><h2>Activate box range</h2><div class="grid"><input id="from" inputmode="numeric" placeholder="From: 1"><input id="to" inputmode="numeric" placeholder="To: 20"><select id="rarity"><option value="standard">Standard</option><option value="golden">Golden</option><option value="rare">Rare</option></select><button id="activate">ACTIVATE RANGE</button></div><p id="actMsg" class="msg"></p></div>
-<div class="card"><h2>Find a box</h2><div class="grid"><input id="findNo" inputmode="numeric" placeholder="Box number"><button id="findBtn">SEARCH</button></div><div id="boxResult"></div></div>
-<div class="card"><h2>Recent activity</h2><div class="table"><table><thead><tr><th>Box</th><th>Status</th><th>Rarity</th><th>Claimed</th></tr></thead><tbody id="rows"></tbody></table></div></div>
-<button id="logout">SIGN OUT</button></div></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script>
-const $=s=>document.querySelector(s),cfg=window.CRAVA_CONFIG,db=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
-async function verify(){const{data:{session}}=await db.auth.getSession();if(!session)return false;const{data}=await db.rpc('is_current_user_admin');if(data){$('#login').classList.add('hidden');$('#panel').classList.remove('hidden');load()}return !!data}
-$('#loginBtn').onclick=async()=>{const{error}=await db.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#pass').value});if(error){$('#msg').textContent=error.message;$('#msg').className='msg danger';return}if(!(await verify())){await db.auth.signOut();$('#msg').textContent='ACCESS DENIED';$('#msg').className='msg danger'}};
-$('#forgotBtn').onclick=async()=>{
-  const email=$('#email').value.trim();
-  if(!email){
-    $('#msg').textContent='ENTER YOUR ADMIN EMAIL FIRST';
-    $('#msg').className='msg danger';
-    return;
-  }
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#070707">
+  <title>CRAVA Control Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--g:#d7c4a3;--g2:#f1e3ca;--t:#f5efe7;--m:#a49b91;--l:rgba(215,196,163,.22);--bad:#ee8f87;--ok:#a9d4b1;--warn:#f0ca7b}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070707;color:var(--t);font-family:Tajawal,sans-serif}.wrap{width:min(100%,1250px);margin:auto;padding:18px 14px 80px}.hidden{display:none!important}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:40;padding:10px 0;background:linear-gradient(#070707 76%,transparent)}.logo{width:145px}.top-actions{display:flex;gap:7px}.card{border:1px solid var(--l);border-radius:20px;padding:17px;background:#111;margin:11px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px}.stat{border:1px solid var(--l);border-radius:15px;padding:13px;background:#0b0b0b}.stat b{display:block;color:var(--g2);font-size:23px}.stat span{font-size:10px;color:var(--m)}input,select,textarea,button{width:100%;padding:12px;border-radius:12px;border:1px solid var(--l);background:#080808;color:white;font:inherit}textarea{min-height:85px;resize:vertical}button{background:linear-gradient(135deg,var(--g2),#b49a72);color:#17110c;font-weight:800;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#171717;color:var(--g2)}.danger{background:#2b1212;color:#ffd9d5;border-color:rgba(238,143,135,.35)}h1,h2,h3{color:var(--g2);font-family:"Cormorant Garamond",Tajawal}h1{font-size:37px}h2{font-size:31px}.tabs{display:flex;gap:7px;overflow:auto;padding:3px 0 7px}.tabs button{min-width:max-content;width:auto}.tabs .active{background:linear-gradient(135deg,var(--g2),#b49a72);color:#17110c}.section{display:none}.section.active{display:block}.msg{color:var(--m);font-size:11px}.bad{color:var(--bad)}.ok{color:var(--ok)}.warning{color:var(--warn)}.badge{display:inline-block;border:1px solid var(--l);border-radius:999px;padding:5px 8px;font-size:10px}.badge.delivered{color:var(--ok)}.badge.cancelled{color:var(--bad)}.badge.new{color:var(--warn)}.toolbar{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px}.order-list{display:grid;gap:12px}.order-card{border:1px solid var(--l);border-radius:18px;background:#0d0d0d;overflow:hidden}.order-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:14px;border-bottom:1px solid var(--l)}.order-head h3{margin:0}.order-body{padding:14px}.order-grid{display:grid;grid-template-columns:1.1fr 1.2fr 1.4fr;gap:10px}.panel{border:1px solid var(--l);border-radius:13px;padding:11px;background:#090909;min-width:0}.panel-title{font-size:10px;color:var(--m);margin-bottom:7px}.line{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid rgba(215,196,163,.09);font-size:12px}.line:last-child{border-bottom:0}.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{border:1px solid var(--l);border-radius:999px;padding:5px 8px;font-size:10px;color:var(--m)}.order-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}.price-total{font-size:20px;color:var(--g2);direction:ltr}.empty{text-align:center;color:var(--m);padding:24px}.box-editor,.customer-card,.rating-card,.physical-card{border:1px solid var(--l);border-radius:16px;padding:14px;background:#0c0c0c}.box-code{font:700 34px "Cormorant Garamond";color:var(--g2)}.stars{color:#f2d38f;letter-spacing:2px}.review-comment{white-space:pre-wrap;color:var(--m);line-height:1.7}.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin:13px 0}.pagination button{width:auto}.modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:14px}.modal-card{width:min(100%,720px);max-height:90vh;overflow:auto;border:1px solid var(--l);border-radius:20px;background:#101010;padding:18px}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.modal-head button{width:auto}.toast{position:fixed;left:14px;right:14px;bottom:15px;z-index:120;width:min(calc(100% - 28px),620px);margin:auto;padding:13px;border:1px solid var(--l);border-radius:14px;background:#171717}.table{overflow:auto;border:1px solid var(--l);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:850px;font-size:11px}td,th{padding:10px;border-bottom:1px solid var(--l);text-align:right;vertical-align:top}.mobile-safe-actions{display:flex;flex-wrap:wrap;gap:7px}.mobile-safe-actions>*{flex:1 1 130px;min-width:0}.notice{padding:11px;border:1px solid var(--l);border-radius:12px;background:#090909;color:var(--m);font-size:11px}
+    @media(max-width:850px){.order-grid{grid-template-columns:1fr 1fr}.order-grid .wide{grid-column:1/-1}.toolbar{grid-template-columns:1fr 1fr}.toolbar input{grid-column:1/-1}.order-actions{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.wrap{padding:10px 9px 70px}.logo{width:112px}.top-actions button{padding:8px;width:auto;font-size:10px}.order-grid,.order-actions,.toolbar{grid-template-columns:1fr}.toolbar input{grid-column:auto}.order-head{display:grid}.stats{grid-template-columns:1fr 1fr}.box-editor,.customer-card,.rating-card,.physical-card{overflow:hidden}.mobile-safe-actions{display:grid;grid-template-columns:1fr}.mobile-safe-actions>*{width:100%;max-width:100%}.card{padding:13px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <img src="./brand-wordmark.png" class="logo" alt="CRAVA">
+    <div class="top-actions"><button id="refreshAll" class="secondary hidden">تحديث</button><button id="logout" class="secondary hidden">خروج</button></div>
+  </div>
 
-  $('#msg').textContent='SENDING RESET LINK...';
-  $('#msg').className='msg';
+  <section id="login" class="card">
+    <h1>Private Vault</h1>
+    <p class="msg">الدخول محمي بصلاحية Admin داخل Supabase، وليس بإخفاء الرابط فقط.</p>
+    <div class="grid">
+      <input id="email" type="email" autocomplete="email" placeholder="بريد الإدارة">
+      <input id="pass" type="password" autocomplete="current-password" placeholder="كلمة المرور">
+      <button id="loginBtn">دخول لوحة الإدارة</button>
+    </div>
+    <button id="forgotBtn" class="secondary" style="margin-top:8px">نسيت كلمة المرور؟</button>
+    <p id="loginMsg" class="msg"></p>
+  </section>
 
-  const redirectTo=new URL('reset-password.html',window.location.href).href;
-  const{error}=await db.auth.resetPasswordForEmail(email,{redirectTo});
+  <section id="panel" class="hidden">
+    <h1>CRAVA Control Room</h1>
+    <div class="tabs">
+      <button data-tab="dashboard" class="active" onclick="showTab('dashboard')">الرئيسية</button>
+      <button data-tab="orders" class="secondary" onclick="showTab('orders')">الطلبات</button>
+      <button data-tab="sizes" class="secondary" onclick="showTab('sizes')">أحجام البوكس</button>
+      <button data-tab="ratings" class="secondary" onclick="showTab('ratings')">التقييمات</button>
+      <button data-tab="customers" class="secondary" onclick="showTab('customers')">العملاء</button>
+      <button data-tab="physical" class="secondary" onclick="showTab('physical')">البوكسات المرقّمة</button>
+    </div>
 
-  if(error){
-    $('#msg').textContent=error.message;
-    $('#msg').className='msg danger';
-  }else{
-    $('#msg').textContent='RESET LINK SENT — CHECK YOUR EMAIL';
-    $('#msg').className='msg';
-  }
+    <section id="dashboard" class="section active">
+      <div id="stats" class="stats"></div>
+      <div class="card"><h2>أحدث الطلبات</h2><div id="latestOrders" class="order-list"></div></div>
+      <div class="card"><h2>ملخص التقييمات</h2><div id="ratingStatsMini" class="stats"></div></div>
+    </section>
+
+    <section id="orders" class="section">
+      <div class="card">
+        <h2>الطلبات</h2>
+        <div class="toolbar">
+          <input id="orderSearch" placeholder="ابحث بالرقم، الاسم، الهاتف أو المنطقة">
+          <select id="orderStatus"><option value="">كل الحالات</option><option value="new">جديد</option><option value="confirmed">مؤكد</option><option value="preparing">قيد التجهيز</option><option value="out_for_delivery">خرج للتوصيل</option><option value="delivered">تم التسليم</option><option value="cancelled">ملغي</option></select>
+          <select id="orderSort"><option value="newest">الأحدث</option><option value="oldest">الأقدم</option><option value="highest">الأعلى قيمة</option><option value="lowest">الأقل قيمة</option></select>
+          <button id="exportOrders" class="secondary">CSV</button>
+        </div>
+      </div>
+      <div id="ordersList" class="order-list"></div>
+      <div id="ordersPagination" class="pagination"></div>
+    </section>
+
+    <section id="sizes" class="section">
+      <div class="card"><h2>أسعار وأحجام البوكس</h2><div class="notice">الأسعار المبدئية قابلة للتعديل هنا. عدد القطع ثابت حسب مواصفات S / M / L / XL.</div></div>
+      <div id="sizesList" class="grid"></div>
+    </section>
+
+    <section id="ratings" class="section">
+      <div id="ratingStats" class="stats"></div>
+      <div class="card"><h2>كل التقييمات</h2><div id="ratingsList" class="grid"></div></div>
+    </section>
+
+    <section id="customers" class="section">
+      <div class="card"><h2>العملاء والنقاط</h2><input id="customerSearch" placeholder="ابحث بالاسم، الهاتف، رقم العضوية أو كود الدعوة"></div>
+      <div id="customersList" class="grid"></div>
+    </section>
+
+    <section id="physical" class="section">
+      <div class="card">
+        <h2>البوكسات المرقّمة</h2>
+        <div class="grid"><input id="generateFrom" inputmode="numeric" placeholder="إنشاء من رقم"><input id="generateTo" inputmode="numeric" placeholder="إلى رقم"><button id="generateBoxes">إنشاء أكواد جديدة</button></div>
+        <div id="generatedCodes" class="notice hidden" style="margin-top:10px"></div>
+      </div>
+      <div class="card">
+        <div class="grid"><input id="activateFrom" inputmode="numeric" placeholder="تفعيل من"><input id="activateTo" inputmode="numeric" placeholder="إلى"><select id="activateRarity"><option value="standard">Standard</option><option value="golden">Golden</option><option value="rare">Rare</option></select><button id="activateRange">تفعيل النطاق</button></div>
+        <p id="physicalMsg" class="msg"></p>
+      </div>
+      <div class="card"><div class="grid"><input id="findBoxNo" inputmode="numeric" placeholder="رقم البوكس"><button id="findBox">بحث</button></div><div id="boxResult"></div></div>
+      <div id="physicalList" class="grid"></div>
+    </section>
+  </section>
+</div>
+
+<div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h2 id="modalTitle">تفاصيل</h2><button class="secondary" onclick="closeModal()">إغلاق</button></div><div id="modalBody"></div></div></div>
+<div id="toast" class="toast hidden"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const cfg=window.CRAVA_CONFIG||{};
+if(!window.supabase||!cfg.SUPABASE_URL||!cfg.SUPABASE_ANON_KEY){document.body.innerHTML='<div class="wrap"><div class="card bad">ملف config.js ناقص.</div></div>';throw Error('Missing config');}
+const db=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
+let orders=[],profiles=[],sizes=[],ratings=[],physicalBoxes=[],referrals=[];
+let orderPage=1;
+const ORDER_PAGE_SIZE=20;
+const statusLabels={new:'جديد',confirmed:'مؤكد',preparing:'قيد التجهيز',out_for_delivery:'خرج للتوصيل',delivered:'تم التسليم',cancelled:'ملغي'};
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const money=v=>Number(v||0).toFixed(3)+' د.أ';
+const dateFmt=v=>v?new Date(v).toLocaleString('ar-JO'):'—';
+const no=v=>'#'+String(v||0).padStart(6,'0');
+function toast(text,bad=false){const el=$('#toast');el.textContent=text;el.style.color=bad?'var(--bad)':'var(--t)';el.classList.remove('hidden');clearTimeout(window.__t);window.__t=setTimeout(()=>el.classList.add('hidden'),3000);}
+function showTab(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));$('#'+id).classList.add('active');document.querySelectorAll('[data-tab]').forEach(x=>{x.classList.toggle('active',x.dataset.tab===id);x.classList.toggle('secondary',x.dataset.tab!==id)});window.scrollTo({top:0,behavior:'smooth'});}
+function closeModal(){$('#modal').classList.add('hidden');}
+
+async function verify(){
+  const {data:{session}}=await db.auth.getSession();
+  if(!session)return false;
+  const {data,error}=await db.rpc('is_current_user_admin');
+  if(error||!data)return false;
+  $('#login').classList.add('hidden');$('#panel').classList.remove('hidden');$('#logout').classList.remove('hidden');$('#refreshAll').classList.remove('hidden');
+  await loadAll();return true;
+}
+$('#loginBtn').onclick=async()=>{
+  $('#loginMsg').textContent='جاري الدخول...';
+  const {error}=await db.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#pass').value});
+  if(error){$('#loginMsg').textContent=error.message;$('#loginMsg').className='msg bad';return;}
+  if(!(await verify())){await db.auth.signOut();$('#loginMsg').textContent='ACCESS DENIED';$('#loginMsg').className='msg bad';}
 };
-async function load(){const[{data:s},{data:r}]=await Promise.all([db.rpc('admin_dashboard_stats'),db.from('boxes').select('box_number,status,rarity,claimed_at').order('box_number',{ascending:false}).limit(30)]);$('#stats').innerHTML=Object.entries(s||{}).map(([k,v])=>`<div class="stat"><b>${v}</b><div class="msg">${k.replaceAll('_',' ').toUpperCase()}</div></div>`).join('');$('#rows').innerHTML=(r||[]).map(x=>`<tr><td>#${String(x.box_number).padStart(6,'0')}</td><td>${x.status}</td><td>${x.rarity}</td><td>${x.claimed_at?new Date(x.claimed_at).toLocaleString():'—'}</td></tr>`).join('')}
-$('#activate').onclick=async()=>{const{data,error}=await db.rpc('admin_activate_box_range',{p_from:+$('#from').value,p_to:+$('#to').value,p_rarity:$('#rarity').value});$('#actMsg').textContent=error?.message||`${data.activated} BOXES ACTIVATED`;if(!error)load()};
-$('#findBtn').onclick=async()=>{const{data,error}=await db.rpc('admin_get_box',{p_box_number:+$('#findNo').value});$('#boxResult').innerHTML=error?`<p class="danger">${error.message}</p>`:`<pre>${JSON.stringify(data,null,2)}</pre>`};
-$('#logout').onclick=async()=>{await db.auth.signOut();location.reload()};verify();
-</script></body></html>
+$('#forgotBtn').onclick=async()=>{
+  const email=$('#email').value.trim();if(!email)return $('#loginMsg').textContent='أدخل البريد أولًا.';
+  const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:new URL('reset-password.html?next=vault-7f3c9a.html',location.href).href});
+  $('#loginMsg').textContent=error?error.message:'تم إرسال رابط الاستعادة.';
+};
+$('#logout').onclick=async()=>{await db.auth.signOut();location.reload();};
+$('#refreshAll').onclick=()=>loadAll();
+
+async function loadAll(){
+  $('#refreshAll').disabled=true;
+  try{await Promise.all([loadStats(),loadOrders(),loadSizes(),loadRatings(),loadProfiles(),loadPhysicalBoxes()]);toast('تم تحديث لوحة الإدارة');}
+  finally{$('#refreshAll').disabled=false;}
+}
+async function loadStats(){
+  const [{data:store,error:storeError},{data:rate,error:rateError}]=await Promise.all([db.rpc('admin_store_stats'),db.rpc('admin_rating_stats')]);
+  if(storeError){$('#stats').innerHTML='<div class="bad">'+esc(storeError.message)+'</div>';return;}
+  const labels={orders_today:'طلبات اليوم',new_orders:'طلبات جديدة',active_orders:'قيد التنفيذ',delivered_orders:'مسلّمة',sales_today:'مبيعات اليوم',sales_total:'إجمالي المبيعات',average_order:'متوسط الطلب',total_customers:'العملاء',total_ratings:'التقييمات'};
+  $('#stats').innerHTML=Object.entries(store||{}).map(([k,v])=>`<div class="stat"><b>${k.includes('sales')||k==='average_order'?money(v):v}</b><span>${labels[k]||k}</span></div>`).join('');
+  if(!rateError){const miniLabels={average_box:'متوسط البوكس',average_delivery:'متوسط التوصيل',total_ratings:'عدد التقييمات',five_star_percentage:'نسبة 5 نجوم'};$('#ratingStatsMini').innerHTML=Object.entries(rate||{}).map(([k,v])=>`<div class="stat"><b>${k==='five_star_percentage'?v+'%':k.startsWith('average')?Number(v).toFixed(2):v}</b><span>${miniLabels[k]||k}</span></div>`).join('');}
+}
+async function loadOrders(){
+  const {data,error}=await db.from('orders').select('*,order_items(*),order_ratings(*)').order('created_at',{ascending:false}).limit(500);
+  if(error){$('#ordersList').innerHTML='<div class="card bad">'+esc(error.message)+'</div>';return;}
+  orders=data||[];orderPage=1;renderOrders();renderLatest();
+}
+function renderLatest(){
+  $('#latestOrders').innerHTML=orders.slice(0,6).map(o=>`<div class="order-card"><div class="order-head"><div><h3>${no(o.order_number)} · ${esc(o.customer_name)}</h3><div class="msg">${esc(o.area)} · ${dateFmt(o.created_at)}</div></div><div><span class="badge ${esc(o.status)}">${statusLabels[o.status]||o.status}</span><div class="price-total">${money(o.total)}</div></div></div></div>`).join('')||'<div class="empty">لا توجد طلبات.</div>';
+}
+function filteredOrders(){
+  const q=$('#orderSearch').value.trim().toLowerCase(),status=$('#orderStatus').value,sort=$('#orderSort').value;
+  const rows=orders.filter(o=>(!status||o.status===status)&&(!q||[o.order_number,o.customer_name,o.phone_e164,o.area,o.street,o.box_name].join(' ').toLowerCase().includes(q)));
+  rows.sort((a,b)=>sort==='oldest'?new Date(a.created_at)-new Date(b.created_at):sort==='highest'?Number(b.total)-Number(a.total):sort==='lowest'?Number(a.total)-Number(b.total):new Date(b.created_at)-new Date(a.created_at));
+  return rows;
+}
+function groupItems(items,type){
+  return (items||[]).filter(i=>i.item_type===type).reduce((a,i)=>{const name=i.option_name||i.product_name||'—';a[name]=(a[name]||0)+Number(i.quantity||1);return a;},{});
+}
+function chips(obj){return Object.entries(obj).map(([name,count])=>`<span class="chip">${count} × ${esc(name)}</span>`).join('')||'<span class="chip">—</span>';}
+function customerProfile(id){return profiles.find(p=>p.id===id);}
+function orderCard(o){
+  const cookies=groupItems(o.order_items,'cookie'),rolls=groupItems(o.order_items,'roll'),candy=groupItems(o.order_items,'candy');
+  const p=customerProfile(o.user_id);
+  const referral=referrals.find(r=>r.qualifying_order_id===o.id);
+  const inviter=customerProfile(o.referrer_id||referral?.inviter_id);
+  const rating=Array.isArray(o.order_ratings)?o.order_ratings[0]:o.order_ratings;
+  return `<article class="order-card">
+    <div class="order-head"><div><h3>${no(o.order_number)} · ${esc(o.box_name||o.box_size_code||'CRAVA')}</h3><div class="msg">${dateFmt(o.created_at)}</div></div><div><span class="badge ${esc(o.status)}">${statusLabels[o.status]||o.status}</span><div class="price-total">${money(o.total)}</div></div></div>
+    <div class="order-body">
+      <div class="order-grid">
+        <div class="panel"><div class="panel-title">العميل</div><div class="line"><span>الاسم</span><b>${esc(o.customer_name)}</b></div><div class="line"><span>الهاتف</span><b dir="ltr">${esc(o.phone_e164)}</b></div><div class="line"><span>رصيده بعد الطلب</span><b>${o.points_balance_after??p?.points??'—'} نقطة</b></div><div class="line"><span>كود دعوته</span><b>${esc(p?.referral_code||'—')}</b></div></div>
+        <div class="panel"><div class="panel-title">العنوان</div><div>${esc([o.area,o.street,o.building,o.floor,o.apartment].filter(Boolean).join('، '))}</div>${o.order_notes?`<div class="notice" style="margin-top:8px"><b>ملاحظات على الطلب:</b><br>${esc(o.order_notes)}</div>`:''}</div>
+        <div class="panel wide"><div class="panel-title">محتويات البوكس</div><b>Cookies</b><div class="chips">${chips(cookies)}</div><br><b>Twist Rolls</b><div class="chips">${chips(rolls)}</div><br><b>Candy</b><div class="chips">${chips(candy)}</div></div>
+      </div>
+      <div class="order-grid" style="margin-top:10px">
+        <div class="panel"><div class="panel-title">الحساب</div><div class="line"><span>سعر الطلب</span><b>${money(o.subtotal)}</b></div><div class="line"><span>التوصيل</span><b>${money(o.delivery_fee)}</b></div><div class="line"><span>النقاط المستخدمة</span><b>${o.points_used||0}</b></div><div class="line"><span>خصم النقاط</span><b>− ${money(o.points_discount)}</b></div><div class="line"><span>المجموع</span><b>${money(o.total)}</b></div><div class="line"><span>الدفع</span><b>عند الاستلام</b></div></div>
+        <div class="panel"><div class="panel-title">الدعوة</div><div class="line"><span>الكود</span><b>${esc(o.referral_code||'—')}</b></div><div class="line"><span>صاحب الكود</span><b>${esc(inviter?.display_name||'—')}</b></div><div class="line"><span>حالة المكافأة</span><b>${esc(referral?.reward_status||'بدون دعوة')}</b></div><div class="line"><span>المكافأة</span><b>${o.referral_rewarded_at?'100 XP تمت':'لم تُصرف'}</b></div><div class="line"><span>إرجاع النقاط</span><b>${o.points_refunded_at?'تم':'لا'}</b></div></div>
+        <div class="panel"><div class="panel-title">التقييم</div>${rating?`<div>البوكس: <span class="stars">${'★'.repeat(rating.box_rating)}</span></div><div>التوصيل: <span class="stars">${'★'.repeat(rating.delivery_rating)}</span></div><div class="msg">${esc(rating.comment||'بدون تعليق')}</div>`:'<div class="msg">لم يتم التقييم بعد.</div>'}</div>
+      </div>
+      <div class="order-actions">
+        <select id="status-${o.id}">${Object.entries(statusLabels).map(([value,label])=>`<option value="${value}" ${o.status===value?'selected':''}>${label}</option>`).join('')}</select>
+        <button onclick="saveOrderStatus('${o.id}')">حفظ الحالة</button>
+        <button class="secondary" onclick="copyOrder('${o.id}')">نسخ التفاصيل</button>
+      </div>
+      <div class="mobile-safe-actions" style="margin-top:8px"><input id="box-${o.id}" inputmode="numeric" placeholder="رقم بوكس لربطه بالطلب"><select id="rarity-${o.id}"><option value="standard">Standard</option><option value="golden">Golden</option><option value="rare">Rare</option></select><button class="secondary" onclick="linkBox('${o.id}')">ربط البوكس</button></div>
+      ${o.admin_note?`<div class="notice" style="margin-top:8px"><b>ملاحظة الإدارة:</b> ${esc(o.admin_note)}</div>`:''}
+    </div>
+  </article>`;
+}
+function renderOrders(){
+  const all=filteredOrders(),pages=Math.max(1,Math.ceil(all.length/ORDER_PAGE_SIZE));orderPage=Math.max(1,Math.min(orderPage,pages));
+  const rows=all.slice((orderPage-1)*ORDER_PAGE_SIZE,orderPage*ORDER_PAGE_SIZE);
+  $('#ordersList').innerHTML=rows.map(orderCard).join('')||'<div class="card empty">لا توجد نتائج.</div>';
+  $('#ordersPagination').innerHTML=`<button class="secondary" ${orderPage<=1?'disabled':''} onclick="changePage(-1)">السابق</button><span class="msg">${orderPage} / ${pages} · ${all.length} طلب</span><button class="secondary" ${orderPage>=pages?'disabled':''} onclick="changePage(1)">التالي</button>`;
+}
+window.changePage=d=>{orderPage+=d;renderOrders();$('#orders').scrollIntoView({behavior:'smooth'});};
+$('#orderSearch').oninput=()=>{orderPage=1;renderOrders();};$('#orderStatus').onchange=()=>{orderPage=1;renderOrders();};$('#orderSort').onchange=()=>{orderPage=1;renderOrders();};
+window.saveOrderStatus=async id=>{
+  const status=$('#status-'+id).value;
+  const note=prompt('ملاحظة داخلية — اختياري','')??'';
+  const {data,error}=await db.rpc('admin_update_order_status',{p_order_id:id,p_status:status,p_admin_note:note||null});
+  if(error)return toast(error.message,true);
+  toast(data.points_refunded?'تم تحديث الحالة وإرجاع النقاط':'تم تحديث حالة الطلب');await Promise.all([loadOrders(),loadStats(),loadProfiles()]);
+};
+window.copyOrder=async id=>{
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  const lines=[`طلب ${no(o.order_number)}`,o.box_name,o.customer_name,o.phone_e164,[o.area,o.street,o.building,o.floor,o.apartment].filter(Boolean).join('، '),'Cookies:',...Object.entries(groupItems(o.order_items,'cookie')).map(([n,c])=>`${c} × ${n}`),'Rolls:',...Object.entries(groupItems(o.order_items,'roll')).map(([n,c])=>`${c} × ${n}`),'Candy: Orbs',`سعر الطلب: ${money(o.subtotal)}`,`التوصيل: ${money(o.delivery_fee)}`,`خصم النقاط: ${money(o.points_discount)}`,`المجموع: ${money(o.total)}`,o.order_notes?`ملاحظات: ${o.order_notes}`:''].filter(Boolean).join('\n');
+  try{await navigator.clipboard.writeText(lines);toast('تم نسخ تفاصيل الطلب');}catch(e){prompt('انسخ التفاصيل:',lines);}
+};
+window.linkBox=async id=>{
+  const boxNo=Number($('#box-'+id).value);if(!Number.isInteger(boxNo))return toast('أدخل رقم بوكس صحيح',true);
+  const {data,error}=await db.rpc('admin_link_order_box',{p_order_id:id,p_box_number:boxNo,p_rarity:$('#rarity-'+id).value});
+  if(error)return toast(error.message,true);toast(`تم ربط الطلب ${no(data.order_number)} بالبوكس #${data.box_number}`);await loadPhysicalBoxes();
+};
+
+async function loadSizes(){
+  const {data,error}=await db.from('box_sizes').select('*').order('sort_order');
+  if(error){$('#sizesList').innerHTML='<div class="bad">'+esc(error.message)+'</div>';return;}
+  sizes=data||[];
+  $('#sizesList').innerHTML=sizes.map(s=>`<div class="box-editor"><div class="box-code">${esc(s.name_ar)}</div><div class="line"><span>Cookies</span><b>${s.cookie_count}</b></div><div class="line"><span>Twist Rolls</span><b>${s.roll_count}</b></div><div class="line"><span>الأشخاص</span><b>${s.people_count}</b></div><label class="msg">السعر<input id="price-${s.code}" type="number" step="0.001" min="0" value="${Number(s.price).toFixed(3)}"></label><label class="msg">الظهور<select id="active-${s.code}"><option value="true" ${s.is_active?'selected':''}>ظاهر</option><option value="false" ${!s.is_active?'selected':''}>مخفي</option></select></label><button onclick="saveSize('${s.code}')">حفظ ${s.code}</button></div>`).join('');
+}
+window.saveSize=async code=>{
+  const {error}=await db.rpc('admin_save_box_size',{p_code:code,p_price:Number($('#price-'+code).value),p_is_active:$('#active-'+code).value==='true'});
+  if(error)return toast(error.message,true);toast('تم حفظ سعر البوكس');await loadSizes();
+};
+
+async function loadRatings(){
+  const [{data:list,error},{data:stats,error:statsError}]=await Promise.all([db.from('order_ratings').select('*,orders(order_number,box_name,customer_name)').order('created_at',{ascending:false}).limit(500),db.rpc('admin_rating_stats')]);
+  if(error){$('#ratingsList').innerHTML='<div class="bad">'+esc(error.message)+'</div>';return;}
+  ratings=list||[];
+  if(!statsError){const labels={average_box:'متوسط البوكس',average_delivery:'متوسط التوصيل',total_ratings:'عدد التقييمات',five_star_percentage:'نسبة 5 نجوم'};$('#ratingStats').innerHTML=Object.entries(stats||{}).map(([k,v])=>`<div class="stat"><b>${k==='five_star_percentage'?v+'%':k.startsWith('average')?Number(v).toFixed(2):v}</b><span>${labels[k]||k}</span></div>`).join('');}
+  $('#ratingsList').innerHTML=ratings.map(r=>`<div class="rating-card"><div class="line"><b>${esc(r.orders?.customer_name||'عميل')}</b><span>${no(r.orders?.order_number)}</span></div><div class="line"><span>البوكس</span><b>${esc(r.orders?.box_name||'CRAVA')}</b></div><div>المنتج: <span class="stars">${'★'.repeat(r.box_rating)}</span></div><div>التوصيل: <span class="stars">${'★'.repeat(r.delivery_rating)}</span></div><p class="review-comment">${esc(r.comment||'بدون تعليق')}</p><div class="msg">${dateFmt(r.created_at)}</div></div>`).join('')||'<div class="empty">لا توجد تقييمات.</div>';
+}
+
+async function loadProfiles(){
+  const [profilesRes,referralsRes]=await Promise.all([
+    db.from('profiles').select('*').order('created_at',{ascending:false}).limit(1000),
+    db.from('referrals').select('*').order('created_at',{ascending:false}).limit(1000)
+  ]);
+  const error=profilesRes.error||referralsRes.error;
+  if(error){$('#customersList').innerHTML='<div class="bad">'+esc(error.message)+'</div>';return;}
+  profiles=profilesRes.data||[];referrals=referralsRes.data||[];renderCustomers();renderOrders();
+}
+function renderCustomers(){
+  const q=$('#customerSearch').value.trim().toLowerCase();
+  const rows=profiles.filter(p=>!q||[p.display_name,p.phone_e164,p.member_number,p.referral_code].join(' ').toLowerCase().includes(q));
+  $('#customersList').innerHTML=rows.map(p=>`<div class="customer-card"><h3>${esc(p.display_name)}</h3><div class="line"><span>الهاتف</span><b dir="ltr">${esc(p.phone_e164||'—')}</b></div><div class="line"><span>العضوية</span><b>${p.member_number||'—'}</b></div><div class="line"><span>النقاط</span><b>${p.points||0}</b></div><div class="line"><span>XP</span><b>${p.xp||0}</b></div><div class="line"><span>كود الدعوة</span><b>${esc(p.referral_code||'—')}</b></div><div class="mobile-safe-actions" style="margin-top:9px"><input id="adj-${p.id}" type="number" placeholder="+100 أو -50"><input id="reason-${p.id}" placeholder="سبب التعديل"><button onclick="adjustPoints('${p.id}')">تعديل النقاط</button></div></div>`).join('')||'<div class="empty">لا يوجد عملاء.</div>';
+}
+$('#customerSearch').oninput=renderCustomers;
+window.adjustPoints=async id=>{
+  const points=Number($('#adj-'+id).value),reason=$('#reason-'+id).value.trim();if(!Number.isInteger(points)||!points||reason.length<3)return toast('أدخل عدد نقاط صحيح وسببًا واضحًا',true);
+  const {data,error}=await db.rpc('admin_adjust_points',{p_user_id:id,p_points:points,p_reason:reason});
+  if(error)return toast(error.message,true);toast(`الرصيد الجديد: ${data.points_balance} نقطة`);await loadProfiles();
+};
+
+async function loadPhysicalBoxes(){
+  const {data,error}=await db.from('boxes').select('box_number,status,rarity,order_id,activated_at,claimed_at').order('box_number',{ascending:false}).limit(100);
+  if(error){$('#physicalList').innerHTML='<div class="bad">'+esc(error.message)+'</div>';return;}
+  physicalBoxes=data||[];
+  $('#physicalList').innerHTML=physicalBoxes.map(b=>`<div class="physical-card"><h3>#${String(b.box_number).padStart(6,'0')}</h3><div class="line"><span>الحالة</span><b>${esc(b.status)}</b></div><div class="line"><span>الندرة</span><b>${esc(b.rarity)}</b></div><div class="line"><span>مرتبط بطلب</span><b>${b.order_id?'نعم':'لا'}</b></div><div class="msg">تفعيل: ${dateFmt(b.activated_at)}<br>Claimed: ${dateFmt(b.claimed_at)}</div></div>`).join('')||'<div class="empty">لا توجد بوكسات مرقّمة.</div>';
+}
+$('#generateBoxes').onclick=async()=>{
+  const from=Number($('#generateFrom').value),to=Number($('#generateTo').value);if(!Number.isInteger(from)||!Number.isInteger(to)||from<1||to<from)return toast('أدخل نطاقًا صحيحًا',true);
+  const {data,error}=await db.rpc('admin_generate_boxes',{p_from:from,p_to:to});if(error)return toast(error.message,true);
+  const rows=data||[];if(!rows.length)return toast('كل الأرقام في هذا النطاق موجودة مسبقًا',true);
+  const text=rows.map(x=>`#${x.box_number}: ${x.claim_code}`).join('\n');$('#generatedCodes').innerHTML='<b>انسخ الأكواد الآن؛ لن تظهر مرة أخرى:</b><pre style="white-space:pre-wrap;direction:ltr">'+esc(text)+'</pre><button class="secondary" onclick="copyGeneratedCodes()">نسخ الكل</button>';$('#generatedCodes').dataset.codes=text;$('#generatedCodes').classList.remove('hidden');await loadPhysicalBoxes();
+};
+window.copyGeneratedCodes=async()=>{const text=$('#generatedCodes').dataset.codes||'';try{await navigator.clipboard.writeText(text);toast('تم نسخ الأكواد');}catch(e){prompt('انسخ الأكواد:',text);}};
+$('#activateRange').onclick=async()=>{
+  const from=Number($('#activateFrom').value),to=Number($('#activateTo').value);if(!Number.isInteger(from)||!Number.isInteger(to)||from<1||to<from)return $('#physicalMsg').textContent='أدخل نطاقًا صحيحًا.';
+  const {data,error}=await db.rpc('admin_activate_box_range',{p_from:from,p_to:to,p_rarity:$('#activateRarity').value});$('#physicalMsg').textContent=error?error.message:`تم تفعيل ${data.activated} بوكس.`;if(!error)await loadPhysicalBoxes();
+};
+$('#findBox').onclick=async()=>{
+  const n=Number($('#findBoxNo').value);const {data,error}=await db.rpc('admin_get_box',{p_box_number:n});$('#boxResult').innerHTML=error?`<div class="bad">${esc(error.message)}</div>`:`<pre style="white-space:pre-wrap;direction:ltr">${esc(JSON.stringify(data,null,2))}</pre>`;
+};
+
+function csvEscape(v){return '"'+String(v??'').replaceAll('"','""')+'"';}
+$('#exportOrders').onclick=()=>{
+  const header=['order_number','created_at','status','box','customer','phone','area','street','subtotal','delivery_fee','points_used','points_discount','total','referral_code'];
+  const rows=filteredOrders().map(o=>[o.order_number,o.created_at,o.status,o.box_name,o.customer_name,o.phone_e164,o.area,o.street,o.subtotal,o.delivery_fee,o.points_used,o.points_discount,o.total,o.referral_code]);
+  const csv='\uFEFF'+[header,...rows].map(r=>r.map(csvEscape).join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='crava-orders.csv';a.click();URL.revokeObjectURL(a.href);
+};
+
+verify();
+</script>
+</body>
+</html>

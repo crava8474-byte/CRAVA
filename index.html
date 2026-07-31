@@ -1,87 +1,542 @@
-<!doctype html><html lang="ar" dir="rtl"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080808">
-<title>CRAVA</title><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--b:#080808;--p:#111;--g:#d7c4a3;--g2:#f1e3ca;--t:#f5efe7;--m:#988f86;--l:rgba(215,196,163,.22);--bad:#ee8f87;--ok:#a9d4b1}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,rgba(215,196,163,.13),transparent 28%),var(--b);color:var(--t);font-family:Tajawal}.wrap{width:min(100%,760px);margin:auto;padding:12px 14px 100px}.hidden{display:none!important}.screen{display:none}.screen.active{display:block}.top{display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20;padding:9px 0;background:linear-gradient(#080808 72%,transparent)}.logo{width:120px}.actions{display:flex;gap:6px}.pill{width:auto;border:1px solid var(--l);background:#111;color:var(--g2);border-radius:999px;padding:9px 11px}.hero{min-height:78vh;display:grid;place-items:center;text-align:center}.hero-logo{width:min(88%,420px)}h1,h2,h3{font-family:"Cormorant Garamond",Tajawal;color:var(--g2)}h1{font-size:clamp(39px,9vw,62px);margin:16px 0 8px}h2{font-size:34px}.lead{color:var(--m);line-height:1.8;font-size:13px}.eyebrow{font-size:10px;color:var(--g);letter-spacing:.13em}.card{border:1px solid var(--l);border-radius:22px;background:linear-gradient(145deg,#171514,#0b0b0b);padding:18px;margin:12px 0}.stack{display:grid;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{text-align:center;border:1px solid var(--l);border-radius:14px;padding:11px 4px}.stat b{display:block;color:var(--g2);font-size:20px}input,textarea,select{width:100%;background:#090909;border:1px solid var(--l);color:white;border-radius:14px;padding:14px}textarea{min-height:85px}.btn{width:100%;border-radius:15px;padding:14px;font-weight:800;border:1px solid transparent}.primary{background:linear-gradient(135deg,var(--g2),#b49a72);color:#17110c}.secondary{background:#111;color:var(--g2);border-color:var(--l)}.msg{min-height:18px;color:var(--m);font-size:11px}.bad{color:var(--bad)}.ok{color:var(--ok)}.products{display:grid;gap:12px}.product{border:1px solid var(--l);border-radius:21px;background:#111;overflow:hidden}.product-img{height:195px;background:linear-gradient(145deg,#201c18,#0b0b0b);display:grid;place-items:center;color:var(--g);font:700 34px "Cormorant Garamond"}.product-img img{width:100%;height:100%;object-fit:cover}.product-body{padding:16px}.product-head{display:flex;justify-content:space-between;gap:8px}.product h3{font-size:27px;margin:0}.price{font-size:22px;color:var(--g2);direction:ltr}.qty{display:grid;grid-template-columns:44px 1fr 44px;gap:7px;align-items:center;margin-top:12px}.qty button{height:42px;border-radius:12px;border:1px solid var(--l);background:#111;color:var(--g2)}.cart-row{display:grid;grid-template-columns:1fr auto;gap:9px;border-bottom:1px solid var(--l);padding:11px 0}.summary{display:flex;justify-content:space-between;margin:8px 0}.nav{display:grid;grid-template-columns:1fr 1fr;gap:9px;position:sticky;bottom:10px;padding:7px;background:rgba(8,8,8,.9);border:1px solid var(--l);border-radius:18px}.order,.box{border:1px solid var(--l);border-radius:15px;padding:13px;margin:8px 0}.status{display:inline-block;padding:4px 8px;border:1px solid var(--l);border-radius:999px;font-size:10px}.notice{padding:11px;border:1px solid var(--l);border-radius:13px;color:var(--m);font-size:11px}.tabs{display:flex;gap:6px;overflow:auto}.tabs button{min-width:max-content}.tabs .active{background:var(--g2);color:#17110c}.empty{text-align:center;color:var(--m);padding:22px}.toast{position:fixed;left:14px;right:14px;bottom:16px;z-index:50;margin:auto;width:min(calc(100% - 28px),600px);padding:13px;border-radius:14px;background:#171717;border:1px solid var(--l)}@media(max-width:430px){.grid2{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.wrap{padding:9px 10px 95px}.logo{width:105px}}
-</style></head><body><main class="wrap">
-<header class="top"><img src="./brand-wordmark.png" class="logo"><div class="actions"><button class="pill" onclick="go('store')">المتجر</button><button class="pill" onclick="go('cart')">السلة <span id="cartCount">0</span></button><button class="pill" onclick="openAccount()">حسابي</button></div></header>
-<section id="landing" class="screen active"><div class="hero"><div><img src="./brand-wordmark.png" class="hero-logo"><div class="eyebrow">CRAVE · COLLECT · DISCOVER</div><h1>كل رغبة تترك توقيعًا.</h1><p class="lead">اطلب تجربة CRAVA، اجمع النقاط، فعّل بوكسك، واصنع ملف ذوقك الخاص.</p><div class="grid2"><button class="btn primary" onclick="go('store')">استكشف المتجر</button><button class="btn secondary" onclick="openAccount()">حسابي</button></div></div></div></section>
-<section id="auth" class="screen"><div class="card stack"><h2>حساب CRAVA</h2><div class="grid2"><button id="su" class="btn secondary" onclick="setMode('signup')">حساب جديد</button><button id="li" class="btn secondary" onclick="setMode('login')">تسجيل الدخول</button></div><div id="nameWrap"><input id="name" placeholder="الاسم الكامل"></div><input id="email" type="email" placeholder="البريد الإلكتروني"><input id="password" type="password" minlength="8" placeholder="كلمة المرور"><input id="referral" placeholder="كود دعوة — اختياري"><button id="authBtn" class="btn primary">إنشاء الحساب</button><button id="forgotBtn" class="btn secondary hidden">نسيت كلمة المرور</button><div id="authMsg" class="msg"></div></div></section>
-<section id="store" class="screen"><h2>متجر CRAVA</h2><p class="lead">الدفع عند الاستلام فقط · التوصيل داخل عمّان.</p><div id="products" class="products"></div><div class="nav"><button class="btn secondary" onclick="go('cart')">عرض السلة</button><button class="btn primary" onclick="startCheckout()">إتمام الطلب</button></div></section>
-<section id="cart" class="screen"><h2>سلتك</h2><div class="card"><div id="cartRows"></div><div class="summary"><span>المجموع</span><b id="cartTotal">0.000 د.أ</b></div></div><div class="nav"><button class="btn secondary" onclick="go('store')">متابعة</button><button class="btn primary" onclick="startCheckout()">إتمام الطلب</button></div></section>
-<section id="checkout" class="screen"><h2>إتمام الطلب</h2><div class="card stack"><div class="notice">الدفع نقدًا عند الاستلام. لا يتم قبول أي عنوان خارج عمّان. التحقق عبر SMS معطّل مؤقتًا.</div><input id="checkoutName" placeholder="الاسم الكامل"><input id="checkoutPhone" inputmode="tel" autocomplete="tel" placeholder="07XXXXXXXX أو +9627XXXXXXXX"><select id="area"><option value="">اختر منطقة داخل عمّان</option><option>عبدون</option><option>أبو نصير</option><option>الجبيهة</option><option>الجاردنز</option><option>الشميساني</option><option>الصويفية</option><option>تلاع العلي</option><option>خلدا</option><option>دابوق</option><option>شفا بدران</option><option>طبربور</option><option>ماركا</option><option>مرج الحمام</option><option>وسط البلد</option><option>أخرى داخل عمّان</option></select><input id="areaOther" class="hidden" placeholder="اكتب المنطقة"><input id="street" placeholder="الشارع"><div class="grid2"><input id="building" placeholder="البناية"><input id="floor" placeholder="الطابق"></div><input id="apartment" placeholder="الشقة — اختياري"><textarea id="notes" placeholder="ملاحظات للسائق"></textarea><input id="pointsUse" inputmode="numeric" placeholder="نقاط للاستخدام — اختياري"><div id="checkoutSummary"></div><button id="placeOrder" class="btn primary">تأكيد الطلب</button><div id="checkoutMsg" class="msg"></div></div></section>
-<section id="success" class="screen"><div class="hero"><div class="card"><h2>تم استلام طلبك 🎉</h2><p id="successText" class="lead"></p><button class="btn primary" onclick="openAccount('orders')">تتبع طلبي</button></div></div></section>
-<section id="account" class="screen"><h2>حسابي</h2><div id="accountContent"></div></section>
-<section id="claim" class="screen"><h2>فعّل بوكسك</h2><div class="card stack"><input id="boxNo" inputmode="numeric" placeholder="رقم البوكس"><input id="claimCode" placeholder="الكود الخاص داخل البوكس"><button id="claimBtn" class="btn primary">تحقق وأضف للمجموعة</button><div id="claimMsg" class="msg"></div></div></section>
-</main><div id="toast" class="toast hidden"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+  <title>CRAVA</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon-192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--b:#080808;--p:#111;--p2:#171514;--g:#d7c4a3;--g2:#f1e3ca;--t:#f5efe7;--m:#a49b91;--l:rgba(215,196,163,.22);--bad:#ee8f87;--ok:#a9d4b1}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -10%,rgba(215,196,163,.14),transparent 28%),var(--b);color:var(--t);font-family:Tajawal,sans-serif}.wrap{width:min(100%,820px);margin:auto;padding:12px 14px 110px}.hidden{display:none!important}.screen{display:none}.screen.active{display:block}.top{display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:30;padding:9px 0;background:linear-gradient(#080808 72%,transparent)}.logo{width:120px}.actions{display:flex;gap:6px}.pill{width:auto;border:1px solid var(--l);background:#111;color:var(--g2);border-radius:999px;padding:9px 11px;cursor:pointer}.hero{min-height:78vh;display:grid;place-items:center;text-align:center}.hero-logo{width:min(88%,430px)}h1,h2,h3{font-family:"Cormorant Garamond",Tajawal;color:var(--g2)}h1{font-size:clamp(39px,9vw,64px);margin:16px 0 8px}h2{font-size:35px;margin:24px 0 8px}h3{font-size:25px;margin:8px 0}.lead{color:var(--m);line-height:1.8;font-size:13px}.eyebrow{font-size:10px;color:var(--g);letter-spacing:.13em}.card{border:1px solid var(--l);border-radius:22px;background:linear-gradient(145deg,var(--p2),#0b0b0b);padding:18px;margin:12px 0}.stack{display:grid;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{text-align:center;border:1px solid var(--l);border-radius:14px;padding:11px 4px;background:#0b0b0b}.stat b{display:block;color:var(--g2);font-size:20px}.stat span{font-size:11px;color:var(--m)}label{display:grid;gap:6px;color:var(--g2);font-size:12px}input,textarea,select{width:100%;background:#090909;border:1px solid var(--l);color:white;border-radius:14px;padding:14px;font:inherit}textarea{min-height:90px;resize:vertical}.btn{width:100%;border-radius:15px;padding:14px;font-weight:800;border:1px solid transparent;cursor:pointer;font:inherit}.btn:disabled{opacity:.5;cursor:not-allowed}.primary{background:linear-gradient(135deg,var(--g2),#b49a72);color:#17110c}.secondary{background:#111;color:var(--g2);border-color:var(--l)}.danger{background:#261212;color:#ffd7d4;border-color:rgba(238,143,135,.35)}.msg{min-height:18px;color:var(--m);font-size:11px}.bad{color:var(--bad)}.ok{color:var(--ok)}.box-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.box-card{border:1px solid var(--l);border-radius:22px;background:linear-gradient(145deg,#1a1714,#0a0a0a);padding:18px;position:relative;overflow:hidden}.box-card:before{content:"";position:absolute;inset:0;background:url('./box-pattern.svg') center/cover;opacity:.045;pointer-events:none}.box-code{font:700 42px "Cormorant Garamond";color:var(--g2)}.box-price{font-size:23px;color:var(--g2);direction:ltr}.feature-list{display:grid;gap:7px;margin:12px 0;color:var(--m);font-size:12px}.feature-list span{display:flex;justify-content:space-between;border-bottom:1px solid rgba(215,196,163,.1);padding-bottom:6px}.selector{border:1px solid var(--l);border-radius:17px;padding:13px;background:#0d0d0d}.selector-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}.selector-no{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--l);border-radius:50%;color:var(--g2);font-size:11px}.included{border:1px dashed rgba(215,196,163,.35);border-radius:16px;padding:14px;text-align:center;color:var(--g2);background:rgba(215,196,163,.05)}.cart-row{display:grid;grid-template-columns:1fr auto;gap:9px;border-bottom:1px solid var(--l);padding:11px 0}.summary{display:flex;justify-content:space-between;gap:12px;margin:9px 0}.summary.total{font-size:18px;border-top:1px solid var(--l);padding-top:12px}.nav{display:grid;grid-template-columns:1fr 1fr;gap:9px;position:sticky;bottom:10px;z-index:25;padding:7px;background:rgba(8,8,8,.92);backdrop-filter:blur(10px);border:1px solid var(--l);border-radius:18px}.order,.collection-box{border:1px solid var(--l);border-radius:16px;padding:14px;margin:9px 0;background:#0d0d0d}.status{display:inline-block;padding:5px 9px;border:1px solid var(--l);border-radius:999px;font-size:10px}.status.delivered{color:var(--ok)}.status.cancelled{color:var(--bad)}.notice{padding:12px;border:1px solid var(--l);border-radius:13px;color:var(--m);font-size:11px;background:#0b0b0b}.tabs{display:flex;gap:6px;overflow:auto;padding-bottom:4px}.tabs button{min-width:max-content}.tabs .active{background:var(--g2);color:#17110c}.empty{text-align:center;color:var(--m);padding:22px}.toast{position:fixed;left:14px;right:14px;bottom:16px;z-index:80;margin:auto;width:min(calc(100% - 28px),600px);padding:13px;border-radius:14px;background:#171717;border:1px solid var(--l);box-shadow:0 15px 50px #000}.choice-summary{display:grid;gap:8px}.choice-group{border:1px solid var(--l);border-radius:14px;padding:12px}.choice-group b{color:var(--g2)}.choice-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chip{border:1px solid var(--l);border-radius:999px;padding:5px 9px;font-size:10px;color:var(--m)}.rating-stars{display:flex;direction:ltr;justify-content:center;gap:7px}.star{width:48px;height:48px;border:1px solid var(--l);border-radius:13px;background:#111;color:#685f55;font-size:25px;cursor:pointer}.star.on{color:#f2d38f;background:#231d13}.order-details{margin-top:10px;border-top:1px solid var(--l);padding-top:10px}.review-box{border:1px solid rgba(169,212,177,.25);border-radius:13px;padding:10px;margin-top:10px;color:var(--ok)}
+    @media(max-width:560px){.box-grid,.grid2,.grid3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.wrap{padding:9px 10px 100px}.logo{width:104px}.actions .pill{padding:8px 9px;font-size:11px}.box-code{font-size:37px}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <img src="./brand-wordmark.png" class="logo" alt="CRAVA">
+    <div class="actions">
+      <button class="pill" onclick="go('store')">البوكسات</button>
+      <button class="pill" onclick="openCart()">السلة <span id="cartCount">0</span></button>
+      <button class="pill" onclick="openAccount()">حسابي</button>
+    </div>
+  </header>
 
-const $=s=>document.querySelector(s),cfg=window.CRAVA_CONFIG||{};
-if(!window.supabase||!cfg.SUPABASE_URL||!cfg.SUPABASE_ANON_KEY){document.body.innerHTML='<main class="wrap"><div class="card bad">ملف config.js ناقص أو غير موجود.</div></main>';throw Error('Missing config')}
-const db=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
-let user=null,profile=null,mode='signup',products=[],cart=JSON.parse(localStorage.getItem('crava_cart')||'{}');
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),money=v=>Number(v||0).toFixed(3)+' د.أ',fmt=v=>v?new Date(v).toLocaleString('ar-JO'):'—';
-const labels={new:'جديد',confirmed:'مؤكد',preparing:'قيد التجهيز',out_for_delivery:'خرج للتوصيل',delivered:'تم التسليم',cancelled:'ملغي'};
-function toast(t,b=false){const x=$('#toast');x.textContent=t;x.style.color=b?'var(--bad)':'var(--ok)';x.classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.add('hidden'),3200)}
-function msg(id,t,c=''){const x=$(id);x.textContent=t;x.className='msg '+c}
-function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$('#'+id).classList.add('active');scrollTo(0,0);if(id==='cart')renderCart();if(id==='checkout')renderCheckout()}
-function setMode(v){mode=v;$('#nameWrap').classList.toggle('hidden',v==='login');$('#referral').classList.toggle('hidden',v==='login');$('#forgotBtn').classList.toggle('hidden',v!=='login');$('#authBtn').textContent=v==='signup'?'إنشاء الحساب':'تسجيل الدخول';$('#su').classList.toggle('primary',v==='signup');$('#li').classList.toggle('primary',v==='login')}
-function phone(v){v=String(v||'').replace(/[\s\-()]/g,'');if(/^07\d{8}$/.test(v))return '+962'+v.slice(1);if(/^\+9627\d{8}$/.test(v))return v;if(/^9627\d{8}$/.test(v))return '+'+v;return null}
-async function session(){const{data}=await db.auth.getSession();user=data.session?.user||null;if(user)await loadProfile();return user}
-async function loadProfile(){const{data}=await db.from('profiles').select('*').eq('id',user.id).maybeSingle();profile=data||null}
-async function requireUser(){if(await session())return true;setMode('login');go('auth');toast('سجّل الدخول للمتابعة',true);return false}
-async function loadProducts(){const{data,error}=await db.from('products').select('*').eq('is_active',true).order('sort_order');if(error){$('#products').innerHTML='<p class="bad">'+esc(error.message)+'</p>';return}products=data||[];renderProducts();count()}
-function renderProducts(){$('#products').innerHTML=products.map(p=>`<article class="product"><div class="product-img">${p.image_url?`<img src="${esc(p.image_url)}">`:'CRAVA'}</div><div class="product-body"><div class="product-head"><div><h3>${esc(p.name_ar)}</h3><div class="lead">${esc(p.name_en||'')}</div></div><span class="price">${money(p.price)}</span></div><p class="lead">${esc(p.description_ar||'')}</p><div class="qty"><button onclick="qty('${p.id}',-1)">−</button><b style="text-align:center">${cart[p.id]||0}</b><button onclick="qty('${p.id}',1)">+</button></div></div></article>`).join('')||'<div class="empty">لا توجد منتجات حاليًا.</div>'}
-window.qty=(id,d)=>{cart[id]=Math.max(0,(cart[id]||0)+d);if(!cart[id])delete cart[id];save();renderProducts()}
-function save(){localStorage.setItem('crava_cart',JSON.stringify(cart));count()}function count(){$('#cartCount').textContent=Object.values(cart).reduce((a,b)=>a+Number(b),0)}
-function items(){return products.filter(p=>cart[p.id]).map(p=>({...p,quantity:Number(cart[p.id])}))}function total(){return items().reduce((s,p)=>s+Number(p.price)*p.quantity,0)}
-function renderCart(){$('#cartRows').innerHTML=items().map(p=>`<div class="cart-row"><div><b>${esc(p.name_ar)}</b><div class="lead">${p.quantity} × ${money(p.price)}</div><button class="pill" onclick="removeItem('${p.id}')">إزالة</button></div><b>${money(p.price*p.quantity)}</b></div>`).join('')||'<div class="empty">السلة فارغة.</div>';$('#cartTotal').textContent=money(total())}
-window.removeItem=id=>{delete cart[id];save();renderCart();renderProducts()}
-async function startCheckout(){if(!items().length){go('store');return toast('أضف منتجًا أولًا',true)}if(await requireUser())go('checkout')}
-function renderCheckout(){$('#checkoutSummary').innerHTML=`<div class="notice">رصيدك: ${profile?.points||0} نقطة</div><div class="summary"><span>المجموع</span><b>${money(total())}</b></div><div class="summary"><span>الدفع</span><b>عند الاستلام</b></div>`;if(profile){$('#checkoutName').value=profile.display_name||'';if(!$('#checkoutPhone').value)$('#checkoutPhone').value=phone(profile.phone_e164||user?.phone)||''}}
-$('#area').onchange=()=>$('#areaOther').classList.toggle('hidden',$('#area').value!=='أخرى داخل عمّان');
+  <section id="landing" class="screen active">
+    <div class="hero"><div>
+      <img src="./brand-wordmark.png" class="hero-logo" alt="CRAVA">
+      <div class="eyebrow">CRAVE · CHOOSE · ENJOY</div>
+      <h1>اختياراتك. بوكسك.</h1>
+      <p class="lead">اختر حجم CRAVA، حدّد نكهة كل كوكي وكل رول، وخلي Orbs تكمل التجربة.</p>
+      <div class="grid2">
+        <button class="btn primary" onclick="go('store')">اختَر بوكسك</button>
+        <button class="btn secondary" onclick="openAccount()">حسابي</button>
+      </div>
+    </div></div>
+  </section>
 
-$('#authBtn').onclick=async()=>{msg('#authMsg','جاري التنفيذ...');try{const email=$('#email').value.trim(),password=$('#password').value;if(!email||password.length<8)throw Error('أدخل بريدًا صحيحًا وكلمة مرور من 8 خانات.');if(mode==='signup'){const name=$('#name').value.trim();if(name.length<2)throw Error('أدخل اسمك الكامل.');const{data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name,referral_code_used:$('#referral').value.trim().toUpperCase()||null}}});if(error)throw error;if(!data.session)return msg('#authMsg','افحص بريدك لتأكيد الحساب.','ok');user=data.user}else{const{data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;user=data.user}await loadProfile();go('store');toast('أهلًا بك في CRAVA')}catch(e){msg('#authMsg',tr(e.message),'bad')}}
-$('#forgotBtn').onclick=async()=>{const email=$('#email').value.trim();if(!email)return msg('#authMsg','أدخل بريدك أولًا.','bad');const{error}=await db.auth.resetPasswordForEmail(email,{redirectTo:new URL('reset-password.html',location.href).href});msg('#authMsg',error?tr(error.message):'تم إرسال رابط الاستعادة.',error?'bad':'ok')}
-$('#placeOrder').onclick=async()=>{
- if(!items().length)return msg('#checkoutMsg','السلة فارغة.','bad');
- if(!(await requireUser()))return;
- const orderPhone=phone($('#checkoutPhone').value);
- const area=$('#area').value==='أخرى داخل عمّان'?$('#areaOther').value.trim():$('#area').value;
- const name=$('#checkoutName').value.trim(),street=$('#street').value.trim(),building=$('#building').value.trim();
- if(!name||!orderPhone||!area||!street||!building)return msg('#checkoutMsg','أكمل الاسم ورقم هاتف أردني صحيح والمنطقة والشارع والبناية.','bad');
- const points=Number($('#pointsUse').value||0);
- if(points<0||points>Number(profile?.points||0))return msg('#checkoutMsg','عدد النقاط غير صالح.','bad');
- $('#placeOrder').disabled=true;msg('#checkoutMsg','جاري إنشاء الطلب...');
- try{
-  const{data,error}=await db.rpc('create_crava_order',{
-   p_customer_name:name,
-   p_phone:orderPhone,
-   p_area:area,
-   p_street:street,
-   p_building:building,
-   p_floor:$('#floor').value.trim(),
-   p_apartment:$('#apartment').value.trim(),
-   p_delivery_notes:$('#notes').value.trim(),
-   p_items:items().map(p=>({product_id:p.id,quantity:p.quantity})),
-   p_points_to_use:points
-  });
-  if(error)throw error;
-  cart={};save();
-  $('#successText').textContent=`رقم طلبك #${String(data.order_number).padStart(6,'0')} — الإجمالي ${money(data.total)}.`;
-  go('success');
- }catch(e){msg('#checkoutMsg',tr(e.message),'bad')}
- finally{$('#placeOrder').disabled=false}
+  <section id="auth" class="screen">
+    <div class="card stack">
+      <h2>حساب CRAVA</h2>
+      <div class="grid2">
+        <button id="signupTab" class="btn secondary" onclick="setMode('signup')">حساب جديد</button>
+        <button id="loginTab" class="btn secondary" onclick="setMode('login')">تسجيل الدخول</button>
+      </div>
+      <div id="nameWrap"><input id="name" placeholder="الاسم الكامل"></div>
+      <input id="email" type="email" autocomplete="email" placeholder="البريد الإلكتروني">
+      <input id="password" type="password" minlength="8" autocomplete="current-password" placeholder="كلمة المرور">
+      <button id="authBtn" class="btn primary">إنشاء الحساب</button>
+      <button id="forgotBtn" class="btn secondary hidden">نسيت كلمة المرور</button>
+      <div id="authMsg" class="msg"></div>
+    </div>
+  </section>
+
+  <section id="store" class="screen">
+    <h2>بوكسات CRAVA</h2>
+    <p class="lead">كل بوكس يحتوي على كوكيز + Twist Rolls + Orbs. الدفع عند الاستلام فقط.</p>
+    <div id="boxGrid" class="box-grid"></div>
+  </section>
+
+  <section id="customize" class="screen">
+    <div id="customizer"></div>
+  </section>
+
+  <section id="cart" class="screen">
+    <h2>سلتك</h2>
+    <div id="cartContent"></div>
+    <div class="nav">
+      <button class="btn secondary" onclick="editCart()">تعديل الاختيارات</button>
+      <button class="btn primary" onclick="startCheckout()">إتمام الطلب</button>
+    </div>
+  </section>
+
+  <section id="checkout" class="screen">
+    <h2>إتمام الطلب</h2>
+    <div class="card stack">
+      <div class="notice">التوصيل يوميًا داخل عمّان · الدفع نقدًا عند الاستلام.</div>
+      <input id="checkoutName" placeholder="الاسم الكامل">
+      <input id="checkoutPhone" inputmode="tel" autocomplete="tel" placeholder="07XXXXXXXX أو +9627XXXXXXXX">
+      <select id="area"><option value="">اختر منطقة داخل عمّان</option></select>
+      <input id="street" placeholder="الشارع">
+      <div class="grid2">
+        <input id="building" placeholder="البناية">
+        <input id="floor" placeholder="الطابق — اختياري">
+      </div>
+      <input id="apartment" placeholder="الشقة — اختياري">
+      <textarea id="notes" placeholder="ملاحظات على الطلب — اختياري"></textarea>
+      <input id="referral" placeholder="كود دعوة — اختياري" autocomplete="off">
+      <label>النقاط المستخدمة — الحد الأقصى 100 نقطة
+        <input id="pointsUse" inputmode="numeric" type="number" min="0" max="100" value="0">
+      </label>
+      <div id="checkoutSummary"></div>
+      <button id="placeOrder" class="btn primary">تأكيد الطلب</button>
+      <div id="checkoutMsg" class="msg"></div>
+    </div>
+  </section>
+
+  <section id="success" class="screen">
+    <div class="hero"><div class="card">
+      <h2>تم استلام طلبك 🎉</h2>
+      <p id="successText" class="lead"></p>
+      <button class="btn primary" onclick="openAccount('orders')">تتبع طلبي</button>
+    </div></div>
+  </section>
+
+  <section id="account" class="screen">
+    <h2>حسابي</h2>
+    <div id="accountContent"></div>
+  </section>
+
+  <section id="rating" class="screen">
+    <h2>قيّم تجربتك</h2>
+    <div class="card stack">
+      <div id="ratingOrder" class="notice"></div>
+      <h3>تقييم البوكس</h3>
+      <div id="boxStars" class="rating-stars"></div>
+      <h3>تقييم التوصيل</h3>
+      <div id="deliveryStars" class="rating-stars"></div>
+      <textarea id="ratingComment" placeholder="اكتب رأيك — اختياري"></textarea>
+      <button id="submitRating" class="btn primary">إرسال التقييم</button>
+      <div id="ratingMsg" class="msg"></div>
+    </div>
+  </section>
+
+  <section id="claim" class="screen">
+    <h2>فعّل بوكسك</h2>
+    <div class="card stack">
+      <input id="boxNo" inputmode="numeric" placeholder="رقم البوكس">
+      <input id="claimCode" placeholder="الكود الخاص داخل البوكس">
+      <button id="claimBtn" class="btn primary">تحقق وأضف للمجموعة</button>
+      <div id="claimMsg" class="msg"></div>
+    </div>
+  </section>
+</main>
+<div id="toast" class="toast hidden"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const cfg=window.CRAVA_CONFIG||{};
+if(!window.supabase||!cfg.SUPABASE_URL||!cfg.SUPABASE_ANON_KEY){
+  document.body.innerHTML='<main class="wrap"><div class="card bad">ملف config.js ناقص أو غير موجود.</div></main>';
+  throw Error('Missing config');
 }
-async function openAccount(tab='summary'){if(!(await requireUser()))return;await loadProfile();const[or,le,bo,ba]=await Promise.all([db.from('orders').select('*,order_items(*)').eq('user_id',user.id).order('created_at',{ascending:false}),db.from('points_ledger').select('*').eq('user_id',user.id).order('created_at',{ascending:false}).limit(30),db.from('boxes').select('box_number,rarity,claimed_at').eq('claimed_by',user.id).order('claimed_at',{ascending:false}),db.from('user_badges').select('*').eq('user_id',user.id)]),orders=or.data||[],ledger=le.data||[],boxes=bo.data||[],badges=ba.data||[];$('#accountContent').innerHTML=`<div class="card"><h3>${esc(profile?.display_name||'عضو CRAVA')}</h3><div class="stats"><div class="stat"><b>${profile?.points||0}</b><span>نقطة</span></div><div class="stat"><b>${profile?.xp||0}</b><span>XP</span></div><div class="stat"><b>${profile?.box_count||0}</b><span>بوكس</span></div></div><p class="lead">كود دعوتك: <b>${esc(profile?.referral_code||'—')}</b> <button class="pill" onclick="copyRef()">نسخ</button></p></div><div class="tabs"><button class="pill ${tab==='summary'?'active':''}" onclick="openAccount('summary')">الملخص</button><button class="pill ${tab==='orders'?'active':''}" onclick="openAccount('orders')">طلباتي</button><button class="pill ${tab==='boxes'?'active':''}" onclick="openAccount('boxes')">بوكساتي</button><button class="pill ${tab==='points'?'active':''}" onclick="openAccount('points')">النقاط</button></div>${tab==='orders'?ordersHtml(orders):tab==='boxes'?boxesHtml(boxes,badges):tab==='points'?pointsHtml(ledger):`<div class="card"><div class="stats"><div class="stat"><b>${orders.length}</b><span>طلب</span></div><div class="stat"><b>${boxes.length}</b><span>بوكس</span></div><div class="stat"><b>${badges.length}</b><span>شارة</span></div></div></div>`}<div class="grid2"><button class="btn primary" onclick="go('claim')">تفعيل بوكس</button><button class="btn secondary" onclick="logout()">تسجيل الخروج</button></div>`;go('account')}
-function ordersHtml(x){return `<div class="card"><h3>طلباتي</h3>${x.map(o=>`<div class="order"><div class="summary"><b>#${String(o.order_number).padStart(6,'0')}</b><span class="status">${labels[o.status]||o.status}</span></div><div class="lead">${fmt(o.created_at)}</div><div class="summary"><span>${(o.order_items||[]).reduce((s,i)=>s+Number(i.quantity),0)} قطعة</span><b>${money(o.total)}</b></div></div>`).join('')||'<div class="empty">لا توجد طلبات.</div>'}</div>`}
-function boxesHtml(x,b){return `<div class="card"><h3>مجموعتي</h3>${x.map(v=>`<div class="box"><b>CRAVA #${String(v.box_number).padStart(6,'0')}</b><div class="lead">${esc(v.rarity)} · ${fmt(v.claimed_at)}</div></div>`).join('')||'<div class="empty">لا توجد بوكسات.</div>'}</div><div class="card"><h3>الشارات</h3>${b.map(v=>`<span class="status">${esc(v.badge_key)}</span> `).join('')||'<div class="empty">لا توجد شارات.</div>'}</div>`}
-function pointsHtml(x){return `<div class="card"><h3>سجل النقاط</h3>${x.map(v=>`<div class="cart-row"><span>${esc(v.reason||'حركة نقاط')}<div class="lead">${fmt(v.created_at)}</div></span><b class="${v.points>=0?'ok':'bad'}">${v.points>0?'+':''}${v.points}</b></div>`).join('')||'<div class="empty">لا يوجد سجل.</div>'}</div>`}
-window.copyRef=async()=>{try{await navigator.clipboard.writeText(profile?.referral_code||'');toast('تم نسخ كود الدعوة')}catch(e){prompt('انسخ الكود:',profile?.referral_code||'')}}
-$('#claimBtn').onclick=async()=>{if(!(await requireUser()))return;const no=Number($('#boxNo').value),code=$('#claimCode').value.trim().toUpperCase();if(!Number.isInteger(no)||code.length<4)return msg('#claimMsg','أدخل رقم البوكس والكود.','bad');const{data,error}=await db.rpc('claim_crava_box',{p_box_number:no,p_claim_code:code});if(error||!data?.ok)return msg('#claimMsg',tr(error?.message||data?.reason),'bad');msg('#claimMsg','تمت إضافة البوكس إلى مجموعتك.','ok');toast('تم تفعيل البوكس 🎉');setTimeout(()=>openAccount('boxes'),600)}
-async function logout(){await db.auth.signOut();user=null;profile=null;go('landing');toast('تم تسجيل الخروج')}
-function tr(x=''){for(const[r,t]of[[/Invalid login/i,'البريد أو كلمة المرور غير صحيحة.'],[/Email not confirmed/i,'أكد بريدك الإلكتروني أولًا.'],[/already registered/i,'البريد مسجل مسبقًا.'],[/rate limit/i,'محاولات كثيرة، انتظر قليلًا.'],[/INVALID PRIVATE CLAIM CODE/i,'كود البوكس غير صحيح.'],[/BOX NOT FOUND/i,'رقم البوكس غير موجود.'],[/ALREADY CLAIMED/i,'البوكس مفعّل مسبقًا.'],[/HAS NOT BEEN ACTIVATED/i,'البوكس لم يتم إطلاقه بعد.']])if(r.test(x))return t;return x||'حدث خطأ.'}
-db.auth.onAuthStateChange(async(_e,s)=>{user=s?.user||null;if(user)await loadProfile()});session();loadProducts();count();setMode('signup');if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-</script></body></html>
+const db=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
+
+let user=null;
+let profile=null;
+let mode='signup';
+let boxSizes=[];
+let flavors=[];
+let deliveryAreas=[];
+let cart=JSON.parse(localStorage.getItem('crava_box_cart')||'null');
+let draft=null;
+let accountOrders=[];
+let ratingState={orderId:null,box:0,delivery:0};
+
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const money=v=>Number(v||0).toFixed(3)+' د.أ';
+const fmt=v=>v?new Date(v).toLocaleString('ar-JO'):'—';
+const statusLabels={new:'جديد',confirmed:'مؤكد',preparing:'قيد التجهيز',out_for_delivery:'خرج للتوصيل',delivered:'تم التسليم',cancelled:'ملغي'};
+
+function toast(text,isBad=false){
+  const el=$('#toast');
+  el.textContent=text;
+  el.style.color=isBad?'var(--bad)':'var(--t)';
+  el.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer=setTimeout(()=>el.classList.add('hidden'),3000);
+}
+function msg(selector,text,type=''){
+  const el=$(selector);el.textContent=text||'';el.className='msg '+type;
+}
+function go(id){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  const screen=$('#'+id);if(screen)screen.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='store')renderStore();
+  if(id==='cart')renderCart();
+  if(id==='checkout')renderCheckout();
+}
+function setMode(next){
+  mode=next;
+  $('#nameWrap').classList.toggle('hidden',next==='login');
+  $('#forgotBtn').classList.toggle('hidden',next!=='login');
+  $('#authBtn').textContent=next==='signup'?'إنشاء الحساب':'تسجيل الدخول';
+  $('#signupTab').classList.toggle('primary',next==='signup');
+  $('#signupTab').classList.toggle('secondary',next!=='signup');
+  $('#loginTab').classList.toggle('primary',next==='login');
+  $('#loginTab').classList.toggle('secondary',next!=='login');
+  msg('#authMsg','');
+}
+async function session(){
+  const {data:{session}}=await db.auth.getSession();
+  user=session?.user||null;
+  if(user)await loadProfile();
+}
+async function loadProfile(){
+  if(!user){profile=null;return null;}
+  const {data,error}=await db.from('profiles').select('*').eq('id',user.id).maybeSingle();
+  if(error)console.error(error);
+  profile=data||null;
+  return profile;
+}
+async function requireUser(){
+  if(user)return true;
+  setMode('login');go('auth');toast('سجّل الدخول للمتابعة',true);return false;
+}
+
+async function loadCatalog(){
+  const [sizesRes,flavorsRes,areasRes]=await Promise.all([
+    db.from('box_sizes').select('*').eq('is_active',true).order('sort_order'),
+    db.from('flavor_options').select('*').eq('is_active',true).order('sort_order'),
+    db.from('delivery_areas').select('*').eq('is_active',true).order('sort_order')
+  ]);
+  const error=sizesRes.error||flavorsRes.error||areasRes.error;
+  if(error){
+    $('#boxGrid').innerHTML='<div class="card bad">'+esc(error.message)+'</div>';
+    return;
+  }
+  boxSizes=sizesRes.data||[];
+  flavors=flavorsRes.data||[];
+  deliveryAreas=areasRes.data||[];
+  renderStore();
+  renderAreaOptions();
+  updateCartCount();
+}
+function renderStore(){
+  if(!$('#boxGrid'))return;
+  $('#boxGrid').innerHTML=boxSizes.map(size=>`
+    <article class="box-card">
+      <div class="box-code">${esc(size.name_ar)}</div>
+      <div class="box-price">${money(size.price)}</div>
+      <div class="feature-list">
+        <span><b>${size.cookie_count}</b> كوكيز</span>
+        <span><b>${size.roll_count}</b> Twist Rolls</span>
+        <span><b>Orbs</b> كاندي</span>
+        <span><b>${size.people_count}</b> أشخاص</span>
+      </div>
+      <button class="btn primary" onclick="chooseBox('${esc(size.code)}')">اختيار وتخصيص</button>
+    </article>`).join('')||'<div class="empty">لا توجد بوكسات متاحة حاليًا.</div>';
+}
+function getSize(code){return boxSizes.find(x=>x.code===code);}
+function optionsFor(type){return flavors.filter(x=>x.item_type===type);}
+function chooseBox(code){
+  const size=getSize(code);if(!size)return;
+  draft={sizeCode:code,cookies:Array(size.cookie_count).fill(''),rolls:Array(size.roll_count).fill('')};
+  renderCustomizer();go('customize');
+}
+function editCart(){
+  if(!cart)return go('store');
+  draft=JSON.parse(JSON.stringify(cart));
+  renderCustomizer();go('customize');
+}
+function selectOptions(type,current){
+  return `<option value="">اختر النكهة</option>`+optionsFor(type).map(o=>`<option value="${esc(o.code)}" ${o.code===current?'selected':''}>${esc(o.name_ar)}</option>`).join('');
+}
+function renderCustomizer(){
+  if(!draft)return go('store');
+  const size=getSize(draft.sizeCode);if(!size)return go('store');
+  const cookieSelectors=draft.cookies.map((value,i)=>`
+    <div class="selector">
+      <div class="selector-head"><b>Cookie ${i+1}</b><span class="selector-no">${i+1}</span></div>
+      <select onchange="setChoice('cookies',${i},this.value)">${selectOptions('cookie',value)}</select>
+    </div>`).join('');
+  const rollSelectors=draft.rolls.map((value,i)=>`
+    <div class="selector">
+      <div class="selector-head"><b>Twist ${i+1}</b><span class="selector-no">${i+1}</span></div>
+      <select onchange="setChoice('rolls',${i},this.value)">${selectOptions('roll',value)}</select>
+    </div>`).join('');
+  $('#customizer').innerHTML=`
+    <h2>خصّص ${esc(size.name_ar)}</h2>
+    <div class="card"><div class="summary"><span>${size.cookie_count} كوكيز + ${size.roll_count} رول + Orbs</span><b>${money(size.price)}</b></div><p class="lead">اختر نكهة كل قطعة بشكل منفصل.</p></div>
+    <h3>Cookies</h3><div class="stack">${cookieSelectors}</div>
+    <h3>Twist Rolls</h3><div class="stack">${rollSelectors}</div>
+    <div class="included"><b>Orbs</b><br><span class="lead">موجودة تلقائيًا داخل البوكس، بدون اختيار نكهة.</span></div>
+    <div class="nav"><button class="btn secondary" onclick="go('store')">رجوع</button><button class="btn primary" onclick="saveCustomizedBox()">حفظ في السلة</button></div>`;
+}
+window.setChoice=(group,index,value)=>{if(draft)draft[group][index]=value;};
+function saveCustomizedBox(){
+  if(!draft)return;
+  if(draft.cookies.some(x=>!x)||draft.rolls.some(x=>!x))return toast('اختر نكهة كل كوكي وكل رول',true);
+  cart=JSON.parse(JSON.stringify(draft));
+  localStorage.setItem('crava_box_cart',JSON.stringify(cart));
+  updateCartCount();toast('تم حفظ البوكس في السلة');go('cart');
+}
+function updateCartCount(){$('#cartCount').textContent=cart?1:0;}
+function flavorName(code){return flavors.find(x=>x.code===code)?.name_ar||code;}
+function countChoices(codes){
+  return codes.reduce((acc,code)=>{acc[code]=(acc[code]||0)+1;return acc;},{});
+}
+function chipsHtml(codes){
+  return Object.entries(countChoices(codes)).map(([code,count])=>`<span class="chip">${count} × ${esc(flavorName(code))}</span>`).join('');
+}
+function choiceSummaryHtml(box){
+  return `<div class="choice-summary">
+    <div class="choice-group"><b>Cookies</b><div class="choice-chips">${chipsHtml(box.cookies)}</div></div>
+    <div class="choice-group"><b>Twist Rolls</b><div class="choice-chips">${chipsHtml(box.rolls)}</div></div>
+    <div class="choice-group"><b>Candy</b><div class="choice-chips"><span class="chip">Orbs</span></div></div>
+  </div>`;
+}
+function renderCart(){
+  if(!cart){
+    $('#cartContent').innerHTML='<div class="card empty">السلة فارغة.<br><br><button class="btn primary" onclick="go(\'store\')">اختَر بوكسك</button></div>';
+    return;
+  }
+  const size=getSize(cart.sizeCode);
+  if(!size){$('#cartContent').innerHTML='<div class="card bad">حجم البوكس غير متاح حاليًا.</div>';return;}
+  $('#cartContent').innerHTML=`<div class="card"><div class="summary"><div><h3>${esc(size.name_ar)}</h3><span class="lead">يكفي ${size.people_count} أشخاص</span></div><b class="box-price">${money(size.price)}</b></div>${choiceSummaryHtml(cart)}<button class="btn danger" style="margin-top:12px" onclick="clearCart()">إزالة البوكس</button></div>`;
+}
+function clearCart(){cart=null;draft=null;localStorage.removeItem('crava_box_cart');updateCartCount();renderCart();toast('تمت إزالة البوكس');}
+function openCart(){go('cart');}
+async function startCheckout(){
+  if(!cart)return toast('اختَر بوكسًا أولًا',true);
+  if(await requireUser())go('checkout');
+}
+function renderAreaOptions(){
+  const select=$('#area');if(!select)return;
+  const current=select.value;
+  select.innerHTML='<option value="">اختر منطقة داخل عمّان</option>'+deliveryAreas.map(a=>`<option value="${esc(a.name_ar)}">${esc(a.name_ar)} — ${money(a.delivery_fee)}</option>`).join('');
+  if(deliveryAreas.some(a=>a.name_ar===current))select.value=current;
+}
+function selectedArea(){return deliveryAreas.find(a=>a.name_ar===$('#area').value);}
+function pointsToUse(){
+  const available=Math.min(100,Number(profile?.points||0));
+  let value=Math.floor(Number($('#pointsUse').value||0));
+  if(!Number.isFinite(value))value=0;
+  value=Math.max(0,Math.min(available,value));
+  $('#pointsUse').value=value;
+  return value;
+}
+function renderCheckout(){
+  if(!cart)return;
+  const size=getSize(cart.sizeCode);if(!size)return;
+  renderAreaOptions();
+  if(profile){
+    if(!$('#checkoutName').value)$('#checkoutName').value=profile.display_name||'';
+    if(!$('#checkoutPhone').value)$('#checkoutPhone').value=profile.phone_e164||'';
+  }
+  const max=Math.min(100,Number(profile?.points||0));
+  $('#pointsUse').max=max;
+  if(Number($('#pointsUse').value)>max)$('#pointsUse').value=max;
+  const area=selectedArea();
+  const delivery=Number(area?.delivery_fee||0);
+  const points=pointsToUse();
+  const discount=points/100;
+  const total=Math.max(0,Number(size.price)+delivery-discount);
+  $('#checkoutSummary').innerHTML=`
+    <div class="notice">رصيدك: <b>${profile?.points||0}</b> نقطة · تستطيع استخدام حتى <b>${max}</b> نقطة في هذا الطلب.</div>
+    <div class="summary"><span>سعر الطلب</span><b>${money(size.price)}</b></div>
+    <div class="summary"><span>سعر التوصيل</span><b>${area?money(delivery):'اختر المنطقة'}</b></div>
+    <div class="summary"><span>خصم النقاط</span><b>− ${money(discount)}</b></div>
+    <div class="summary total"><span>المجموع</span><b>${money(total)}</b></div>
+    <div class="summary"><span>الدفع</span><b>عند الاستلام</b></div>`;
+}
+$('#area').addEventListener('change',renderCheckout);
+$('#pointsUse').addEventListener('input',renderCheckout);
+
+function normalizePhone(value){
+  let v=String(value||'').replace(/[\s()-]/g,'');
+  if(/^07\d{8}$/.test(v))return '+962'+v.slice(1);
+  if(/^9627\d{8}$/.test(v))return '+'+v;
+  if(/^\+9627\d{8}$/.test(v))return v;
+  return null;
+}
+
+$('#authBtn').onclick=async()=>{
+  msg('#authMsg','جاري التنفيذ...');
+  try{
+    const email=$('#email').value.trim(),password=$('#password').value;
+    if(!email||password.length<8)throw Error('أدخل بريدًا صحيحًا وكلمة مرور من 8 خانات.');
+    if(mode==='signup'){
+      const name=$('#name').value.trim();
+      if(name.length<2)throw Error('أدخل اسمك الكامل.');
+      const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name}}});
+      if(error)throw error;
+      if(!data.session){msg('#authMsg','افحص بريدك لتأكيد الحساب.','ok');return;}
+      user=data.user;
+    }else{
+      const {data,error}=await db.auth.signInWithPassword({email,password});
+      if(error)throw error;
+      user=data.user;
+    }
+    await loadProfile();go(cart?'cart':'store');toast('أهلًا بك في CRAVA');
+  }catch(e){msg('#authMsg',translateError(e.message),'bad');}
+};
+$('#forgotBtn').onclick=async()=>{
+  const email=$('#email').value.trim();
+  if(!email)return msg('#authMsg','أدخل بريدك أولًا.','bad');
+  const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:new URL('reset-password.html?next=index.html',location.href).href});
+  msg('#authMsg',error?translateError(error.message):'تم إرسال رابط الاستعادة.',error?'bad':'ok');
+};
+
+$('#placeOrder').onclick=async()=>{
+  if(!cart)return msg('#checkoutMsg','السلة فارغة.','bad');
+  if(!(await requireUser()))return;
+  const size=getSize(cart.sizeCode);
+  const orderPhone=normalizePhone($('#checkoutPhone').value);
+  const area=selectedArea();
+  const name=$('#checkoutName').value.trim();
+  const street=$('#street').value.trim();
+  const building=$('#building').value.trim();
+  if(!name||!orderPhone||!area||!street||!building)return msg('#checkoutMsg','أكمل الاسم ورقم هاتف أردني صحيح والمنطقة والشارع والبناية.','bad');
+  const points=pointsToUse();
+  $('#placeOrder').disabled=true;msg('#checkoutMsg','جاري إنشاء الطلب...');
+  try{
+    const {data,error}=await db.rpc('create_crava_order',{
+      p_customer_name:name,
+      p_phone:orderPhone,
+      p_area:area.name_ar,
+      p_street:street,
+      p_building:building,
+      p_floor:$('#floor').value.trim()||null,
+      p_apartment:$('#apartment').value.trim()||null,
+      p_order_notes:$('#notes').value.trim()||null,
+      p_box_size_code:size.code,
+      p_cookie_selections:cart.cookies,
+      p_roll_selections:cart.rolls,
+      p_points_to_use:points,
+      p_referral_code:$('#referral').value.trim().toUpperCase()||null
+    });
+    if(error)throw error;
+    cart=null;draft=null;localStorage.removeItem('crava_box_cart');updateCartCount();
+    await loadProfile();
+    $('#successText').textContent=`رقم طلبك #${String(data.order_number).padStart(6,'0')} — الإجمالي ${money(data.total)}.`;
+    go('success');
+  }catch(e){msg('#checkoutMsg',translateError(e.message),'bad');}
+  finally{$('#placeOrder').disabled=false;}
+};
+
+async function openAccount(tab='summary'){
+  if(!(await requireUser()))return;
+  await loadProfile();
+  const [ordersRes,ledgerRes,boxesRes,badgesRes]=await Promise.all([
+    db.from('orders').select('*,order_items(*),order_ratings(*)').eq('user_id',user.id).order('created_at',{ascending:false}),
+    db.from('points_ledger').select('*').eq('user_id',user.id).order('created_at',{ascending:false}).limit(50),
+    db.from('boxes').select('box_number,rarity,claimed_at').eq('claimed_by',user.id).order('claimed_at',{ascending:false}),
+    db.from('user_badges').select('*').eq('user_id',user.id)
+  ]);
+  const err=ordersRes.error||ledgerRes.error||boxesRes.error||badgesRes.error;
+  if(err){toast(translateError(err.message),true);return;}
+  accountOrders=ordersRes.data||[];
+  const ledger=ledgerRes.data||[],boxes=boxesRes.data||[],badges=badgesRes.data||[];
+  $('#accountContent').innerHTML=`
+    <div class="card">
+      <h3>${esc(profile?.display_name||'عضو CRAVA')}</h3>
+      <div class="stats"><div class="stat"><b>${profile?.points||0}</b><span>نقطة</span></div><div class="stat"><b>${profile?.xp||0}</b><span>XP</span></div><div class="stat"><b>${profile?.box_count||0}</b><span>بوكس مفعّل</span></div></div>
+      <p class="lead">كود دعوتك: <b>${esc(profile?.referral_code||'—')}</b> <button class="pill" onclick="copyReferral()">نسخ</button></p>
+    </div>
+    <div class="tabs">
+      <button class="pill ${tab==='summary'?'active':''}" onclick="openAccount('summary')">الملخص</button>
+      <button class="pill ${tab==='orders'?'active':''}" onclick="openAccount('orders')">طلباتي</button>
+      <button class="pill ${tab==='points'?'active':''}" onclick="openAccount('points')">النقاط</button>
+      <button class="pill ${tab==='boxes'?'active':''}" onclick="openAccount('boxes')">بوكساتي</button>
+    </div>
+    ${tab==='orders'?ordersHtml(accountOrders):tab==='points'?pointsHtml(ledger):tab==='boxes'?boxesHtml(boxes,badges):summaryHtml(accountOrders,boxes,badges)}
+    <div class="grid2"><button class="btn primary" onclick="go('claim')">تفعيل بوكس</button><button class="btn secondary" onclick="logout()">تسجيل الخروج</button></div>`;
+  go('account');
+}
+function summaryHtml(orders,boxes,badges){
+  const delivered=orders.filter(x=>x.status==='delivered').length;
+  return `<div class="card"><div class="stats"><div class="stat"><b>${orders.length}</b><span>طلب</span></div><div class="stat"><b>${delivered}</b><span>تم تسليمه</span></div><div class="stat"><b>${badges.length}</b><span>شارة</span></div></div><p class="lead">لديك ${boxes.length} بوكسات مفعّلة في مجموعتك.</p></div>`;
+}
+function itemGroups(items){
+  const group=type=>(items||[]).filter(i=>i.item_type===type).reduce((a,i)=>{const n=i.option_name||i.product_name||'—';a[n]=(a[n]||0)+Number(i.quantity||1);return a;},{});
+  return {cookies:group('cookie'),rolls:group('roll'),candy:group('candy')};
+}
+function groupRows(obj){return Object.entries(obj).map(([name,count])=>`<span class="chip">${count} × ${esc(name)}</span>`).join('')||'<span class="chip">—</span>';}
+function ordersHtml(orders){
+  return `<div class="card"><h3>طلباتي</h3>${orders.map(o=>{
+    const g=itemGroups(o.order_items||[]);
+    const rating=Array.isArray(o.order_ratings)?o.order_ratings[0]:o.order_ratings;
+    return `<div class="order">
+      <div class="summary"><b>#${String(o.order_number).padStart(6,'0')} · ${esc(o.box_name||o.box_size_code||'CRAVA')}</b><span class="status ${esc(o.status)}">${statusLabels[o.status]||o.status}</span></div>
+      <div class="lead">${fmt(o.created_at)}</div>
+      <div class="order-details"><div class="choice-chips">${groupRows(g.cookies)}</div><div class="choice-chips">${groupRows(g.rolls)}</div><div class="choice-chips">${groupRows(g.candy)}</div></div>
+      <div class="summary"><span>التوصيل ${money(o.delivery_fee)}</span><b>${money(o.total)}</b></div>
+      ${o.points_used?`<div class="lead">تم استخدام ${o.points_used} نقطة بخصم ${money(o.points_discount)}</div>`:''}
+      ${o.status==='delivered'&&!rating?`<button class="btn primary" onclick="openRating('${o.id}')">قيّم البوكس والتوصيل</button>`:''}
+      ${rating?`<div class="review-box">تقييمك: البوكس ${'★'.repeat(rating.box_rating)} · التوصيل ${'★'.repeat(rating.delivery_rating)}</div>`:''}
+    </div>`;
+  }).join('')||'<div class="empty">لا توجد طلبات.</div>'}</div>`;
+}
+function pointsHtml(rows){
+  return `<div class="card"><h3>سجل النقاط</h3>${rows.map(v=>`<div class="cart-row"><span>${esc(v.reason)}<div class="lead">${fmt(v.created_at)}</div></span><b class="${v.points>=0?'ok':'bad'}">${v.points>0?'+':''}${v.points}</b></div>`).join('')||'<div class="empty">لا يوجد سجل.</div>'}</div>`;
+}
+function boxesHtml(boxes,badges){
+  return `<div class="card"><h3>مجموعتي</h3>${boxes.map(v=>`<div class="collection-box"><b>CRAVA #${String(v.box_number).padStart(6,'0')}</b><div class="lead">${esc(v.rarity)} · ${fmt(v.claimed_at)}</div></div>`).join('')||'<div class="empty">لا توجد بوكسات مفعّلة.</div>'}</div><div class="card"><h3>الشارات</h3><div class="choice-chips">${badges.map(v=>`<span class="chip">${esc(v.badge_key)}</span>`).join('')||'<span class="lead">لا توجد شارات.</span>'}</div></div>`;
+}
+window.copyReferral=async()=>{
+  const code=profile?.referral_code||'';
+  try{await navigator.clipboard.writeText(code);toast('تم نسخ كود الدعوة');}catch(e){prompt('انسخ الكود:',code);}
+};
+function openRating(orderId){
+  const order=accountOrders.find(x=>x.id===orderId);if(!order)return;
+  ratingState={orderId,box:0,delivery:0};
+  $('#ratingOrder').textContent=`الطلب #${String(order.order_number).padStart(6,'0')} — ${order.box_name||'CRAVA'}`;
+  $('#ratingComment').value='';msg('#ratingMsg','');renderStars();go('rating');
+}
+function starsHtml(type,value){return [1,2,3,4,5].map(n=>`<button type="button" class="star ${n<=value?'on':''}" onclick="setRating('${type}',${n})">★</button>`).join('');}
+function renderStars(){$('#boxStars').innerHTML=starsHtml('box',ratingState.box);$('#deliveryStars').innerHTML=starsHtml('delivery',ratingState.delivery);}
+window.setRating=(type,value)=>{ratingState[type]=value;renderStars();};
+$('#submitRating').onclick=async()=>{
+  if(!ratingState.box||!ratingState.delivery)return msg('#ratingMsg','اختر تقييم البوكس والتوصيل.','bad');
+  $('#submitRating').disabled=true;msg('#ratingMsg','جاري الإرسال...');
+  const {data,error}=await db.rpc('submit_order_rating',{p_order_id:ratingState.orderId,p_box_rating:ratingState.box,p_delivery_rating:ratingState.delivery,p_comment:$('#ratingComment').value.trim()||null});
+  $('#submitRating').disabled=false;
+  if(error||!data?.ok)return msg('#ratingMsg',translateError(error?.message||'تعذر إرسال التقييم'),'bad');
+  toast('شكرًا لتقييمك 🤍');openAccount('orders');
+};
+
+$('#claimBtn').onclick=async()=>{
+  if(!(await requireUser()))return;
+  const no=Number($('#boxNo').value),code=$('#claimCode').value.trim().toUpperCase();
+  if(!Number.isInteger(no)||code.length<4)return msg('#claimMsg','أدخل رقم البوكس والكود.','bad');
+  const {data,error}=await db.rpc('claim_crava_box',{p_box_number:no,p_claim_code:code});
+  if(error||!data?.ok)return msg('#claimMsg',translateError(error?.message||data?.reason),'bad');
+  msg('#claimMsg','تمت إضافة البوكس إلى مجموعتك.','ok');toast('تم تفعيل البوكس 🎉');setTimeout(()=>openAccount('boxes'),500);
+};
+async function logout(){await db.auth.signOut();user=null;profile=null;go('landing');toast('تم تسجيل الخروج');}
+
+function translateError(text=''){
+  const map=[
+    [/Invalid login/i,'البريد أو كلمة المرور غير صحيحة.'],[/Email not confirmed/i,'أكد بريدك الإلكتروني أولًا.'],[/already registered/i,'البريد مسجل مسبقًا.'],[/rate limit/i,'محاولات كثيرة، انتظر قليلًا.'],
+    [/SIGN IN REQUIRED/i,'سجّل الدخول أولًا.'],[/INVALID JORDAN PHONE/i,'رقم الهاتف الأردني غير صحيح.'],[/DELIVERY OUTSIDE AMMAN/i,'التوصيل متاح داخل عمّان فقط.'],[/INCOMPLETE ADDRESS/i,'أكمل بيانات العنوان.'],
+    [/COOKIE SELECTIONS INCOMPLETE/i,'اختيارات الكوكيز غير مكتملة.'],[/ROLL SELECTIONS INCOMPLETE/i,'اختيارات الرولات غير مكتملة.'],[/INVALID REFERRAL CODE/i,'كود الدعوة غير صحيح.'],[/CANNOT USE OWN REFERRAL CODE/i,'لا يمكنك استخدام كود دعوتك.'],[/REFERRAL ALREADY USED/i,'تم استخدام دعوة لهذا الحساب مسبقًا.'],[/REFERRAL ALREADY REGISTERED/i,'هذا الحساب مرتبط بكود دعوة آخر.'],
+    [/POINTS LIMIT IS 100/i,'الحد الأقصى 100 نقطة لكل طلب.'],[/INSUFFICIENT POINTS/i,'رصيد النقاط غير كافٍ.'],[/ORDER NOT DELIVERED/i,'يمكن التقييم بعد تسليم الطلب فقط.'],[/ORDER ALREADY RATED/i,'تم تقييم هذا الطلب مسبقًا.'],
+    [/INVALID PRIVATE CLAIM CODE/i,'كود البوكس غير صحيح.'],[/BOX NOT FOUND/i,'رقم البوكس غير موجود.'],[/ALREADY CLAIMED/i,'البوكس مفعّل مسبقًا.'],[/HAS NOT BEEN ACTIVATED/i,'البوكس لم يتم إطلاقه بعد.']
+  ];
+  for(const [re,ar] of map)if(re.test(text))return ar;
+  return text||'حدث خطأ.';
+}
+
+db.auth.onAuthStateChange(async(_event,s)=>{user=s?.user||null;if(user)await loadProfile();});
+session();loadCatalog();setMode('signup');updateCartCount();
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
