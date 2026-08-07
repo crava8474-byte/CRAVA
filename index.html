@@ -232,7 +232,7 @@ function renderStore(){
   if(!$('#boxGrid'))return;
   $('#boxGrid').innerHTML=boxSizes.map(size=>`
     <article class="box-card">
-      <div class="box-code">${esc(size.name_ar)}</div>
+      <div class="box-code">${size.code==='XL'?'⭐ ':''}${esc(size.name_ar)}</div>
       <div class="box-price">${money(size.price)}</div>
       <div class="feature-list">
         <span><b>${size.cookie_count}</b> كوكيز</span>
